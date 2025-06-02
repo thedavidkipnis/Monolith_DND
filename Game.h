@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <memory>
+#include "UImanager.h"
 #include "Dungeon.h"
 #include "Player.h"
 #include "NPC.h"
@@ -12,20 +13,13 @@ private:
     SDL_Renderer* renderer;
     bool running;
 
-    SDL_Rect gameView;
-    SDL_Rect leftUIPanel;
-    SDL_Rect rightUIPanel;
-    SDL_Rect bottomUIPanel;
+    UIManager* visualsManager;
 
     bool isPlayerInEncounter;
 
     std::unique_ptr<Player> player;
     std::unique_ptr<Room> currentRoom;
     std::unique_ptr<Dungeon> dungeon;
-
-    SDL_Texture* wallTexture = nullptr;
-    SDL_Texture* doorTexture = nullptr;
-    SDL_Texture* NPCTexture = nullptr;
 
     const Uint8* keyState;
     Uint32 lastMoveTime;
@@ -35,7 +29,6 @@ public:
     Game();
     ~Game();
 
-    void loadTextures();
     bool initialize();
     void run();
     void cleanup();
@@ -45,6 +38,5 @@ public:
 private:
     void handleInput();
     void update();
-    void renderUIPanel(SDL_Renderer* renderer, SDL_Rect panel);
     void render();
 };

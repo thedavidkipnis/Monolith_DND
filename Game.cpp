@@ -14,45 +14,6 @@ Game::~Game() {
     cleanup();
 }
 
-void Game::loadTextures() {
-    SDL_Surface* surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/wall.png");
-    if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-    }
-
-    wallTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
-    if (!wallTexture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-    }
-
-    surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
-    if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-    }
-
-    doorTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
-    if (!doorTexture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-    }
-
-    surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/goblin.png");
-    if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-    }
-
-    NPCTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
-    if (!NPCTexture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-    }
-
-}
-
 bool Game::initialize() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -80,13 +41,7 @@ bool Game::initialize() {
         return false;
     }
 
-    gameView = { UI_SIDE_PANEL_WIDTH, 0, GAMEVIEW_WIDTH, GAMEVIEW_HEIGHT };
-    leftUIPanel = { 0, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
-    rightUIPanel = { UI_SIDE_PANEL_WIDTH + GAMEVIEW_WIDTH, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
-    bottomUIPanel = { 0, GAMEVIEW_HEIGHT, UI_BOTTOM_PANNEL_WIDTH, UI_BOTTOM_PANNEL_HEIGHT };
-
-
-    loadTextures();
+    visualsManager = new UIManager(renderer);
 
     // Initialize game objects
     player = std::make_unique<Player>(12, 9);
@@ -110,36 +65,54 @@ void Game::handleInput() {
         if (e.type == SDL_QUIT) {
             running = false;
         }
+
+        if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
+            /*int mouseX = e.button.x;
+            int mouseY = e.button.y;
+
+            SDL_Point mousePoint = { mouseX, mouseY };
+
+            if (SDL_PointInRect(&mousePoint, &UIMoveButton)) {
+                std::cout << "Move button clicked!" << std::endl;
+            }
+
+            if (SDL_PointInRect(&mousePoint, &UIAttackButton)) {
+                std::cout << "Attack button clicked!" << std::endl;
+            }*/
+        }
+
     }
 
     // Handle continuous key presses with timing
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastMoveTime > MOVE_DELAY) {
-        int deltaX = 0, deltaY = 0;
+        if (!isPlayerInEncounter) {
+            int deltaX = 0, deltaY = 0;
 
-        if (keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP]) {
-            deltaY = -1;
-        }
-        if (keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN]) {
-            deltaY = 1;
-        }
-        if (keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT]) {
-            deltaX = -1;
-        }
-        if (keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT]) {
-            deltaX = 1;
-        }
+            if (keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP]) {
+                deltaY = -1;
+            }
+            if (keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN]) {
+                deltaY = 1;
+            }
+            if (keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT]) {
+                deltaX = -1;
+            }
+            if (keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT]) {
+                deltaX = 1;
+            }
 
-        // Try to move player
-        if (deltaX != 0 || deltaY != 0) {
-            Room* currentRoom = dungeon->getCurrentRoom();
-            if (currentRoom && player->tryMove(deltaX, deltaY, *currentRoom)) {
-                lastMoveTime = currentTime;
+            // Try to move player
+            if (deltaX != 0 || deltaY != 0) {
+                Room* currentRoom = dungeon->getCurrentRoom();
+                if (currentRoom && player->tryMove(deltaX, deltaY, *currentRoom)) {
+                    lastMoveTime = currentTime;
 
-                // Check for room transitions
-                int newPlayerX, newPlayerY;
-                if (dungeon->tryRoomTransition(player->getX(), player->getY(), newPlayerX, newPlayerY)) {
-                    player->setPosition(newPlayerX, newPlayerY);
+                    // Check for room transitions
+                    int newPlayerX, newPlayerY;
+                    if (dungeon->tryRoomTransition(player->getX(), player->getY(), newPlayerX, newPlayerY)) {
+                        player->setPosition(newPlayerX, newPlayerY);
+                    }
                 }
             }
         }
@@ -158,6 +131,7 @@ void Game::update() {
             std::cout << "entered encounter room. ";
             curRoom->setRoomEncounterState(false);
             curRoom->setRoomVisited(true);
+            isPlayerInEncounter = true;
         }
         else {
             std::cout << "not an encounter. ";
@@ -169,32 +143,13 @@ void Game::update() {
     }
 }
 
-void Game::renderUIPanel(SDL_Renderer* renderer, SDL_Rect panel) {
-    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
-    SDL_RenderFillRect(renderer, &panel);
-
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-    SDL_RenderDrawRect(renderer, &panel);
-}
-
 void Game::render() {
-    // Clear screen
-    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
-    SDL_RenderClear(renderer);
-
-    renderUIPanel(renderer, leftUIPanel);
-    renderUIPanel(renderer, rightUIPanel);
-    renderUIPanel(renderer, bottomUIPanel);
 
     // Render game objects
     Room* currentRoom = dungeon->getCurrentRoom();
-    if (currentRoom) {
-        currentRoom->render(renderer, wallTexture, doorTexture);
-        currentRoom->renderRoomNPCs(renderer, NPCTexture);
-    }
-    player->render(renderer);
 
-    // Present the rendered frame
+    visualsManager->render(currentRoom, player->getX(), player->getY());
+
     SDL_RenderPresent(renderer);
 }
 
@@ -220,8 +175,8 @@ void Game::cleanup() {
         window = nullptr;
     }
 
-    if (wallTexture) {
-        SDL_DestroyTexture(wallTexture);
+    if (visualsManager) {
+        visualsManager->~UIManager();
     }
 
     SDL_Quit();

@@ -33,6 +33,9 @@
     <ClCompile Include="NPC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,6 +89,18 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\..\..\Downloads\tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\full_red_heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="half_red_heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="full_action_point.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="action_point_half.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

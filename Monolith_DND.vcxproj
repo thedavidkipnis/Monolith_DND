@@ -138,6 +138,7 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -146,13 +147,18 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\Downloads\full_red_heart.png" />
     <Image Include="..\..\..\Downloads\tree.png" />
+    <Image Include="action_point_half.png" />
     <Image Include="chest.png" />
     <Image Include="coins.png" />
+    <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
     <Image Include="goblin.png" />
+    <Image Include="half_red_heart.png" />
     <Image Include="knight.png" />
     <Image Include="pine.png" />
     <Image Include="rogue.png" />

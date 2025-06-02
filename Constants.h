@@ -10,8 +10,6 @@ const int TILE_HEIGHT_OFFSET = 0;
 // Game view
 const int GAMEVIEW_WIDTH = TILE_SIZE * ROOM_WIDTH;
 const int GAMEVIEW_HEIGHT = TILE_SIZE * ROOM_HEIGHT;
-const int GAMEVIEW_START_X = TILE_SIZE * 5;
-const int GAMEVIEW_START_Y = TILE_SIZE * 0;
 
 // Screen dimensions
 const int UI_SIDE_PANEL_WIDTH = TILE_SIZE * 5;
@@ -26,6 +24,16 @@ const int SCREEN_HEIGHT = GAMEVIEW_HEIGHT + UI_BOTTOM_PANNEL_HEIGHT;
 
 // for knowing where to start rendering game screen
 const int TILE_WIDTH_OFFSET = UI_SIDE_PANEL_WIDTH;
+
+// starting points for future layouts
+const int GAMEVIEW_START_X = TILE_SIZE * 5;
+const int GAMEVIEW_START_Y = TILE_SIZE * 0;
+const int UI_BOTTOM_PANNEL_START_X = 0;
+const int UI_BOTTOM_PANNEL_START_Y = GAMEVIEW_HEIGHT;
+
+// UI buttons and layouts
+const int BUTTON_WIDTH = TILE_SIZE * 2;
+const int BUTTON_HEIGHT = TILE_SIZE;
 
 // Colors
 const SDL_Color COLOR_BLACK = { 0, 0, 0, 255 };
