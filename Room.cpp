@@ -12,6 +12,10 @@ Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncoun
     tiles.resize(height, std::vector<int>(width, FLOOR));
 }
 
+Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false), roomNPCs(npcs) {
+    tiles.resize(height, std::vector<int>(width, FLOOR));
+}
+
 int Room::getTile(int x, int y) const {
     if (!isValidPosition(x, y)) return WALL;
     return tiles[y][x];
@@ -21,6 +25,15 @@ void Room::setTile(int x, int y, int tileType) {
     if (isValidPosition(x, y)) {
         tiles[y][x] = tileType;
     }
+}
+
+std::vector<NPC*>* Room::getListOfNPCs() {
+    return &roomNPCs;
+}
+
+void Room::addNPCToRoom(int x, int y) {
+    NPC* newNPC = new NPC(x,y);
+    roomNPCs.push_back(newNPC);
 }
 
 bool Room::isRoomEncounter() const {
@@ -161,6 +174,22 @@ void Room::render(SDL_Renderer* renderer, SDL_Texture* wallTexture, SDL_Texture*
                 // Floor tiles are just the black background - no drawing needed
                 break;
             }
+        }
+    }
+}
+
+void Room::renderRoomNPCs(SDL_Renderer* renderer, SDL_Texture* NPCTexture) const {
+    if (roomNPCs.size() > 0) {
+        for (NPC* npc : roomNPCs) {
+            int location_x = npc->getX();
+            int location_y = npc->getY();
+
+            SDL_Rect tileRect = { (location_x * TILE_SIZE) + GAMEVIEW_START_X,
+                                    (location_y * TILE_SIZE) + GAMEVIEW_START_Y,
+                                    TILE_SIZE,
+                                    TILE_SIZE };
+
+            SDL_RenderCopy(renderer, NPCTexture, nullptr, &tileRect);
         }
     }
 }

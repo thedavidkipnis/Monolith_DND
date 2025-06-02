@@ -6,7 +6,6 @@
 class NPC {
 private:
     int x, y;
-    SDL_Texture* spriteTexture = nullptr;
 
 public:
     NPC(int startX, int startY);
@@ -18,8 +17,4 @@ public:
 
     // Movement
     void setPosition(int newX, int newY);
-
-    // Rendering
-    void render(SDL_Renderer* renderer) const;
-    bool loadTexture(SDL_Renderer* renderer, const std::string& filePath);
 };

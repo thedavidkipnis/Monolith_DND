@@ -23,11 +23,9 @@ private:
     std::unique_ptr<Room> currentRoom;
     std::unique_ptr<Dungeon> dungeon;
 
-    std::unique_ptr<NPC> gob1;
-    std::unique_ptr<NPC> gob2;
-
     SDL_Texture* wallTexture = nullptr;
     SDL_Texture* doorTexture = nullptr;
+    SDL_Texture* NPCTexture = nullptr;
 
     const Uint8* keyState;
     Uint32 lastMoveTime;

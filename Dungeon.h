@@ -3,7 +3,9 @@
 #include <memory>
 #include <map>
 #include <utility>
+#include <vector>
 #include "Constants.h"
+#include "NPC.h"
 
 class Room;
 
@@ -45,6 +47,6 @@ public:
     RoomCoord getNeighborCoord(const RoomCoord& coord, Direction dir) const;
 
 private:
-    void createRoom(const RoomCoord& coord, int width, int height, bool isEncounter);
+    void createRoom(const RoomCoord& coord, int width, int height, bool isEncounter, std::vector<NPC*> npcs);
     void setupRoomConnections(const RoomCoord& coord);
 };

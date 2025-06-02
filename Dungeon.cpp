@@ -11,22 +11,32 @@ void Dungeon::generateInitialRooms() {
     // You can expand this to be more sophisticated later
 
     // Create center room and immediate neighbors
-    createRoom(RoomCoord(0, 0), ROOM_WIDTH, ROOM_HEIGHT, false);   // Center
-    createRoom(RoomCoord(0, -1), ROOM_WIDTH, ROOM_HEIGHT, false);  // North
-    createRoom(RoomCoord(0, -2), ROOM_WIDTH, ROOM_HEIGHT, true);
-    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, true);  // North West
-    createRoom(RoomCoord(1, 0), ROOM_WIDTH, ROOM_HEIGHT, false);   // East
-    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, true);   // South
-    createRoom(RoomCoord(-1, 0), ROOM_WIDTH, ROOM_HEIGHT, true);  // West
+    std::vector<NPC*> emptyVector;
+    createRoom(RoomCoord(0, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // Center
+    createRoom(RoomCoord(0, -1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);  // North
+    createRoom(RoomCoord(0, -2), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);
+    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);  // North West
+    createRoom(RoomCoord(1, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // East
+    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);   // South
+    createRoom(RoomCoord(-1, 0), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);  // West
 
     // Setup connections for all rooms
     for (auto& [coord, room] : rooms) {
         setupRoomConnections(coord);
     }
+
+    // create some NPCs to test rendering
+    rooms[RoomCoord(0, -2)]->addNPCToRoom(10, 10);
+    rooms[RoomCoord(0, -2)]->addNPCToRoom(22, 2);
+
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(3, 3);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(19, 7);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(4, 7);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(8, 12);
 }
 
-void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter) {
-    rooms[coord] = std::make_unique<Room>(width, height, isEncounter);
+void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter, std::vector<NPC*> npcs) {
+    rooms[coord] = std::make_unique<Room>(width, height, isEncounter, npcs);
 }
 
 void Dungeon::setupRoomConnections(const RoomCoord& coord) {

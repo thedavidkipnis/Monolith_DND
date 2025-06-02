@@ -39,6 +39,18 @@ void Game::loadTextures() {
         std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
     }
 
+    surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/goblin.png");
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    }
+
+    NPCTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!NPCTexture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    }
+
 }
 
 bool Game::initialize() {
@@ -84,13 +96,6 @@ bool Game::initialize() {
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateInitialRooms();
-
-    
-    gob1 = std::make_unique<NPC>(1, 1);
-    gob2 = std::make_unique<NPC>(5, 10);
-
-    gob1->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/goblin.png");
-    gob2->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/goblin.png");
 
     isPlayerInEncounter = false;
 
@@ -147,16 +152,20 @@ void Game::update() {
 
     Room* curRoom = dungeon->getCurrentRoom();
 
-    if (curRoom->isRoomEncounter() && !curRoom->hasRoomBeenVisited()) {
-        std::cout << "entered encounter room\n";
-        curRoom->setRoomEncounterState(false);
-        curRoom->setRoomVisited(true);
-    }
-    else {
-        if (!curRoom->hasRoomBeenVisited()) {
-            std::cout << "not an encounter\n";
+    if(!curRoom->hasRoomBeenVisited())
+    {
+        if (curRoom->isRoomEncounter()) {
+            std::cout << "entered encounter room. ";
+            curRoom->setRoomEncounterState(false);
             curRoom->setRoomVisited(true);
         }
+        else {
+            std::cout << "not an encounter. ";
+            curRoom->setRoomVisited(true);
+        }
+        std::cout << "room has ";
+        std::cout << curRoom->getListOfNPCs()->size();
+        std::cout << " enemies.\n";
     }
 }
 
@@ -181,10 +190,9 @@ void Game::render() {
     Room* currentRoom = dungeon->getCurrentRoom();
     if (currentRoom) {
         currentRoom->render(renderer, wallTexture, doorTexture);
+        currentRoom->renderRoomNPCs(renderer, NPCTexture);
     }
     player->render(renderer);
-    /*gob1->render(renderer);
-    gob2->render(renderer);*/
 
     // Present the rendered frame
     SDL_RenderPresent(renderer);
