@@ -1,6 +1,7 @@
 #include "Dungeon.h"
 #include "Room.h"
 #include "Constants.h"
+#include <iostream>
 
 Dungeon::Dungeon() : currentRoomCoord(0, 0) {
 }
@@ -10,11 +11,13 @@ void Dungeon::generateInitialRooms() {
     // You can expand this to be more sophisticated later
 
     // Create center room and immediate neighbors
-    createRoom(RoomCoord(0, 0));   // Center
-    createRoom(RoomCoord(0, -1));  // North
-    createRoom(RoomCoord(1, 0));   // East
-    createRoom(RoomCoord(0, 1));   // South
-    createRoom(RoomCoord(-1, 0));  // West
+    createRoom(RoomCoord(0, 0), ROOM_WIDTH, ROOM_HEIGHT, false);   // Center
+    createRoom(RoomCoord(0, -1), ROOM_WIDTH, ROOM_HEIGHT, false);  // North
+    createRoom(RoomCoord(0, -2), ROOM_WIDTH, ROOM_HEIGHT, true);
+    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, true);  // North West
+    createRoom(RoomCoord(1, 0), ROOM_WIDTH, ROOM_HEIGHT, false);   // East
+    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, true);   // South
+    createRoom(RoomCoord(-1, 0), ROOM_WIDTH, ROOM_HEIGHT, true);  // West
 
     // Setup connections for all rooms
     for (auto& [coord, room] : rooms) {
@@ -22,8 +25,8 @@ void Dungeon::generateInitialRooms() {
     }
 }
 
-void Dungeon::createRoom(const RoomCoord& coord) {
-    rooms[coord] = std::make_unique<Room>();
+void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter) {
+    rooms[coord] = std::make_unique<Room>(width, height, isEncounter);
 }
 
 void Dungeon::setupRoomConnections(const RoomCoord& coord) {

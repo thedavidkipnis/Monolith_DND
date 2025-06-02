@@ -30,6 +30,9 @@
     <ClCompile Include="Dungeon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -47,5 +50,40 @@
     <ClInclude Include="Dungeon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="wall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rogue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="goblin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="coins.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="g-chest.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="chest.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pine.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

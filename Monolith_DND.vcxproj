@@ -110,9 +110,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\SDL2\SDL2-2.30.2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SDL2_image\SDL2_image-2.8.2\lib\x64;C:\SDL2\SDL2-2.30.2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib
-;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,6 +135,7 @@
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main_game.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Room.cpp" />
   </ItemGroup>
@@ -142,8 +143,21 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\Downloads\tree.png" />
+    <Image Include="chest.png" />
+    <Image Include="coins.png" />
+    <Image Include="g-chest.png" />
+    <Image Include="goblin.png" />
+    <Image Include="knight.png" />
+    <Image Include="pine.png" />
+    <Image Include="rogue.png" />
+    <Image Include="wall.png" />
+    <Image Include="tree.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

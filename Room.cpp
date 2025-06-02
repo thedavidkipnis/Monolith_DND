@@ -1,10 +1,14 @@
 #include "Room.h"
+#include "Constants.h"
+#include <iostream>
+#include <random>
+#include <ctime>
 
-Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT) {
+Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
 }
 
-Room::Room(int w, int h) : width(w), height(h) {
+Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
 }
 
@@ -18,6 +22,22 @@ void Room::setTile(int x, int y, int tileType) {
         tiles[y][x] = tileType;
     }
 }
+
+bool Room::isRoomEncounter() const {
+    return isRoomAnEncounter;
+};
+
+void Room::setRoomEncounterState(bool state) {
+    isRoomAnEncounter = state;
+};
+
+bool Room::hasRoomBeenVisited() const {
+    return roomVisitedState;
+};
+
+void Room::setRoomVisited(bool state) {
+    roomVisitedState = state;
+};
 
 bool Room::isValidPosition(int x, int y) const {
     return x >= 0 && x < width && y >= 0 && y < height;
@@ -93,32 +113,49 @@ Direction Room::getDoorDirection(int x, int y) const {
     return NORTH; // Default
 }
 void Room::addInteriorElements() {
-    // Add some interior walls for variety
-    // This will be expanded for procedural generation later
-    setTile(5, 3, WALL);
-    setTile(6, 3, WALL);
-    setTile(5, 4, WALL);
-    setTile(18, 15, WALL);
-    setTile(18, 16, WALL);
-    setTile(19, 15, WALL);
-    setTile(8, 10, WALL);
-    setTile(8, 11, WALL);
-    setTile(8, 12, WALL);
+
+    // generates random wall blocks inside the room
+    //std::random_device rd;
+    //std::mt19937 rng(rd());
+
+    //// Define the distributions
+    //std::uniform_int_distribution<int> distA(1, 24);  // For first parameter
+    //std::uniform_int_distribution<int> distB(1, 18);  // For second parameter
+
+    //for (int i = 0; i < 5; ++i) {
+    //    int a = distA(rng);
+    //    int b = distB(rng);
+    //    setTile(a, b, WALL);
+    //}
+
 }
 
-void Room::render(SDL_Renderer* renderer) const {
+void Room::render(SDL_Renderer* renderer, SDL_Texture* wallTexture, SDL_Texture* doorTexture) const {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            SDL_Rect tileRect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
+            SDL_Rect tileRect = {   (x * TILE_SIZE) + GAMEVIEW_START_X,
+                                    (y * TILE_SIZE) + GAMEVIEW_START_Y,
+                                    TILE_SIZE, 
+                                    TILE_SIZE };
 
             switch (tiles[y][x]) {
             case WALL:
-                SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
-                SDL_RenderFillRect(renderer, &tileRect);
+                if (wallTexture) {
+                    SDL_RenderCopy(renderer, wallTexture, nullptr, &tileRect);
+                }
+                else {
+                    SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
+                    SDL_RenderFillRect(renderer, &tileRect);
+                }
                 break;
             case DOOR:
-                SDL_SetRenderDrawColor(renderer, COLOR_BROWN.r, COLOR_BROWN.g, COLOR_BROWN.b, COLOR_BROWN.a);
-                SDL_RenderFillRect(renderer, &tileRect);
+                if (doorTexture) {
+                    SDL_RenderCopy(renderer, doorTexture, nullptr, &tileRect);
+                }
+                else {
+                    SDL_SetRenderDrawColor(renderer, COLOR_BROWN.r, COLOR_BROWN.g, COLOR_BROWN.b, COLOR_BROWN.a);
+                    SDL_RenderFillRect(renderer, &tileRect);
+                }
                 break;
             case FLOOR:
                 // Floor tiles are just the black background - no drawing needed

@@ -1,30 +1,22 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
-#include "Room.h"
 #include <string>
 
-
-class Player {
+class NPC {
 private:
     int x, y;
-    int speed;
-    SDL_Color color;
     SDL_Texture* spriteTexture = nullptr;
 
 public:
-    Player();
-    Player(int startX, int startY);
-    ~Player();
+    NPC(int startX, int startY);
+    ~NPC();
 
     // Getters
     int getX() const { return x; }
     int getY() const { return y; }
-    int getSpeed() const { return speed; }
-    SDL_Color getColor() const { return color; }
 
     // Movement
-    bool tryMove(int deltaX, int deltaY, const Room& room);
     void setPosition(int newX, int newY);
 
     // Rendering

@@ -1,14 +1,31 @@
 #pragma once
 #include <SDL.h>
 
-// Screen dimensions
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-
 // Tile system
-const int TILE_SIZE = 32;
+const int TILE_SIZE = 45;
 const int ROOM_WIDTH = 25;
 const int ROOM_HEIGHT = 19;
+const int TILE_HEIGHT_OFFSET = 0;
+
+// Game view
+const int GAMEVIEW_WIDTH = TILE_SIZE * ROOM_WIDTH;
+const int GAMEVIEW_HEIGHT = TILE_SIZE * ROOM_HEIGHT;
+const int GAMEVIEW_START_X = TILE_SIZE * 5;
+const int GAMEVIEW_START_Y = TILE_SIZE * 0;
+
+// Screen dimensions
+const int UI_SIDE_PANEL_WIDTH = TILE_SIZE * 5;
+const int UI_SIDE_PANEL_HEIGHT = TILE_SIZE * ROOM_HEIGHT;
+
+const int SCREEN_WIDTH = GAMEVIEW_WIDTH + (2 * UI_SIDE_PANEL_WIDTH);
+
+const int UI_BOTTOM_PANNEL_WIDTH = SCREEN_WIDTH;
+const int UI_BOTTOM_PANNEL_HEIGHT = TILE_SIZE * 5;
+
+const int SCREEN_HEIGHT = GAMEVIEW_HEIGHT + UI_BOTTOM_PANNEL_HEIGHT;
+
+// for knowing where to start rendering game screen
+const int TILE_WIDTH_OFFSET = UI_SIDE_PANEL_WIDTH;
 
 // Colors
 const SDL_Color COLOR_BLACK = { 0, 0, 0, 255 };

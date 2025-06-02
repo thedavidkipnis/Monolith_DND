@@ -45,6 +45,6 @@ public:
     RoomCoord getNeighborCoord(const RoomCoord& coord, Direction dir) const;
 
 private:
-    void createRoom(const RoomCoord& coord);
+    void createRoom(const RoomCoord& coord, int width, int height, bool isEncounter);
     void setupRoomConnections(const RoomCoord& coord);
 };

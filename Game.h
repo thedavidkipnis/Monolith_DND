@@ -1,10 +1,10 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_image.h>
 #include <memory>
 #include "Dungeon.h"
-
-class Player;
-class Room;
+#include "Player.h"
+#include "NPC.h"
 
 class Game {
 private:
@@ -12,9 +12,22 @@ private:
     SDL_Renderer* renderer;
     bool running;
 
+    SDL_Rect gameView;
+    SDL_Rect leftUIPanel;
+    SDL_Rect rightUIPanel;
+    SDL_Rect bottomUIPanel;
+
+    bool isPlayerInEncounter;
+
     std::unique_ptr<Player> player;
     std::unique_ptr<Room> currentRoom;
     std::unique_ptr<Dungeon> dungeon;
+
+    std::unique_ptr<NPC> gob1;
+    std::unique_ptr<NPC> gob2;
+
+    SDL_Texture* wallTexture = nullptr;
+    SDL_Texture* doorTexture = nullptr;
 
     const Uint8* keyState;
     Uint32 lastMoveTime;
@@ -24,6 +37,7 @@ public:
     Game();
     ~Game();
 
+    void loadTextures();
     bool initialize();
     void run();
     void cleanup();
@@ -33,5 +47,6 @@ public:
 private:
     void handleInput();
     void update();
+    void renderUIPanel(SDL_Renderer* renderer, SDL_Rect panel);
     void render();
 };

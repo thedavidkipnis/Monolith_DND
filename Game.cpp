@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Player.h"
+#include "NPC.h"
 #include "Dungeon.h"
 #include "Room.h"
 #include "Constants.h"
@@ -13,10 +14,43 @@ Game::~Game() {
     cleanup();
 }
 
+void Game::loadTextures() {
+    SDL_Surface* surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/wall.png");
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    }
+
+    wallTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!wallTexture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    }
+
+    surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    }
+
+    doorTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!doorTexture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    }
+
+}
+
 bool Game::initialize() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
+    }
+
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        std::cerr << "IMG_Init Error: " << IMG_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
     }
 
     window = SDL_CreateWindow("Roguelike Dungeon Crawler",
@@ -34,10 +68,31 @@ bool Game::initialize() {
         return false;
     }
 
+    gameView = { UI_SIDE_PANEL_WIDTH, 0, GAMEVIEW_WIDTH, GAMEVIEW_HEIGHT };
+    leftUIPanel = { 0, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
+    rightUIPanel = { UI_SIDE_PANEL_WIDTH + GAMEVIEW_WIDTH, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
+    bottomUIPanel = { 0, GAMEVIEW_HEIGHT, UI_BOTTOM_PANNEL_WIDTH, UI_BOTTOM_PANNEL_HEIGHT };
+
+
+    loadTextures();
+
     // Initialize game objects
     player = std::make_unique<Player>(12, 9);
+    player->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/rogue.png");
+
+    isPlayerInEncounter = false;
+
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateInitialRooms();
+
+    
+    gob1 = std::make_unique<NPC>(1, 1);
+    gob2 = std::make_unique<NPC>(5, 10);
+
+    gob1->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/goblin.png");
+    gob2->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/goblin.png");
+
+    isPlayerInEncounter = false;
 
     keyState = SDL_GetKeyboardState(nullptr);
     running = true;
@@ -88,7 +143,29 @@ void Game::handleInput() {
 
 void Game::update() {
     // Game logic updates would go here
-    // Future: enemy AI, item interactions, room transitions, etc.
+    // Future: enemy AI, item interactions
+
+    Room* curRoom = dungeon->getCurrentRoom();
+
+    if (curRoom->isRoomEncounter() && !curRoom->hasRoomBeenVisited()) {
+        std::cout << "entered encounter room\n";
+        curRoom->setRoomEncounterState(false);
+        curRoom->setRoomVisited(true);
+    }
+    else {
+        if (!curRoom->hasRoomBeenVisited()) {
+            std::cout << "not an encounter\n";
+            curRoom->setRoomVisited(true);
+        }
+    }
+}
+
+void Game::renderUIPanel(SDL_Renderer* renderer, SDL_Rect panel) {
+    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+    SDL_RenderFillRect(renderer, &panel);
+
+    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    SDL_RenderDrawRect(renderer, &panel);
 }
 
 void Game::render() {
@@ -96,12 +173,18 @@ void Game::render() {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
+    renderUIPanel(renderer, leftUIPanel);
+    renderUIPanel(renderer, rightUIPanel);
+    renderUIPanel(renderer, bottomUIPanel);
+
     // Render game objects
     Room* currentRoom = dungeon->getCurrentRoom();
     if (currentRoom) {
-        currentRoom->render(renderer);
+        currentRoom->render(renderer, wallTexture, doorTexture);
     }
     player->render(renderer);
+    /*gob1->render(renderer);
+    gob2->render(renderer);*/
 
     // Present the rendered frame
     SDL_RenderPresent(renderer);
@@ -127,6 +210,10 @@ void Game::cleanup() {
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
+    }
+
+    if (wallTexture) {
+        SDL_DestroyTexture(wallTexture);
     }
 
     SDL_Quit();
