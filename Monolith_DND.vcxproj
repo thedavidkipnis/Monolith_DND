@@ -155,13 +155,19 @@
     <Image Include="action_point_half.png" />
     <Image Include="chest.png" />
     <Image Include="coins.png" />
+    <Image Include="cursor.png" />
+    <Image Include="cursor_2.png" />
+    <Image Include="dirt_1.png" />
+    <Image Include="drop_ladder.png" />
     <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
     <Image Include="goblin.png" />
     <Image Include="half_red_heart.png" />
     <Image Include="knight.png" />
     <Image Include="pine.png" />
+    <Image Include="red_x.png" />
     <Image Include="rogue.png" />
+    <Image Include="sword.png" />
     <Image Include="wall.png" />
     <Image Include="tree.png" />
   </ItemGroup>

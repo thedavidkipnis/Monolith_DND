@@ -16,6 +16,10 @@ Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), h
     tiles.resize(height, std::vector<int>(width, FLOOR));
 }
 
+std::vector<std::vector<int>>* Room::getTiles() {
+    return &tiles;
+}
+
 int Room::getTile(int x, int y) const {
     if (!isValidPosition(x, y)) return WALL;
     return tiles[y][x];
@@ -141,55 +145,4 @@ void Room::addInteriorElements() {
     //    setTile(a, b, WALL);
     //}
 
-}
-
-void Room::render(SDL_Renderer* renderer, SDL_Texture* wallTexture, SDL_Texture* doorTexture) const {
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            SDL_Rect tileRect = {   (x * TILE_SIZE) + GAMEVIEW_START_X,
-                                    (y * TILE_SIZE) + GAMEVIEW_START_Y,
-                                    TILE_SIZE, 
-                                    TILE_SIZE };
-
-            switch (tiles[y][x]) {
-            case WALL:
-                if (wallTexture) {
-                    SDL_RenderCopy(renderer, wallTexture, nullptr, &tileRect);
-                }
-                else {
-                    SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
-                    SDL_RenderFillRect(renderer, &tileRect);
-                }
-                break;
-            case DOOR:
-                if (doorTexture) {
-                    SDL_RenderCopy(renderer, doorTexture, nullptr, &tileRect);
-                }
-                else {
-                    SDL_SetRenderDrawColor(renderer, COLOR_BROWN.r, COLOR_BROWN.g, COLOR_BROWN.b, COLOR_BROWN.a);
-                    SDL_RenderFillRect(renderer, &tileRect);
-                }
-                break;
-            case FLOOR:
-                // Floor tiles are just the black background - no drawing needed
-                break;
-            }
-        }
-    }
-}
-
-void Room::renderRoomNPCs(SDL_Renderer* renderer, SDL_Texture* NPCTexture) const {
-    if (roomNPCs.size() > 0) {
-        for (NPC* npc : roomNPCs) {
-            int location_x = npc->getX();
-            int location_y = npc->getY();
-
-            SDL_Rect tileRect = { (location_x * TILE_SIZE) + GAMEVIEW_START_X,
-                                    (location_y * TILE_SIZE) + GAMEVIEW_START_Y,
-                                    TILE_SIZE,
-                                    TILE_SIZE };
-
-            SDL_RenderCopy(renderer, NPCTexture, nullptr, &tileRect);
-        }
-    }
 }

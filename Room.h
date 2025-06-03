@@ -22,6 +22,7 @@ public:
     Room(int w, int h, bool isRoomAnEncounter, std::vector<NPC*> npcs);
 
     // Tile access
+    std::vector<std::vector<int>>* getTiles();
     int getTile(int x, int y) const;
     void setTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
@@ -41,10 +42,6 @@ public:
     // Door checking
     bool isDoor(int x, int y) const;
     Direction getDoorDirection(int x, int y) const;
-
-    // Rendering
-    void render(SDL_Renderer* renderer, SDL_Texture* wallTexture, SDL_Texture* doorTexture) const;
-    void renderRoomNPCs(SDL_Renderer* renderer, SDL_Texture* NPCTexture) const;
 
     // Getters
     int getWidth() const { return width; }

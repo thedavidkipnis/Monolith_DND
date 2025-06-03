@@ -15,9 +15,9 @@ void Dungeon::generateInitialRooms() {
     createRoom(RoomCoord(0, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // Center
     createRoom(RoomCoord(0, -1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);  // North
     createRoom(RoomCoord(0, -2), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);
-    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);  // North West
+    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);  // North West
     createRoom(RoomCoord(1, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // East
-    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);   // South
+    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // South
     createRoom(RoomCoord(-1, 0), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);  // West
 
     // Setup connections for all rooms

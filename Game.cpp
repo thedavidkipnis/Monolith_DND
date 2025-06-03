@@ -7,7 +7,13 @@
 #include <iostream>
 
 Game::Game()
-    : window(nullptr), renderer(nullptr), running(false), lastMoveTime(0) {
+    : window(nullptr), 
+    renderer(nullptr), 
+    visualsManager(nullptr), 
+    running(false), 
+    isPlayerInEncounter(false), 
+    lastMoveTime(0),
+    keyState(nullptr) {
 }
 
 Game::~Game() {
@@ -45,9 +51,6 @@ bool Game::initialize() {
 
     // Initialize game objects
     player = std::make_unique<Player>(12, 9);
-    player->loadTexture(renderer, "C:/Users/theda/source/repos/Monolith_DND/rogue.png");
-
-    isPlayerInEncounter = false;
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateInitialRooms();
@@ -67,18 +70,19 @@ void Game::handleInput() {
         }
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
-            /*int mouseX = e.button.x;
-            int mouseY = e.button.y;
+            
+            int mouseX = (e.button.x - (e.button.x % TILE_SIZE) - GAMEVIEW_START_X) / TILE_SIZE;
+            int mouseY = (e.button.y - (e.button.y % TILE_SIZE) - GAMEVIEW_START_Y) / TILE_SIZE;
 
             SDL_Point mousePoint = { mouseX, mouseY };
 
-            if (SDL_PointInRect(&mousePoint, &UIMoveButton)) {
-                std::cout << "Move button clicked!" << std::endl;
-            }
+            if (dungeon->getCurrentRoom()->isWalkable(mouseX, mouseY)) {
+                player->setPosition(mouseX, mouseY);
+            };
 
-            if (SDL_PointInRect(&mousePoint, &UIAttackButton)) {
-                std::cout << "Attack button clicked!" << std::endl;
-            }*/
+            //if (SDL_PointInRect(&mousePoint, &UIAttackButton)) {
+            //    std::cout << "Attack button clicked!" << std::endl;
+            //}
         }
 
     }
@@ -148,7 +152,7 @@ void Game::render() {
     // Render game objects
     Room* currentRoom = dungeon->getCurrentRoom();
 
-    visualsManager->render(currentRoom, player->getX(), player->getY());
+    visualsManager->render(currentRoom, player->getXTile(), player->getYTile());
 
     SDL_RenderPresent(renderer);
 }

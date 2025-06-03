@@ -8,9 +8,9 @@
 class Player {
 private:
     int x, y;
-    int speed;
-    SDL_Color color;
     SDL_Texture* spriteTexture = nullptr;
+
+    int movement_speed;
 
 public:
     Player();
@@ -20,14 +20,12 @@ public:
     // Getters
     int getX() const { return x; }
     int getY() const { return y; }
-    int getSpeed() const { return speed; }
-    SDL_Color getColor() const { return color; }
+
+    int getXTile() const;
+    int getYTile() const;
 
     // Movement
     bool tryMove(int deltaX, int deltaY, const Room& room);
     void setPosition(int newX, int newY);
 
-    // Rendering
-    void render(SDL_Renderer* renderer) const;
-    bool loadTexture(SDL_Renderer* renderer, const std::string& filePath);
 };

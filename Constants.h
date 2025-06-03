@@ -1,5 +1,7 @@
 #pragma once
 #include <SDL.h>
+#include <cmath>
+#include <algorithm>
 
 // Tile system
 const int TILE_SIZE = 45;
@@ -46,7 +48,8 @@ enum TileType {
     EMPTY = 0,
     WALL = 1,
     FLOOR = 2,
-    DOOR = 3
+    DOOR = 3,
+    LADDER = 4
 };
 
 // Directions for room connections
@@ -59,3 +62,17 @@ enum Direction {
 
 // Door colors
 const SDL_Color COLOR_BROWN = { 139, 69, 19, 255 };
+
+// Math Stuff
+
+inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {
+
+    return std::floor(sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2))) / TILE_SIZE;
+};
+
+inline int findTileDistanceForShading(int x1, int y1, int x2, int y2) {
+    if (abs(x2-x1) == abs(y2-y1)) {
+        return (abs(x2 - x1) / TILE_SIZE) + 1;
+    }
+    return std::max(abs(x2 - x1), abs(y2 - y1)) / TILE_SIZE;
+};

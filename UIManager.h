@@ -22,16 +22,25 @@ private:
     SDL_Rect UIAttackButton;
     SDL_Rect UIMoveButton;
 
+    SDL_Cursor* cursorTexture = nullptr;
+
+    SDL_Texture* ladderTexture = nullptr;
+
     SDL_Texture* playerTexture = nullptr;
     SDL_Texture* wallTexture = nullptr;
+    SDL_Texture* floorTexture = nullptr;
     SDL_Texture* doorTexture = nullptr;
     SDL_Texture* NPCTexture = nullptr;
 
+    void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
-    void renderGameView(Room* currentRoom);
+    void renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY);
     void renderUIPanel(SDL_Rect panel);
     void renderUIButton(SDL_Rect panel);
     void renderPlayer(int playerLocationX, int playerLocationY);
+    void renderDarkness(int playerLocationX, int playerLocationY);
+    void renderCurrentRoom(Room* currentRoom);
+    void renderCurrentRoomNPCs(Room* currentRoom);
     void renderUI();
 
 public:

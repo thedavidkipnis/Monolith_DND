@@ -103,5 +103,23 @@
     <Image Include="action_point_half.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="dirt_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cursor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cursor_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="drop_ladder.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="red_x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
