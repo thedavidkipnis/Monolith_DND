@@ -9,6 +9,10 @@ const int ROOM_WIDTH = 25;
 const int ROOM_HEIGHT = 19;
 const int TILE_HEIGHT_OFFSET = 0;
 
+// Lighting stuff for rendering darkness
+const int DARKNESS_SCALE = 20;
+const int MAX_DARKNESS_RANGE_IN_TILES = 8;
+
 // Game view
 const int GAMEVIEW_WIDTH = TILE_SIZE * ROOM_WIDTH;
 const int GAMEVIEW_HEIGHT = TILE_SIZE * ROOM_HEIGHT;
@@ -37,6 +41,13 @@ const int UI_BOTTOM_PANNEL_START_Y = GAMEVIEW_HEIGHT;
 const int BUTTON_WIDTH = TILE_SIZE * 2;
 const int BUTTON_HEIGHT = TILE_SIZE;
 
+enum ButtonIDs {
+    NONE = 0,
+    END_TURN = 1,
+    MOVE = 2,
+    ATTACK = 3
+};
+
 // Colors
 const SDL_Color COLOR_BLACK = { 0, 0, 0, 255 };
 const SDL_Color COLOR_WHITE = { 255, 255, 255, 255 };
@@ -63,11 +74,15 @@ enum Direction {
 // Door colors
 const SDL_Color COLOR_BROWN = { 139, 69, 19, 255 };
 
-// Math Stuff
+// Entity stat constants
+const int BASE_ENTITY_SPEED_IN_TILES = 5;
+const int BASE_ENTITY_ATTACK_RANGE_IN_TILES = 1;
+const int BASE_ENTITY_DAMAGE = 1;
 
+// Math Stuff
 inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {
 
-    return std::floor(sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2))) / TILE_SIZE;
+    return std::floor(sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
 };
 
 inline int findTileDistanceForShading(int x1, int y1, int x2, int y2) {

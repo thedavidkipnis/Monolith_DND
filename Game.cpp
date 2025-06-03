@@ -12,6 +12,7 @@ Game::Game()
     visualsManager(nullptr), 
     running(false), 
     isPlayerInEncounter(false), 
+    selectedPlayerAction(NONE),
     lastMoveTime(0),
     keyState(nullptr) {
 }
@@ -50,7 +51,7 @@ bool Game::initialize() {
     visualsManager = new UIManager(renderer);
 
     // Initialize game objects
-    player = std::make_unique<Player>(12, 9);
+    player = std::make_unique<Player>(12, 9, 5, 1, 1);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateInitialRooms();
@@ -71,18 +72,76 @@ void Game::handleInput() {
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
             
-            int mouseX = (e.button.x - (e.button.x % TILE_SIZE) - GAMEVIEW_START_X) / TILE_SIZE;
-            int mouseY = (e.button.y - (e.button.y % TILE_SIZE) - GAMEVIEW_START_Y) / TILE_SIZE;
+            // if click was inside of a UI panel, let UIManager handle it
+            if ((e.button.x < GAMEVIEW_START_X || e.button.x > GAMEVIEW_START_X + GAMEVIEW_WIDTH)
+                || (e.button.y < GAMEVIEW_START_Y || e.button.y > GAMEVIEW_START_Y + GAMEVIEW_HEIGHT)) {
+                switch (visualsManager->checkUIButtonPress(e.button.x, e.button.y)) {
+                    case ATTACK:
+                        std::cout << "Selected ATTACK.\n";
+                        selectedPlayerAction = ATTACK;
+                        break;
+                    case END_TURN:
+                        std::cout << "Ending turn...\n";
+                        selectedPlayerAction = END_TURN;
+                        break;
+                    case MOVE:
+                        std::cout << "Selected MOVE.\n";
+                        selectedPlayerAction = MOVE;
+                        break;
+                    default:
+                        std::cout << "Outside game view. No button press.\n";
+                        selectedPlayerAction = NONE;
+                        break;
+                }
+            }
+            // otherwise, player clicked somewhere on GameView
+            else
+            {
 
-            SDL_Point mousePoint = { mouseX, mouseY };
+                // adjusting click coordinates to gameview screen
+                int mouseX = (e.button.x - (e.button.x % TILE_SIZE) - GAMEVIEW_START_X) / TILE_SIZE;
+                int mouseY = (e.button.y - (e.button.y % TILE_SIZE) - GAMEVIEW_START_Y) / TILE_SIZE;
 
-            if (dungeon->getCurrentRoom()->isWalkable(mouseX, mouseY)) {
-                player->setPosition(mouseX, mouseY);
-            };
+                switch (selectedPlayerAction) {
+                case ATTACK:
+                    if (player->tryAttacking(mouseX, mouseY)) {
+                        player->attack(mouseX, mouseY);
+                        dungeon->getCurrentRoom()->processPlayerAttack(mouseX, mouseY);
+                    }
+                    else {
+                        std::cout << "Can't attack: ";
+                        std::cout << mouseX;
+                        std::cout << " ";
+                        std::cout << mouseY;
+                        std::cout << ". Too far.\n";
+                    }
+                    break;
+                case END_TURN: // SHOULD NEVER BE AN OPTION
+                    std::cout << "Attempting END TURN\n";
+                    break;
+                case MOVE:
+                    if (player->tryMoveTurnBased(mouseX, mouseY, *dungeon->getCurrentRoom())) {
+                        player->makeMoveTurnBased(mouseX, mouseY);
+                    }
+                    else {
+                        std::cout << "Not enough movement speed to move to: ";
+                        std::cout << mouseX;
+                        std::cout << " ";
+                        std::cout << mouseY;
+                        std::cout << "\n";
+                    }
+                    break;
+                default:
+                    std::cout << "Attempting NO ACTION on tile: ";
+                    std::cout << mouseX;
+                    std::cout << " ";
+                    std::cout << mouseY;
+                    std::cout << "\n";
+                    break;
+                }
 
-            //if (SDL_PointInRect(&mousePoint, &UIAttackButton)) {
-            //    std::cout << "Attack button clicked!" << std::endl;
-            //}
+                SDL_Point mousePoint = { mouseX, mouseY };              
+            }
         }
 
     }
@@ -133,18 +192,31 @@ void Game::update() {
     {
         if (curRoom->isRoomEncounter()) {
             std::cout << "entered encounter room. ";
-            curRoom->setRoomEncounterState(false);
-            curRoom->setRoomVisited(true);
-            isPlayerInEncounter = true;
         }
         else {
             std::cout << "not an encounter. ";
-            curRoom->setRoomVisited(true);
         }
         std::cout << "room has ";
         std::cout << curRoom->getListOfNPCs()->size();
-        std::cout << " enemies.\n";
+        std::cout << " NPC(s).\n";
+
+        curRoom->setRoomVisited(true);
     }
+
+    if (curRoom->getListOfNPCs()->size() > 0) { // if we encounter enemies
+        isPlayerInEncounter = true;
+    }
+    else { // when there are no more enemies
+        curRoom->setRoomEncounterState(false);
+        isPlayerInEncounter = false;
+    }
+
+    if (selectedPlayerAction == END_TURN) {
+        // AI will get processed here
+        player->setMovementSpeedLeft(player->getMovementSpeed());
+        selectedPlayerAction = NONE;
+    }
+
 }
 
 void Game::render() {

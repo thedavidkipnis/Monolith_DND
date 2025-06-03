@@ -146,3 +146,22 @@ void Room::addInteriorElements() {
     //}
 
 }
+
+void Room::processPlayerAttack(int mouseX, int mouseY) {
+    for (auto it = roomNPCs.begin(); it != roomNPCs.end(); ) {
+        int location_x = (*it)->getX();
+        int location_y = (*it)->getY();
+
+        if (mouseX == location_x && mouseY == location_y) {
+            delete* it;
+            it = roomNPCs.erase(it);
+        }
+        else {
+            ++it;
+        }
+        std::cout << "Goblin died...\n";
+    }
+    std::cout << "NPCS left: ";
+    std::cout << roomNPCs.size();
+    std::cout << "\n";
+}

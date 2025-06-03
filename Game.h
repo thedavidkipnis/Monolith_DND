@@ -15,15 +15,16 @@ private:
 
     UIManager* visualsManager;
 
-    bool isPlayerInEncounter;
-
     std::unique_ptr<Player> player;
     std::unique_ptr<Room> currentRoom;
     std::unique_ptr<Dungeon> dungeon;
 
+    bool isPlayerInEncounter;
+    int selectedPlayerAction;
+
     const Uint8* keyState;
     Uint32 lastMoveTime;
-    static const Uint32 MOVE_DELAY = 150;
+    static const Uint32 MOVE_DELAY = 90;
 
 public:
     Game();

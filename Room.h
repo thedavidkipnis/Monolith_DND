@@ -52,4 +52,7 @@ public:
 
     bool hasRoomBeenVisited() const;
     void setRoomVisited(bool state);
+
+    // Player interaction
+    void processPlayerAttack(int mouseX, int mouseY);
 };

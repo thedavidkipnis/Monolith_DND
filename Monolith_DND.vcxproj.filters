@@ -121,5 +121,23 @@
     <Image Include="sword.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="x_bnw_non_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="x_bnw_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sword_bnw_non_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sword_bnw_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="move_button_bnw_non_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="move_button_bnw_clicked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

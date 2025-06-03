@@ -164,12 +164,18 @@
     <Image Include="goblin.png" />
     <Image Include="half_red_heart.png" />
     <Image Include="knight.png" />
+    <Image Include="move_button_bnw_clicked.png" />
+    <Image Include="move_button_bnw_non_clicked.png" />
     <Image Include="pine.png" />
     <Image Include="red_x.png" />
     <Image Include="rogue.png" />
     <Image Include="sword.png" />
+    <Image Include="sword_bnw_clicked.png" />
+    <Image Include="sword_bnw_non_clicked.png" />
     <Image Include="wall.png" />
     <Image Include="tree.png" />
+    <Image Include="x_bnw_clicked.png" />
+    <Image Include="x_bnw_non_clicked.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

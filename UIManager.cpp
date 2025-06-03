@@ -8,8 +8,9 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer) {
     rightUIPanel = { UI_SIDE_PANEL_WIDTH + GAMEVIEW_WIDTH, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
     bottomUIPanel = { UI_BOTTOM_PANNEL_START_X, UI_BOTTOM_PANNEL_START_Y, UI_BOTTOM_PANNEL_WIDTH, UI_BOTTOM_PANNEL_HEIGHT };
 
-    UIMoveButton = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + TILE_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT };
-    UIAttackButton = { GAMEVIEW_START_X + BUTTON_WIDTH + TILE_SIZE, UI_BOTTOM_PANNEL_START_Y + TILE_SIZE, BUTTON_WIDTH, BUTTON_HEIGHT };
+    UIEndTurnButton = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    UIMoveButton = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    UIAttackButton = { GAMEVIEW_START_X + (2*(BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
 
 }
 
@@ -58,12 +59,20 @@ void UIManager::loadTextures() {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", endTurnButtonTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", endTurnButtonPressedTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", moveButtonTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", moveButtonPressedTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_non_clicked.png", attackButtonTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_clicked.png", attackButtonPressedTexture);
+
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight.png", playerTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png", NPCTexture);
+
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wall.png", wallTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png", doorTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png", NPCTexture);
 
 }
 
@@ -81,9 +90,11 @@ void UIManager::renderUIPanel(SDL_Rect panel) {
     SDL_RenderDrawRect(renderer, &panel);
 };
 
-void UIManager::renderUIButton(SDL_Rect panel) {
-    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
-    SDL_RenderFillRect(renderer, &panel);
+void UIManager::renderUIButton(SDL_Rect panel, SDL_Texture* buttonTexture) {
+    /*SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+    SDL_RenderFillRect(renderer, &panel);*/
+
+    SDL_RenderCopy(renderer, buttonTexture, nullptr, &panel);
 
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
     SDL_RenderDrawRect(renderer, &panel);
@@ -94,8 +105,9 @@ void UIManager::renderUI() {
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
 
-    renderUIButton(UIMoveButton);
-    renderUIButton(UIAttackButton);
+    renderUIButton(UIEndTurnButton, endTurnButtonTexture);
+    renderUIButton(UIMoveButton, moveButtonTexture);
+    renderUIButton(UIAttackButton, attackButtonTexture);
 
 };
 
@@ -161,11 +173,11 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
         for (int j = 0; j < gameViewHeightInTiles; j++) {
 
             int distanceToPLayer = findTileDistanceForShading(playerLocationX, playerLocationY, GAMEVIEW_START_X + (i * TILE_SIZE), GAMEVIEW_START_Y + (j * TILE_SIZE));
-            if (distanceToPLayer > 8) {
-                distanceToPLayer = 200;
+            if (distanceToPLayer > MAX_DARKNESS_RANGE_IN_TILES) {
+                distanceToPLayer = (MAX_DARKNESS_RANGE_IN_TILES + 1) * DARKNESS_SCALE;
             }
             else {
-                distanceToPLayer *= 20;
+                distanceToPLayer *= DARKNESS_SCALE;
             }
 
             SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -186,3 +198,23 @@ void UIManager::render(Room* currentRoom, int playerLocationX, int playerLocatio
 
     renderDarkness(playerLocationX, playerLocationY);
 };
+
+int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
+
+    if ((mouseX > UIAttackButton.x && mouseX < UIAttackButton.x + BUTTON_WIDTH)
+        && (mouseY > UIAttackButton.y && mouseY < UIAttackButton.y + BUTTON_HEIGHT)) {
+        return ATTACK;
+    }
+
+    if ((mouseX > UIMoveButton.x && mouseX < UIMoveButton.x + BUTTON_WIDTH)
+        && (mouseY > UIMoveButton.y && mouseY < UIMoveButton.y + BUTTON_HEIGHT)) {
+        return MOVE;
+    }
+
+    if ((mouseX > UIEndTurnButton.x && mouseX < UIEndTurnButton.x + BUTTON_WIDTH)
+        && (mouseY > UIEndTurnButton.y && mouseY < UIEndTurnButton.y + BUTTON_HEIGHT)) {
+        return END_TURN;
+    }
+
+    return NONE;
+}

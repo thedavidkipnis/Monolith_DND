@@ -20,23 +20,31 @@ private:
     SDL_Rect bottomUIPanel;
 
     SDL_Rect UIAttackButton;
+    SDL_Rect UIEndTurnButton;
     SDL_Rect UIMoveButton;
 
     SDL_Cursor* cursorTexture = nullptr;
 
-    SDL_Texture* ladderTexture = nullptr;
+    SDL_Texture* attackButtonTexture = nullptr;
+    SDL_Texture* attackButtonPressedTexture = nullptr;
+    SDL_Texture* endTurnButtonPressedTexture = nullptr;
+    SDL_Texture* endTurnButtonTexture = nullptr;
+    SDL_Texture* moveButtonPressedTexture = nullptr;
+    SDL_Texture* moveButtonTexture = nullptr;
 
     SDL_Texture* playerTexture = nullptr;
+    SDL_Texture* NPCTexture = nullptr;
+
     SDL_Texture* wallTexture = nullptr;
+    SDL_Texture* ladderTexture = nullptr;
     SDL_Texture* floorTexture = nullptr;
     SDL_Texture* doorTexture = nullptr;
-    SDL_Texture* NPCTexture = nullptr;
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
     void renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY);
     void renderUIPanel(SDL_Rect panel);
-    void renderUIButton(SDL_Rect panel);
+    void renderUIButton(SDL_Rect panel, SDL_Texture* buttonTexture);
     void renderPlayer(int playerLocationX, int playerLocationY);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
@@ -49,5 +57,6 @@ public:
     ~UIManager();
 
     void render(Room* currentRoom, int playerLocationX, int playerLocationY);
+    int checkUIButtonPress(int mouseX, int mouseY);
 
 };
