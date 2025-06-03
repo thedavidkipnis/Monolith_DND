@@ -132,11 +132,8 @@ void Game::handleInput() {
                     }
                     break;
                 default:
-                    std::cout << "Attempting NO ACTION on tile: ";
-                    std::cout << mouseX;
-                    std::cout << " ";
-                    std::cout << mouseY;
-                    std::cout << "\n";
+                    // NO ACTION
+                    // COULD ADD TILE INSPECT FUNCTIONALITY HERE
                     break;
                 }
 

@@ -2,15 +2,12 @@
 
 UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer) {
 	loadTextures();
+    loadUIButtons();
 
     gameView = { UI_SIDE_PANEL_WIDTH, 0, GAMEVIEW_WIDTH, GAMEVIEW_HEIGHT };
     leftUIPanel = { 0, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
     rightUIPanel = { UI_SIDE_PANEL_WIDTH + GAMEVIEW_WIDTH, 0, UI_SIDE_PANEL_WIDTH, UI_SIDE_PANEL_HEIGHT };
     bottomUIPanel = { UI_BOTTOM_PANNEL_START_X, UI_BOTTOM_PANNEL_START_Y, UI_BOTTOM_PANNEL_WIDTH, UI_BOTTOM_PANNEL_HEIGHT };
-
-    UIEndTurnButton = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
-    UIMoveButton = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
-    UIAttackButton = { GAMEVIEW_START_X + (2*(BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
 
 }
 
@@ -61,10 +58,6 @@ void UIManager::loadTextures() {
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", endTurnButtonTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", endTurnButtonPressedTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", moveButtonTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", moveButtonPressedTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_non_clicked.png", attackButtonTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_clicked.png", attackButtonPressedTexture);
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight.png", playerTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png", NPCTexture);
@@ -74,6 +67,36 @@ void UIManager::loadTextures() {
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);
 
+}
+
+void UIManager::loadUIButtons() {
+    
+    SDL_Texture* buttonActive = nullptr;
+    SDL_Texture* buttonInactive = nullptr;
+
+    SDL_Rect attackButtonFrame = { GAMEVIEW_START_X + (2 * (BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_non_clicked.png", buttonInactive);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_clicked.png", buttonActive);
+
+    attackButton = new UIButton(attackButtonFrame, buttonActive, buttonInactive, INACTIVE, ATTACK);
+
+    buttonActive = nullptr;
+    buttonInactive = nullptr;
+
+    SDL_Rect moveButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", buttonInactive);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", buttonActive);
+
+    moveButton = new UIButton(moveButtonFrame, buttonActive, buttonInactive, INACTIVE, MOVE);
+
+    buttonActive = nullptr;
+    buttonInactive = nullptr;
+
+    SDL_Rect endTurnButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", buttonInactive);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", buttonActive);
+
+    endTurnButton = new UIButton(endTurnButtonFrame, buttonActive, buttonInactive, INACTIVE, END_TURN);
 }
 
 void UIManager::renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY) {
@@ -90,14 +113,19 @@ void UIManager::renderUIPanel(SDL_Rect panel) {
     SDL_RenderDrawRect(renderer, &panel);
 };
 
-void UIManager::renderUIButton(SDL_Rect panel, SDL_Texture* buttonTexture) {
-    /*SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
-    SDL_RenderFillRect(renderer, &panel);*/
+void UIManager::renderUIButton(UIButton* button) {
 
-    SDL_RenderCopy(renderer, buttonTexture, nullptr, &panel);
+    switch (button->getButtonState()) {
+    case ACTIVE:
+        SDL_RenderCopy(renderer, button->getButtonActiveTexture(), nullptr, &button->getButtonArea());
+        break;
+    default:
+        SDL_RenderCopy(renderer, button->getButtonInactiveTexture(), nullptr, &button->getButtonArea());
+        break;
+    }
 
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-    SDL_RenderDrawRect(renderer, &panel);
+    SDL_RenderDrawRect(renderer, &button->getButtonArea());
 };
 
 void UIManager::renderUI() {
@@ -105,10 +133,9 @@ void UIManager::renderUI() {
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
 
-    renderUIButton(UIEndTurnButton, endTurnButtonTexture);
-    renderUIButton(UIMoveButton, moveButtonTexture);
-    renderUIButton(UIAttackButton, attackButtonTexture);
-
+    renderUIButton(attackButton);
+    renderUIButton(moveButton);
+    renderUIButton(endTurnButton);
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY) {
@@ -201,18 +228,33 @@ void UIManager::render(Room* currentRoom, int playerLocationX, int playerLocatio
 
 int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
 
-    if ((mouseX > UIAttackButton.x && mouseX < UIAttackButton.x + BUTTON_WIDTH)
-        && (mouseY > UIAttackButton.y && mouseY < UIAttackButton.y + BUTTON_HEIGHT)) {
+    if ((mouseX > attackButton->getButtonArea().x && mouseX < attackButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > attackButton->getButtonArea().y && mouseY < attackButton->getButtonArea().y + BUTTON_HEIGHT)) {
+        
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        
+        attackButton->setButtonState(ACTIVE);
         return ATTACK;
     }
 
-    if ((mouseX > UIMoveButton.x && mouseX < UIMoveButton.x + BUTTON_WIDTH)
-        && (mouseY > UIMoveButton.y && mouseY < UIMoveButton.y + BUTTON_HEIGHT)) {
+    if ((mouseX > moveButton->getButtonArea().x && mouseX < moveButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > moveButton->getButtonArea().y && mouseY < moveButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+
+        moveButton->setButtonState(ACTIVE);
         return MOVE;
     }
 
-    if ((mouseX > UIEndTurnButton.x && mouseX < UIEndTurnButton.x + BUTTON_WIDTH)
-        && (mouseY > UIEndTurnButton.y && mouseY < UIEndTurnButton.y + BUTTON_HEIGHT)) {
+    if ((mouseX > endTurnButton->getButtonArea().x && mouseX < endTurnButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > endTurnButton->getButtonArea().y && mouseY < endTurnButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        moveButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+
+        endTurnButton->setButtonState(ACTIVE);
         return END_TURN;
     }
 

@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Room.h"
 #include "Player.h"
+#include "UIButton.h"
 #include <iostream>
 
 
@@ -19,18 +20,16 @@ private:
     SDL_Rect rightUIPanel;
     SDL_Rect bottomUIPanel;
 
-    SDL_Rect UIAttackButton;
     SDL_Rect UIEndTurnButton;
-    SDL_Rect UIMoveButton;
 
     SDL_Cursor* cursorTexture = nullptr;
 
-    SDL_Texture* attackButtonTexture = nullptr;
-    SDL_Texture* attackButtonPressedTexture = nullptr;
+    UIButton* attackButton = nullptr;
+    UIButton* moveButton = nullptr;
+    UIButton* endTurnButton = nullptr;
+
     SDL_Texture* endTurnButtonPressedTexture = nullptr;
     SDL_Texture* endTurnButtonTexture = nullptr;
-    SDL_Texture* moveButtonPressedTexture = nullptr;
-    SDL_Texture* moveButtonTexture = nullptr;
 
     SDL_Texture* playerTexture = nullptr;
     SDL_Texture* NPCTexture = nullptr;
@@ -42,9 +41,10 @@ private:
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
+    void loadUIButtons();
     void renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY);
     void renderUIPanel(SDL_Rect panel);
-    void renderUIButton(SDL_Rect panel, SDL_Texture* buttonTexture);
+    void renderUIButton(UIButton* button);
     void renderPlayer(int playerLocationX, int playerLocationY);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
