@@ -2,6 +2,7 @@
 
 UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer) {
 	loadTextures();
+    loadNPCTextures();
     loadUIButtons();
 
     gameView = { UI_SIDE_PANEL_WIDTH, 0, GAMEVIEW_WIDTH, GAMEVIEW_HEIGHT };
@@ -56,17 +57,22 @@ void UIManager::loadTextures() {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", endTurnButtonTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", endTurnButtonPressedTexture);
-
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight.png", playerTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png", NPCTexture);
-
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wall.png", wallTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png", doorTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);
 
+}
+
+void UIManager::loadNPCTextures() {
+    SDL_Texture* goblinTexture = nullptr;
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png", goblinTexture);
+    NPCTextures[GOBLIN] = goblinTexture;
+
+    SDL_Texture* spiderTexture = nullptr;
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/spider.png", spiderTexture);
+    NPCTextures[SPIDER] = spiderTexture;
 }
 
 void UIManager::loadUIButtons() {
@@ -101,7 +107,8 @@ void UIManager::loadUIButtons() {
 
 void UIManager::renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY) {
     renderCurrentRoom(currentRoom);
-    renderPlayer(playerLocationX, playerLocationY);  
+    renderPlayer(playerLocationX, playerLocationY); 
+    renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
 };
 
@@ -181,16 +188,22 @@ void UIManager::renderCurrentRoomNPCs(Room* currentRoom) {
         for (NPC* npc : *npcs) {
             int location_x = npc->getX();
             int location_y = npc->getY();
+            int typeID = npc->getTypeID();
 
-            SDL_Rect tileRect = { (location_x * TILE_SIZE) + GAMEVIEW_START_X,
-                                    (location_y * TILE_SIZE) + GAMEVIEW_START_Y,
-                                    TILE_SIZE,
-                                    TILE_SIZE };
+            try {
+                SDL_RenderCopy(renderer, NPCTextures[typeID], nullptr, &npc->getNPCFrame());
+            }
+            catch (const std::runtime_error& e) {
+                std::cerr << "Caught exception during NPC texture rendering: " << e.what() << std::endl;
+            }
 
-            SDL_RenderCopy(renderer, NPCTexture, nullptr, &tileRect);
         }
     }
 };
+
+void UIManager::renderCurrentRoomObjects(Room* currentRoom) {
+
+}
 
 void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     int gameViewWidthInTiles = GAMEVIEW_WIDTH / TILE_SIZE;

@@ -6,6 +6,7 @@
 #include "Room.h"
 #include "Player.h"
 #include "UIButton.h"
+#include <unordered_map>
 #include <iostream>
 
 
@@ -20,19 +21,16 @@ private:
     SDL_Rect rightUIPanel;
     SDL_Rect bottomUIPanel;
 
-    SDL_Rect UIEndTurnButton;
-
     SDL_Cursor* cursorTexture = nullptr;
 
     UIButton* attackButton = nullptr;
     UIButton* moveButton = nullptr;
     UIButton* endTurnButton = nullptr;
 
-    SDL_Texture* endTurnButtonPressedTexture = nullptr;
-    SDL_Texture* endTurnButtonTexture = nullptr;
-
     SDL_Texture* playerTexture = nullptr;
     SDL_Texture* NPCTexture = nullptr;
+
+    std::unordered_map<int, SDL_Texture*> NPCTextures;
 
     SDL_Texture* wallTexture = nullptr;
     SDL_Texture* ladderTexture = nullptr;
@@ -41,6 +39,7 @@ private:
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
+    void loadNPCTextures();
     void loadUIButtons();
     void renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY);
     void renderUIPanel(SDL_Rect panel);
@@ -49,6 +48,7 @@ private:
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
+    void renderCurrentRoomObjects(Room* currentRoom);
     void renderUI();
 
 public:

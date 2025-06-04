@@ -35,8 +35,8 @@ std::vector<NPC*>* Room::getListOfNPCs() {
     return &roomNPCs;
 }
 
-void Room::addNPCToRoom(int x, int y) {
-    NPC* newNPC = new NPC(x,y);
+void Room::addNPCToRoom(int x, int y, int type) {
+    NPC* newNPC = new NPC(x,y, type);
     roomNPCs.push_back(newNPC);
 }
 
@@ -159,9 +159,5 @@ void Room::processPlayerAttack(int mouseX, int mouseY) {
         else {
             ++it;
         }
-        std::cout << "Goblin died...\n";
     }
-    std::cout << "NPCS left: ";
-    std::cout << roomNPCs.size();
-    std::cout << "\n";
 }

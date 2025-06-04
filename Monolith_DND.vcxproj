@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
@@ -155,6 +157,7 @@
     <Image Include="..\..\..\Downloads\full_red_heart.png" />
     <Image Include="..\..\..\Downloads\tree.png" />
     <Image Include="action_point_half.png" />
+    <Image Include="camp_fire.png" />
     <Image Include="chest.png" />
     <Image Include="coins.png" />
     <Image Include="cursor.png" />
@@ -171,6 +174,7 @@
     <Image Include="pine.png" />
     <Image Include="red_x.png" />
     <Image Include="rogue.png" />
+    <Image Include="spider.png" />
     <Image Include="sword.png" />
     <Image Include="sword_bnw_clicked.png" />
     <Image Include="sword_bnw_non_clicked.png" />

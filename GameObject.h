@@ -3,26 +3,17 @@
 #include <SDL_image.h>
 #include <string>
 
-class NPC {
+class GameObject {
 private:
     int x, y;
 
-    int typeID;
-
-    SDL_Rect NPCFrame;
-
 public:
-    NPC(int startX, int startY, int typeID);
-    ~NPC();
+    GameObject(int startX, int startY);
+    ~GameObject();
 
     // Getters
     int getX() const { return x; }
     int getY() const { return y; }
-
-    int getTypeID() const { return typeID; }
-    void setTypeID(int type);
-
-    SDL_Rect& getNPCFrame();
 
     // Movement
     void setPosition(int newX, int newY);

@@ -10,7 +10,7 @@ const int ROOM_HEIGHT = 19;
 const int TILE_HEIGHT_OFFSET = 0;
 
 // Lighting stuff for rendering darkness
-const int DARKNESS_SCALE = 20;
+const int DARKNESS_SCALE = 18;
 const int MAX_DARKNESS_RANGE_IN_TILES = 8;
 
 // Game view
@@ -83,6 +83,14 @@ const SDL_Color COLOR_BROWN = { 139, 69, 19, 255 };
 const int BASE_ENTITY_SPEED_IN_TILES = 5;
 const int BASE_ENTITY_ATTACK_RANGE_IN_TILES = 1;
 const int BASE_ENTITY_DAMAGE = 1;
+
+// Entity list
+
+enum NPCTypes {
+    BAT = 0,
+    GOBLIN = 1,
+    SPIDER = 2
+};
 
 // Math Stuff
 inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {

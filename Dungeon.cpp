@@ -26,13 +26,13 @@ void Dungeon::generateInitialRooms() {
     }
 
     // create some NPCs to test rendering
-    rooms[RoomCoord(0, -2)]->addNPCToRoom(10, 10);
-    rooms[RoomCoord(0, -2)]->addNPCToRoom(22, 2);
+    rooms[RoomCoord(0, -2)]->addNPCToRoom(10, 10, GOBLIN);
+    rooms[RoomCoord(0, -2)]->addNPCToRoom(22, 2, SPIDER);
 
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(3, 3);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(19, 7);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(4, 7);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(8, 12);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(3, 3, GOBLIN);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(19, 7, SPIDER);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(4, 7, GOBLIN);
+    rooms[RoomCoord(-1, 0)]->addNPCToRoom(8, 12, SPIDER);
 }
 
 void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter, std::vector<NPC*> npcs) {
