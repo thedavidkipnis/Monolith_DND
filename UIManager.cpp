@@ -1,6 +1,6 @@
 #include "UIManager.h"
 
-UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer) {
+UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCount(0) {
 	loadTextures();
     loadNPCTextures();
     loadUIButtons();
@@ -105,11 +105,14 @@ void UIManager::loadUIButtons() {
     endTurnButton = new UIButton(endTurnButtonFrame, buttonActive, buttonInactive, INACTIVE, END_TURN);
 }
 
-void UIManager::renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY) {
+void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderCurrentRoom(currentRoom);
-    renderPlayer(playerLocationX, playerLocationY); 
+    renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
+    renderDarkness(player->getXTile(), player->getYTile());
+
+    //renderActionableTiles(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderUIPanel(SDL_Rect panel) {
@@ -145,15 +148,16 @@ void UIManager::renderUI() {
     renderUIButton(endTurnButton);
 };
 
-void UIManager::renderPlayer(int playerLocationX, int playerLocationY) {
+void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
     SDL_Rect destRect = {
         playerLocationX,
         playerLocationY,
         TILE_SIZE,
         TILE_SIZE
     };
+    
+    SDL_RenderCopyEx(renderer, playerTexture, nullptr, &destRect, 0.0, nullptr, facingDirection ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
 
-    SDL_RenderCopy(renderer, playerTexture, nullptr, &destRect);
 }
 
 void UIManager::renderCurrentRoom(Room* currentRoom) {
@@ -183,6 +187,7 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
 };
 
 void UIManager::renderCurrentRoomNPCs(Room* currentRoom) {
+
     if (currentRoom->getListOfNPCs()->size() > 0) {
         std::vector<NPC*>* npcs = currentRoom->getListOfNPCs();
         for (NPC* npc : *npcs) {
@@ -190,8 +195,13 @@ void UIManager::renderCurrentRoomNPCs(Room* currentRoom) {
             int location_y = npc->getY();
             int typeID = npc->getTypeID();
 
+            SDL_Rect NPCFrame = { (location_x * TILE_SIZE) + GAMEVIEW_START_X,
+                                  (location_y * TILE_SIZE) + GAMEVIEW_START_Y,
+                                   TILE_SIZE,
+                                   TILE_SIZE };
+
             try {
-                SDL_RenderCopy(renderer, NPCTextures[typeID], nullptr, &npc->getNPCFrame());
+                SDL_RenderCopy(renderer, NPCTextures[typeID], nullptr, &NPCFrame);
             }
             catch (const std::runtime_error& e) {
                 std::cerr << "Caught exception during NPC texture rendering: " << e.what() << std::endl;
@@ -209,34 +219,42 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     int gameViewWidthInTiles = GAMEVIEW_WIDTH / TILE_SIZE;
     int gameViewHeightInTiles = GAMEVIEW_HEIGHT / TILE_SIZE;
 
+    float time = SDL_GetTicks() / 1000.0f;  // Get time in seconds
+    float brightnessOscillation = 1.0f + 0.05f * std::sin(time * 3.0f);
+
     for (int i = 0; i < gameViewWidthInTiles; i++) {
         for (int j = 0; j < gameViewHeightInTiles; j++) {
 
-            int distanceToPLayer = findTileDistanceForShading(playerLocationX, playerLocationY, GAMEVIEW_START_X + (i * TILE_SIZE), GAMEVIEW_START_Y + (j * TILE_SIZE));
-            if (distanceToPLayer > MAX_DARKNESS_RANGE_IN_TILES) {
-                distanceToPLayer = (MAX_DARKNESS_RANGE_IN_TILES + 1) * DARKNESS_SCALE;
+            int darknessFactor = findTileDistanceForShading(playerLocationX, playerLocationY, GAMEVIEW_START_X + (i * TILE_SIZE), GAMEVIEW_START_Y + (j * TILE_SIZE));
+            if (darknessFactor > MAX_DARKNESS_RANGE_IN_TILES) {
+                darknessFactor = (MAX_DARKNESS_RANGE_IN_TILES + 1) * DARKNESS_SCALE;
             }
             else {
-                distanceToPLayer *= DARKNESS_SCALE;
+                darknessFactor *= DARKNESS_SCALE;
+                darknessFactor = static_cast<int>(darknessFactor * brightnessOscillation);
+
             }
 
+
             SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, distanceToPLayer);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, darknessFactor);
             SDL_Rect darknessOverlay = { GAMEVIEW_START_X + (i * TILE_SIZE), GAMEVIEW_START_Y + (j * TILE_SIZE), TILE_SIZE, TILE_SIZE };
             SDL_RenderFillRect(renderer, &darknessOverlay);
         }
     }
 }
 
-void UIManager::render(Room* currentRoom, int playerLocationX, int playerLocationY) {
+void UIManager::render(Room* currentRoom, Player* player) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
     renderUI();
-    renderGameView(currentRoom, playerLocationX, playerLocationY);
-    renderPlayer(playerLocationX, playerLocationY);
+    renderGameView(currentRoom, player);
 
-    renderDarkness(playerLocationX, playerLocationY);
+    if (frameCount > MAX_FRAME_COUNT) {
+        frameCount = 0;
+    }
+    frameCount++;
 };
 
 int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
@@ -272,4 +290,10 @@ int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
     }
 
     return NONE;
+} 
+
+void UIManager::renderActionableTiles(int playerX, int playerY) {
+    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    SDL_Rect n = {playerX - (TILE_SIZE), playerY, TILE_SIZE, TILE_SIZE};
+    SDL_RenderDrawRect(renderer, &n);
 }

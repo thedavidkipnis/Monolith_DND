@@ -129,6 +129,7 @@ Direction Room::getDoorDirection(int x, int y) const {
 
     return NORTH; // Default
 }
+
 void Room::addInteriorElements() {
 
     // generates random wall blocks inside the room
@@ -160,4 +161,16 @@ void Room::processPlayerAttack(int mouseX, int mouseY) {
             ++it;
         }
     }
+}
+
+void Room::processNPCActions(int playerLocationX, int playerLocationY) {
+    for (NPC* npc : roomNPCs)
+    {
+        npc->triggerBehavior(this, playerLocationX, playerLocationY);
+    }
+    /*std::cout << "XXXXXXXXXXXXXXXXXXXXXXXX\n";
+    for (NPC* npc : roomNPCs)
+    {
+        std::cout << npc->getX() << " " << npc->getY() << "\n";
+    }*/
 }

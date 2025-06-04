@@ -134,18 +134,31 @@ void Game::handleInput() {
                 default:
                     // NO ACTION
                     // COULD ADD TILE INSPECT FUNCTIONALITY HERE
+                    std::cout << findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()) << "\n";
                     break;
                 }
 
                 SDL_Point mousePoint = { mouseX, mouseY };              
             }
         }
-
     }
 
     // Handle continuous key presses with timing
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastMoveTime > MOVE_DELAY) {
+
+        // see if user is trying to switch actions
+        if (keyState[SDL_SCANCODE_1]) {
+            selectedPlayerAction = END_TURN;
+        }
+        if (keyState[SDL_SCANCODE_2]) {
+            selectedPlayerAction = MOVE;
+        }
+        if (keyState[SDL_SCANCODE_3]) {
+            selectedPlayerAction = ATTACK;
+        }
+
+
         if (!isPlayerInEncounter) {
             int deltaX = 0, deltaY = 0;
 
@@ -157,15 +170,18 @@ void Game::handleInput() {
             }
             if (keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT]) {
                 deltaX = -1;
+                player->setWhichDirectionIsFacing(LEFT);
             }
             if (keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT]) {
                 deltaX = 1;
+                player->setWhichDirectionIsFacing(RIGHT);
             }
 
             // Try to move player
             if (deltaX != 0 || deltaY != 0) {
                 Room* currentRoom = dungeon->getCurrentRoom();
                 if (currentRoom && player->tryMove(deltaX, deltaY, *currentRoom)) {
+
                     lastMoveTime = currentTime;
 
                     // Check for room transitions
@@ -206,12 +222,14 @@ void Game::update() {
     else { // when there are no more enemies
         curRoom->setRoomEncounterState(false);
         isPlayerInEncounter = false;
+        player->setMovementSpeedLeft(player->getMovementSpeed());
     }
 
     if (selectedPlayerAction == END_TURN) {
-        // AI will get processed here
         player->setMovementSpeedLeft(player->getMovementSpeed());
         selectedPlayerAction = NONE;
+
+        dungeon->getCurrentRoom()->processNPCActions(player->getX(), player->getY());
     }
 
 }
@@ -221,7 +239,7 @@ void Game::render() {
     // Render game objects
     Room* currentRoom = dungeon->getCurrentRoom();
 
-    visualsManager->render(currentRoom, player->getXTile(), player->getYTile());
+    visualsManager->render(currentRoom, player.get());
 
     SDL_RenderPresent(renderer);
 }

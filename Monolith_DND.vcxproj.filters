@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="NPC Behaviors">
+      <UniqueIdentifier>{e46aa9fd-e587-41be-a346-a8486b4c2087}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_game.cpp">
@@ -42,6 +45,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorWander.cpp">
+      <Filter>NPC Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorAttackPlayerMelee.cpp">
+      <Filter>NPC Behaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -70,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPCBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorWander.h">
+      <Filter>NPC Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorAttackPlayerMelee.h">
+      <Filter>NPC Behaviors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +173,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="spider.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sheep.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

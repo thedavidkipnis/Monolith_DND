@@ -132,6 +132,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviorAttackPlayerMelee.cpp" />
+    <ClCompile Include="BehaviorWander.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -143,11 +145,14 @@
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviorAttackPlayerMelee.h" />
+    <ClInclude Include="BehaviorWander.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="NPCBehavior.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="UIButton.h" />
@@ -174,6 +179,7 @@
     <Image Include="pine.png" />
     <Image Include="red_x.png" />
     <Image Include="rogue.png" />
+    <Image Include="sheep.png" />
     <Image Include="spider.png" />
     <Image Include="sword.png" />
     <Image Include="sword_bnw_clicked.png" />

@@ -55,4 +55,7 @@ public:
 
     // Player interaction
     void processPlayerAttack(int mouseX, int mouseY);
+
+    // NPC Logic
+    void processNPCActions(int playerLocationX, int playerLocationY);
 };

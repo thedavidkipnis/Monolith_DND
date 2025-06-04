@@ -8,7 +8,6 @@
 class Player {
 private:
     int x, y;
-    SDL_Texture* spriteTexture = nullptr;
 
     int movementSpeed;
     int movementSpeedLeft;
@@ -16,10 +15,11 @@ private:
     int attackRange;
     int damage;
 
+    int whichDirectionIsFacing;
+
 public:
     Player();
     Player(int startX, int startY, int movementSpeed, int attackRange, int damage);
-    ~Player();
 
     // Getters
     int getX() const { return x; }
@@ -37,6 +37,9 @@ public:
 
     void setMovementSpeed(int sp);
     void setMovementSpeedLeft(int sp);
+
+    int getWhichDirectionIsFacing() const { return whichDirectionIsFacing; }
+    void setWhichDirectionIsFacing(int direction);
 
     bool tryMoveTurnBased(int destX, int destY, const Room& room);
     void makeMoveTurnBased(int mouseX, int mouseY);

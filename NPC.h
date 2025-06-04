@@ -1,15 +1,19 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <iostream>
 #include <string>
+#include "NPCBehavior.h"
+#include "BehaviorWander.h"
+#include "BehaviorAttackPLayerMelee.h"
+#include <memory>
 
 class NPC {
 private:
     int x, y;
-
     int typeID;
 
-    SDL_Rect NPCFrame;
+    std::unique_ptr<NPCBehavior> behavior;
 
 public:
     NPC(int startX, int startY, int typeID);
@@ -22,8 +26,9 @@ public:
     int getTypeID() const { return typeID; }
     void setTypeID(int type);
 
-    SDL_Rect& getNPCFrame();
-
     // Movement
     void setPosition(int newX, int newY);
+
+    // Logic
+    void triggerBehavior(Room* room, int playerLocationX, int playerLocationY);
 };

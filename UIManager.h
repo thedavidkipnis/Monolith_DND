@@ -8,18 +8,19 @@
 #include "UIButton.h"
 #include <unordered_map>
 #include <iostream>
+#include <cmath>
 
 
 class UIManager {
 private:
 	SDL_Renderer* renderer;
 
-    std::unique_ptr<Player> player;
-
     SDL_Rect gameView;
     SDL_Rect leftUIPanel;
     SDL_Rect rightUIPanel;
     SDL_Rect bottomUIPanel;
+
+    int frameCount;
 
     SDL_Cursor* cursorTexture = nullptr;
 
@@ -41,14 +42,15 @@ private:
     void loadTextures();
     void loadNPCTextures();
     void loadUIButtons();
-    void renderGameView(Room* currentRoom, int playerLocationX, int playerLocationY);
+    void renderGameView(Room* currentRoom, Player* player);
     void renderUIPanel(SDL_Rect panel);
     void renderUIButton(UIButton* button);
-    void renderPlayer(int playerLocationX, int playerLocationY);
+    void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
+    void renderActionableTiles(int playerX, int playerY);
     void renderUI();
 
 public:
@@ -56,7 +58,7 @@ public:
     UIManager(SDL_Renderer* renderer);
     ~UIManager();
 
-    void render(Room* currentRoom, int playerLocationX, int playerLocationY);
+    void render(Room* currentRoom, Player* player);
     int checkUIButtonPress(int mouseX, int mouseY);
 
 };

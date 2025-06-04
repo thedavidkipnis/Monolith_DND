@@ -10,8 +10,12 @@ const int ROOM_HEIGHT = 19;
 const int TILE_HEIGHT_OFFSET = 0;
 
 // Lighting stuff for rendering darkness
-const int DARKNESS_SCALE = 18;
+const int DARKNESS_SCALE = 15;
 const int MAX_DARKNESS_RANGE_IN_TILES = 8;
+
+// this variable is used by UIManager - it's the cap to the frameCount variable
+// UIManager counts up to this number, then resets
+const int MAX_FRAME_COUNT = 100;
 
 // Game view
 const int GAMEVIEW_WIDTH = TILE_SIZE * ROOM_WIDTH;
@@ -85,6 +89,11 @@ const int BASE_ENTITY_ATTACK_RANGE_IN_TILES = 1;
 const int BASE_ENTITY_DAMAGE = 1;
 
 // Entity list
+enum facingDirectionsForRendering {
+    LEFT = 0,
+    RIGHT = 1
+};
+
 
 enum NPCTypes {
     BAT = 0,
@@ -95,7 +104,14 @@ enum NPCTypes {
 // Math Stuff
 inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {
 
+    return abs(x1 - x2) + abs(y1 - y2);
+
+};
+
+inline int findDistance(int x1, int y1, int x2, int y2) {
+
     return std::floor(sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+
 };
 
 inline int findTileDistanceForShading(int x1, int y1, int x2, int y2) {

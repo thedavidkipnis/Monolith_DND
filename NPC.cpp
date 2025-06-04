@@ -2,20 +2,27 @@
 #include "Constants.h"
 #include <iostream>
 
-NPC::NPC(int startX, int startY, int typeID) : x(startX), y(startY), typeID(typeID) {
-    NPCFrame = { (startX * TILE_SIZE) + GAMEVIEW_START_X,
-                 (startY * TILE_SIZE) + GAMEVIEW_START_Y,
-                 TILE_SIZE,
-                 TILE_SIZE };
+NPC::NPC(int startX, int startY, int typeID) : 
+    x(startX), 
+    y(startY), 
+    typeID(typeID) {
+
+    switch (typeID) {
+    case GOBLIN:
+        behavior = std::make_unique<BehaviorAttackPlayerMelee>();
+        break;
+    case SPIDER:
+        behavior = std::make_unique<BehaviorAttackPlayerMelee>();
+        break;
+    default:
+
+        break;
+    }
 
 };
 
 NPC::~NPC() {
 };
-
-SDL_Rect& NPC::getNPCFrame() {
-    return NPCFrame;
-}
 
 // Setters
 void NPC::setPosition(int newX, int newY) {
@@ -25,4 +32,10 @@ void NPC::setPosition(int newX, int newY) {
 
 void NPC::setTypeID(int type) {
     typeID = type;
+}
+
+void NPC::triggerBehavior(Room* room, int playerLocationX, int playerLocationY) {
+    if (behavior) {
+        behavior->behave(this, room, playerLocationX, playerLocationY);
+    }
 }
