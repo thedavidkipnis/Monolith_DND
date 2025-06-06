@@ -66,6 +66,12 @@ bool Room::isWalkable(int x, int y) const {
     return tile != WALL; // Both FLOOR and DOOR are walkable
 }
 
+bool Room::isWalkableTurnBased(int x, int y) const {
+    if (!isValidPosition(x, y)) return false;
+    int tile = tiles[y][x];
+    return (tile != WALL && tile != DOOR); // Both FLOOR and DOOR are walkable
+}
+
 void Room::generateBasicRoom() {
     generateRoomWithConnections(false, false, false, false);
 }
@@ -148,14 +154,23 @@ void Room::addInteriorElements() {
 
 }
 
-void Room::processPlayerAttack(int mouseX, int mouseY) {
+void Room::processPlayerAttack(int mouseX, int mouseY, int damage) {
     for (auto it = roomNPCs.begin(); it != roomNPCs.end(); ) {
         int location_x = (*it)->getX();
         int location_y = (*it)->getY();
 
-        if (mouseX == location_x && mouseY == location_y) {
-            delete* it;
-            it = roomNPCs.erase(it);
+        if (mouseX == location_x && mouseY == location_y) { // hit
+            int remainingHealth = (*it)->getHealthPoints() - damage;
+            if (remainingHealth > 0) {
+                (*it)->setHealthPoints(remainingHealth);
+                std::cout << "Hit NPC for " << damage << " damage, " << remainingHealth << " health left.\n";
+                ++it;
+            }
+            else {
+                delete* it;
+                it = roomNPCs.erase(it);
+                std::cout << "NPC Died >:)\n";
+            }
         }
         else {
             ++it;

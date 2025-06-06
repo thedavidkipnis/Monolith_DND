@@ -12,6 +12,8 @@ private:
     int movementSpeed;
     int movementSpeedLeft;
 
+    int healthPoints;
+
     int attackRange;
     int damage;
 
@@ -19,7 +21,7 @@ private:
 
 public:
     Player();
-    Player(int startX, int startY, int movementSpeed, int attackRange, int damage);
+    Player(int startX, int startY, int movementSpeed, int healthPoints, int attackRange, int damage);
 
     // Getters
     int getX() const { return x; }
@@ -37,6 +39,11 @@ public:
 
     void setMovementSpeed(int sp);
     void setMovementSpeedLeft(int sp);
+
+    int getHealthPoints() const { return healthPoints; }
+    void setHealthPoints(int hp);
+
+    int getDamage() const { return damage; }
 
     int getWhichDirectionIsFacing() const { return whichDirectionIsFacing; }
     void setWhichDirectionIsFacing(int direction);

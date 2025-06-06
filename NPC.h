@@ -13,6 +13,8 @@ private:
     int x, y;
     int typeID;
 
+    int healthPoints;
+
     std::unique_ptr<NPCBehavior> behavior;
 
 public:
@@ -25,6 +27,9 @@ public:
 
     int getTypeID() const { return typeID; }
     void setTypeID(int type);
+
+    int getHealthPoints() const { return healthPoints; }
+    void setHealthPoints(int hp);
 
     // Movement
     void setPosition(int newX, int newY);

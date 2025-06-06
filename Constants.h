@@ -4,7 +4,7 @@
 #include <algorithm>
 
 // Tile system
-const int TILE_SIZE = 45;
+const int TILE_SIZE = 55;
 const int ROOM_WIDTH = 25;
 const int ROOM_HEIGHT = 19;
 const int TILE_HEIGHT_OFFSET = 0;

@@ -244,11 +244,12 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     }
 }
 
-void UIManager::render(Room* currentRoom, Player* player) {
+void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerAction) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
     renderUI();
+    updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     renderGameView(currentRoom, player);
 
     if (frameCount > MAX_FRAME_COUNT) {
@@ -291,6 +292,31 @@ int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
 
     return NONE;
 } 
+
+void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
+    switch (selectedPlayerAction) {
+    case ATTACK:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(ACTIVE);
+        break;
+    case END_TURN:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(ACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    case MOVE:
+        moveButton->setButtonState(ACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    default:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    }
+}
 
 void UIManager::renderActionableTiles(int playerX, int playerY) {
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);

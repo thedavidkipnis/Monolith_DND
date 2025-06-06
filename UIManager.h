@@ -45,6 +45,7 @@ private:
     void renderGameView(Room* currentRoom, Player* player);
     void renderUIPanel(SDL_Rect panel);
     void renderUIButton(UIButton* button);
+    void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
@@ -58,7 +59,8 @@ public:
     UIManager(SDL_Renderer* renderer);
     ~UIManager();
 
-    void render(Room* currentRoom, Player* player);
+    void render(Room* currentRoom, Player* player, int selectedPlayerAction);
     int checkUIButtonPress(int mouseX, int mouseY);
+    void toggleButton(int button);
 
 };

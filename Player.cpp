@@ -2,20 +2,12 @@
 #include "Constants.h"
 #include <iostream>
 
-Player::Player() : 
-    x(12), 
-    y(9), 
-    movementSpeed(BASE_ENTITY_SPEED_IN_TILES), 
-    movementSpeedLeft(BASE_ENTITY_SPEED_IN_TILES),
-    attackRange(BASE_ENTITY_ATTACK_RANGE_IN_TILES),
-    damage(BASE_ENTITY_DAMAGE),
-    whichDirectionIsFacing(1){}
-
-Player::Player(int startX, int startY, int movementSpeed, int attackRange, int damage) : 
-    x(startX), 
-    y(startY), 
-    movementSpeed(movementSpeed), 
+Player::Player(int startX, int startY, int movementSpeed, int healthPoints, int attackRange, int damage) :
+    x(startX),
+    y(startY),
+    movementSpeed(movementSpeed),
     movementSpeedLeft(movementSpeed),
+    healthPoints(healthPoints),
     attackRange(attackRange),
     damage(damage),
     whichDirectionIsFacing(1){}
@@ -60,7 +52,7 @@ void Player::setWhichDirectionIsFacing(int direction) {
 
 bool Player::tryMoveTurnBased(int destX, int destY, const Room& room) {
     int distanceToDesiredPoint = findDistanceInTiles(x, y, destX, destY);
-    return room.isWalkable(destX, destY) && distanceToDesiredPoint <= movementSpeed && distanceToDesiredPoint <= movementSpeedLeft;
+    return room.isWalkableTurnBased(destX, destY) && distanceToDesiredPoint <= movementSpeed && distanceToDesiredPoint <= movementSpeedLeft;
 }
 
 void Player::makeMoveTurnBased(int mouseX, int mouseY) {

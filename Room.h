@@ -27,6 +27,7 @@ public:
     void setTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
     bool isWalkable(int x, int y) const;
+    bool isWalkableTurnBased(int x, int y) const;
 
     // NPC access
     std::vector<NPC*>* getListOfNPCs();
@@ -54,7 +55,7 @@ public:
     void setRoomVisited(bool state);
 
     // Player interaction
-    void processPlayerAttack(int mouseX, int mouseY);
+    void processPlayerAttack(int mouseX, int mouseY, int damage);
 
     // NPC Logic
     void processNPCActions(int playerLocationX, int playerLocationY);

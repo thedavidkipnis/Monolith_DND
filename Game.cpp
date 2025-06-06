@@ -51,7 +51,7 @@ bool Game::initialize() {
     visualsManager = new UIManager(renderer);
 
     // Initialize game objects
-    player = std::make_unique<Player>(12, 9, 5, 1, 1);
+    player = std::make_unique<Player>(12, 9, 5, 8, 1, 3);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateInitialRooms();
@@ -68,6 +68,11 @@ void Game::handleInput() {
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
             running = false;
+        }
+
+        // this is for skipping turn to trigger properly
+        if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
+            selectedPlayerAction = END_TURN;
         }
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
@@ -106,7 +111,7 @@ void Game::handleInput() {
                 case ATTACK:
                     if (player->tryAttacking(mouseX, mouseY)) {
                         player->attack(mouseX, mouseY);
-                        dungeon->getCurrentRoom()->processPlayerAttack(mouseX, mouseY);
+                        dungeon->getCurrentRoom()->processPlayerAttack(mouseX, mouseY, player->getDamage());
                     }
                     else {
                         std::cout << "Can't attack: ";
@@ -134,7 +139,6 @@ void Game::handleInput() {
                 default:
                     // NO ACTION
                     // COULD ADD TILE INSPECT FUNCTIONALITY HERE
-                    std::cout << findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()) << "\n";
                     break;
                 }
 
@@ -148,9 +152,6 @@ void Game::handleInput() {
     if (currentTime - lastMoveTime > MOVE_DELAY) {
 
         // see if user is trying to switch actions
-        if (keyState[SDL_SCANCODE_1]) {
-            selectedPlayerAction = END_TURN;
-        }
         if (keyState[SDL_SCANCODE_2]) {
             selectedPlayerAction = MOVE;
         }
@@ -223,6 +224,7 @@ void Game::update() {
         curRoom->setRoomEncounterState(false);
         isPlayerInEncounter = false;
         player->setMovementSpeedLeft(player->getMovementSpeed());
+        selectedPlayerAction = NONE;
     }
 
     if (selectedPlayerAction == END_TURN) {
@@ -239,7 +241,7 @@ void Game::render() {
     // Render game objects
     Room* currentRoom = dungeon->getCurrentRoom();
 
-    visualsManager->render(currentRoom, player.get());
+    visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
 
     SDL_RenderPresent(renderer);
 }
