@@ -15,7 +15,7 @@ const int MAX_DARKNESS_RANGE_IN_TILES = 8;
 
 // this variable is used by UIManager - it's the cap to the frameCount variable
 // UIManager counts up to this number, then resets
-const int MAX_FRAME_COUNT = 100;
+const int MAX_FRAME_COUNT = 40;
 
 // Game view
 const int GAMEVIEW_WIDTH = TILE_SIZE * ROOM_WIDTH;

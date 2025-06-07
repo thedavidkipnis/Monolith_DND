@@ -61,7 +61,8 @@ void UIManager::loadTextures() {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight.png", playerTexture);
+    loadPlayerTextures();
+
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/stone_wall.png", wallTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png", doorTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
@@ -75,6 +76,21 @@ void UIManager::loadTextures() {
 
     std::cout << "Successfully loaded base textures.\n";
 
+}
+
+void UIManager::loadPlayerTextures() {
+    SDL_Texture* playerTexture;
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_1.png", playerTexture);
+    playerTextures.push_back(playerTexture);
+
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_2.png", playerTexture);
+    playerTextures.push_back(playerTexture);
+
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_3.png", playerTexture);
+    playerTextures.push_back(playerTexture);
+
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_4.png", playerTexture);
+    playerTextures.push_back(playerTexture);
 }
 
 void UIManager::loadAlphabetTextures() {
@@ -346,8 +362,8 @@ void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facin
         TILE_SIZE,
         TILE_SIZE
     };
-    
-    SDL_RenderCopyEx(renderer, playerTexture, nullptr, &destRect, 0.0, nullptr, facingDirection ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+    int curPlayerFrame = frameCount / (MAX_FRAME_COUNT / playerTextures.size());
+    SDL_RenderCopyEx(renderer, playerTextures[curPlayerFrame], nullptr, &destRect, 0.0, nullptr, facingDirection ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
 
 }
 
@@ -443,7 +459,7 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     renderGameView(currentRoom, player);
 
-    if (frameCount > MAX_FRAME_COUNT) {
+    if (frameCount >= MAX_FRAME_COUNT - 1) {
         frameCount = 0;
     }
     frameCount++;

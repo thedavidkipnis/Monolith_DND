@@ -31,7 +31,7 @@ private:
     UIButton* moveButton = nullptr;
     UIButton* endTurnButton = nullptr;
 
-    SDL_Texture* playerTexture = nullptr;
+    std::vector<SDL_Texture*> playerTextures;
     SDL_Texture* NPCTexture = nullptr;
 
     std::unordered_map<int, SDL_Texture*> NPCTextures;
@@ -50,6 +50,7 @@ private:
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
+    void loadPlayerTextures();
     void loadAlphabetTextures();
     void loadNPCTextures();
     void loadUIButtons();

@@ -189,7 +189,10 @@
     <Image Include="game_over.png" />
     <Image Include="goblin.png" />
     <Image Include="half_red_heart.png" />
-    <Image Include="knight.png" />
+    <Image Include="knight_1.png" />
+    <Image Include="knight_2.png" />
+    <Image Include="knight_3.png" />
+    <Image Include="knight_4.png" />
     <Image Include="move_button_bnw_clicked.png" />
     <Image Include="move_button_bnw_non_clicked.png" />
     <Image Include="pine.png" />

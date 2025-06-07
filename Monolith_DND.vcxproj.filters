@@ -118,9 +118,6 @@
     <Image Include="pine.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="knight.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\..\..\Downloads\tree.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -315,6 +312,18 @@
     </Image>
     <Image Include="question_mark.png">
       <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="knight_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="knight_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="knight_4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="knight_3.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>
