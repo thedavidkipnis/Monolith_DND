@@ -12,18 +12,20 @@ NPC::NPC(int startX, int startY, int typeID) :
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 5;
         movementSpeed = 3;
+        damage = 2;
         break;
     case SPIDER:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 2;
         movementSpeed = 6;
+        damage = 1;
         break;
     default:
         healthPoints = 0;
         movementSpeed = 0;
+        damage = 0;
         break;
     }
-
 };
 
 NPC::~NPC() {
@@ -48,8 +50,9 @@ void NPC::setMovementSpeed(int ms) {
 }
 
 
-void NPC::triggerBehavior(Room* room, int playerLocationX, int playerLocationY) {
+int NPC::triggerBehavior(Room* room, int playerLocationX, int playerLocationY) {
     if (behavior) {
-        behavior->behave(this, room, playerLocationX, playerLocationY);
+        return behavior->behave(this, room, playerLocationX, playerLocationY);
     }
+    return NPC_ACTION_NONE;
 }

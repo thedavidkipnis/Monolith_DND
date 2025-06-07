@@ -58,7 +58,7 @@ void UIManager::loadTextures() {
     }
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight.png", playerTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/wall.png", wallTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/stone_wall.png", wallTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png", doorTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);

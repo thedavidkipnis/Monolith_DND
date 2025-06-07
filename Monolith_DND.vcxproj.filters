@@ -178,5 +178,11 @@
     <Image Include="sheep.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="stone_wall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="stone_wall_alt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

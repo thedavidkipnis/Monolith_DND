@@ -8,5 +8,5 @@ public:
     virtual ~NPCBehavior() = default;
 
     // This will be implemented differently by each behavior type
-    virtual void behave(NPC* npc, Room* room, int playerX, int playerY) = 0;
+    virtual int behave(NPC* npc, Room* room, int playerX, int playerY) = 0;
 };

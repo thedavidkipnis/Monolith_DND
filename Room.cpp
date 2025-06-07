@@ -1,8 +1,5 @@
 #include "Room.h"
-#include "Constants.h"
-#include <iostream>
-#include <random>
-#include <ctime>
+
 
 Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
@@ -178,14 +175,25 @@ void Room::processPlayerAttack(int mouseX, int mouseY, int damage) {
     }
 }
 
+void Room::processNPCAttack(int mouseX, int mouseY, int damage) {
+
+}
+
 void Room::processNPCActions(int playerLocationX, int playerLocationY) {
+    int actionTaken = NPC_ACTION_NONE;
     for (NPC* npc : roomNPCs)
     {
-        npc->triggerBehavior(this, playerLocationX, playerLocationY);
+        actionTaken = npc->triggerBehavior(this, playerLocationX, playerLocationY);
+        switch (actionTaken) {
+        case NPC_ATTACK_PLAYER:
+            std::cout << "NPC ATTACKING PLAYER with " << npc->getDamage() << " damage\n";
+            break;
+        case NPC_MOVE:
+            std::cout << "NPC MOVED\n";
+            break;
+        default:
+            std::cout << "NO NPC ACTION TAKEN\n";
+            break;
+        }
     }
-    /*std::cout << "XXXXXXXXXXXXXXXXXXXXXXXX\n";
-    for (NPC* npc : roomNPCs)
-    {
-        std::cout << npc->getX() << " " << npc->getY() << "\n";
-    }*/
 }

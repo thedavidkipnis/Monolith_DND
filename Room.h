@@ -1,10 +1,13 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <string>
 #include <vector>
+#include <iostream>
+#include <random>
+#include <ctime>
 #include "Constants.h"
 #include "NPC.h"
-#include <string>
 
 class Room {
 private:
@@ -59,4 +62,5 @@ public:
 
     // NPC Logic
     void processNPCActions(int playerLocationX, int playerLocationY);
+    void processNPCAttack(int mouseX, int mouseY, int damage);
 };

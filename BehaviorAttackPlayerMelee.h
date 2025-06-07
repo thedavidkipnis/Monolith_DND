@@ -5,5 +5,5 @@
 
 class BehaviorAttackPlayerMelee : public NPCBehavior {
 public:
-    void behave(NPC* npc, Room* room, int playerX, int playerY) override;
+    int behave(NPC* npc, Room* room, int playerX, int playerY) override;
 };

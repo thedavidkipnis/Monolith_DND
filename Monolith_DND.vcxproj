@@ -181,6 +181,8 @@
     <Image Include="rogue.png" />
     <Image Include="sheep.png" />
     <Image Include="spider.png" />
+    <Image Include="stone_wall.png" />
+    <Image Include="stone_wall_alt.png" />
     <Image Include="sword.png" />
     <Image Include="sword_bnw_clicked.png" />
     <Image Include="sword_bnw_non_clicked.png" />

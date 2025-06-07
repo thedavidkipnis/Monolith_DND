@@ -16,6 +16,8 @@ private:
     int healthPoints;
     int movementSpeed;
 
+    int damage;
+
     std::unique_ptr<NPCBehavior> behavior;
 
 public:
@@ -35,9 +37,11 @@ public:
     int getMovementSpeed() const { return movementSpeed; }
     void setMovementSpeed(int ms);
 
+    int getDamage() const { return damage; }
+
     // Movement
     void setPosition(int newX, int newY);
 
     // Logic
-    void triggerBehavior(Room* room, int playerLocationX, int playerLocationY);
+    int triggerBehavior(Room* room, int playerLocationX, int playerLocationY);
 };

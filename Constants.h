@@ -101,6 +101,12 @@ enum NPCTypes {
     SPIDER = 2
 };
 
+enum NPCActionTypes {
+    NPC_ACTION_NONE = 0,
+    NPC_MOVE = 1,
+    NPC_ATTACK_PLAYER = 2
+};
+
 // Math Stuff
 inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {
 
