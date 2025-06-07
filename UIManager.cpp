@@ -71,6 +71,8 @@ void UIManager::loadTextures() {
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
 
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png", playerMovementSpeedTexture);
+
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/game_over.png", gameOverTexture);
 
@@ -251,7 +253,7 @@ void UIManager::setUITextboxText(std::string text) {
     currentTextBoxText = text;
 }
 
-void UIManager::renderUI(int playerHP) {
+void UIManager::renderUI(int playerHP, int playerMP) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
@@ -262,7 +264,7 @@ void UIManager::renderUI(int playerHP) {
 
     renderUITextBox();
 
-    renderPlayerStats(playerHP);
+    renderPlayerStats(playerHP, playerMP);
 
 };
 
@@ -326,7 +328,9 @@ void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
     }
 }
 
-void UIManager::renderPlayerStats(int healthPoints) {
+void UIManager::renderPlayerStats(int healthPoints, int movementSpeed) {
+
+    // health
     int healthRenderStartX = TILE_SIZE;
     int healthRenderStartY = TILE_SIZE;
 
@@ -342,6 +346,19 @@ void UIManager::renderPlayerStats(int healthPoints) {
         int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, playerHealthHalfHeartTexture, nullptr, &heartArea);
+    }
+
+    // movement speed
+    int movementSpeedRenderStartX = TILE_SIZE;
+    int movementSpeedRenderStartY = 2 * TILE_SIZE;
+    int curMPOffset = 0;
+    while (movementSpeed > 0) {
+        int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
+        SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, playerMovementSpeedTexture, nullptr, &MPArea);
+
+        curMPOffset++;
+        movementSpeed--;
     }
 }
 
@@ -455,7 +472,7 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
-    renderUI(player->getHealthPoints());
+    renderUI(player->getHealthPoints(), player->getMovementSpeedLeft());
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     renderGameView(currentRoom, player);
 

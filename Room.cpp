@@ -83,7 +83,6 @@ void Room::generateRoomWithConnections(bool north, bool east, bool south, bool w
 
     addWalls();
     addDoors(north, east, south, west);
-    addInteriorElements();
 }
 
 void Room::addWalls() {
@@ -131,24 +130,6 @@ Direction Room::getDoorDirection(int x, int y) const {
     if (x == 0 && y == centerY) return WEST;
 
     return NORTH; // Default
-}
-
-void Room::addInteriorElements() {
-
-    // generates random wall blocks inside the room
-    //std::random_device rd;
-    //std::mt19937 rng(rd());
-
-    //// Define the distributions
-    //std::uniform_int_distribution<int> distA(1, 24);  // For first parameter
-    //std::uniform_int_distribution<int> distB(1, 18);  // For second parameter
-
-    //for (int i = 0; i < 5; ++i) {
-    //    int a = distA(rng);
-    //    int b = distB(rng);
-    //    setTile(a, b, WALL);
-    //}
-
 }
 
 void Room::processPlayerAttack(int mouseX, int mouseY, int damage) {

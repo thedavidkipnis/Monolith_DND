@@ -39,6 +39,28 @@ void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isE
     rooms[coord] = std::make_unique<Room>(width, height, isEncounter, npcs);
 }
 
+void Dungeon::parseAndPopulateRoomTiles(const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file '" << filename << "'\n";
+        return;
+    }
+
+    char c;
+    while (file.get(c)) {
+        std::cout << c;
+    }
+
+    file.close();
+}
+void Dungeon::parseAndPopulateRoomNPCs(const std::string& filename) {
+
+}
+void Dungeon::parseAndPopulateRoomObjects(const std::string& filename) {
+
+}
+
 void Dungeon::setupRoomConnections(const RoomCoord& coord) {
     bool north = hasNeighbor(coord, NORTH);
     bool east = hasNeighbor(coord, EAST);

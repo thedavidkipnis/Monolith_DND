@@ -4,6 +4,9 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "Constants.h"
 #include "NPC.h"
 
@@ -48,5 +51,8 @@ public:
 
 private:
     void createRoom(const RoomCoord& coord, int width, int height, bool isEncounter, std::vector<NPC*> npcs);
+    void parseAndPopulateRoomTiles(const std::string& filename);
+    void parseAndPopulateRoomNPCs(const std::string& filename);
+    void parseAndPopulateRoomObjects(const std::string& filename);
     void setupRoomConnections(const RoomCoord& coord);
 };

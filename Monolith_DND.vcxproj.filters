@@ -19,6 +19,18 @@
     <Filter Include="Resource Files\UI Characters">
       <UniqueIdentifier>{1fdcafe1-61f4-403e-b139-73d6646a28dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rooms">
+      <UniqueIdentifier>{a4f0e0a1-a444-4276-a8eb-baa43b410235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rooms\RoomTileMappings">
+      <UniqueIdentifier>{dbecb357-8648-4574-86ce-c0c1057afc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rooms\RoomObjectMappings">
+      <UniqueIdentifier>{43daae22-6fbc-4362-a0fd-76557364b4bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rooms\RoomNPCMappings">
+      <UniqueIdentifier>{3874d286-39cd-4cae-b8f6-0581c92085f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_game.cpp">
@@ -323,6 +335,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="knight_3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="movement_point.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

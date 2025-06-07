@@ -45,6 +45,8 @@ private:
     SDL_Texture* playerHealthHeartTexture;
     SDL_Texture* playerHealthHalfHeartTexture;
 
+    SDL_Texture* playerMovementSpeedTexture;
+
     SDL_Rect gameOverTextureFrame;
     SDL_Texture* gameOverTexture;
 
@@ -59,14 +61,14 @@ private:
     void renderUIButton(UIButton* button);
     void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
     void renderUITextBox();
-    void renderPlayerStats(int healthPoints);
+    void renderPlayerStats(int healthPoints, int movementSpeed);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
     void renderActionableTiles(int playerX, int playerY);
-    void renderUI(int playerHP);
+    void renderUI(int playerHP, int playerMP);
 
 public:
 

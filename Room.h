@@ -43,7 +43,6 @@ public:
     void generateRoomWithConnections(bool north, bool east, bool south, bool west);
     void addWalls();
     void addDoors(bool north, bool east, bool south, bool west);
-    void addInteriorElements();
 
     // Door checking
     bool isDoor(int x, int y) const;
