@@ -184,5 +184,8 @@
     <Image Include="stone_wall_alt.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="game_over.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -125,7 +125,7 @@ void Game::handleInput() {
                     std::cout << "Attempting END TURN\n";
                     break;
                 case MOVE:
-                    if (player->tryMoveTurnBased(mouseX, mouseY, *dungeon->getCurrentRoom())) {
+                    if (dungeon->getCurrentRoom()->isWalkableTurnBased(player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft())) {
                         player->makeMoveTurnBased(mouseX, mouseY);
                     }
                     else {
@@ -181,8 +181,8 @@ void Game::handleInput() {
             // Try to move player
             if (deltaX != 0 || deltaY != 0) {
                 Room* currentRoom = dungeon->getCurrentRoom();
-                if (currentRoom && player->tryMove(deltaX, deltaY, *currentRoom)) {
-
+                if (currentRoom && currentRoom->isWalkable(deltaX + player->getX(), deltaY + player->getY())) {
+                    player->setPosition(deltaX + player->getX(), deltaY + player->getY());
                     lastMoveTime = currentTime;
 
                     // Check for room transitions
@@ -201,6 +201,10 @@ void Game::update() {
     // Future: enemy AI, item interactions
 
     Room* curRoom = dungeon->getCurrentRoom();
+
+    if (player->getHealthPoints() < 1) {
+        // you died game over!
+    }
 
     if(!curRoom->hasRoomBeenVisited())
     {
@@ -231,17 +235,20 @@ void Game::update() {
         player->setMovementSpeedLeft(player->getMovementSpeed());
         selectedPlayerAction = NONE;
 
-        dungeon->getCurrentRoom()->processNPCActions(player->getX(), player->getY());
+        dungeon->getCurrentRoom()->processNPCActions(player.get());
     }
 
 }
 
 void Game::render() {
 
-    // Render game objects
-    Room* currentRoom = dungeon->getCurrentRoom();
-
-    visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+    if (player->getHealthPoints() < 1) { // DEAD
+        visualsManager->renderDeathScreen();
+    }
+    else {
+        Room* currentRoom = dungeon->getCurrentRoom();
+        visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+    }
 
     SDL_RenderPresent(renderer);
 }

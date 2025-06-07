@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Constants.h"
 #include <iostream>
 
 Player::Player(int startX, int startY, int movementSpeed, int healthPoints, int attackRange, int damage) :
@@ -18,18 +17,6 @@ int Player::getXTile() const {
 int Player::getYTile() const {
     return (y * TILE_SIZE) + GAMEVIEW_START_Y;
 };
-
-bool Player::tryMove(int deltaX, int deltaY, const Room& room) {
-    int newX = x + deltaX;
-    int newY = y + deltaY;
-
-    if (room.isWalkable(newX, newY)) {
-        x = newX;
-        y = newY;
-        return true;
-    }
-    return false;
-}
 
 void Player::setPosition(int newX, int newY) {
     
@@ -51,12 +38,6 @@ void Player::setHealthPoints(int hp) {
 
 void Player::setWhichDirectionIsFacing(int direction) {
     whichDirectionIsFacing = direction;
-}
-
-
-bool Player::tryMoveTurnBased(int destX, int destY, const Room& room) {
-    int distanceToDesiredPoint = findDistanceInTiles(x, y, destX, destY);
-    return room.isWalkableTurnBased(destX, destY) && distanceToDesiredPoint <= movementSpeed && distanceToDesiredPoint <= movementSpeedLeft;
 }
 
 void Player::makeMoveTurnBased(int mouseX, int mouseY) {

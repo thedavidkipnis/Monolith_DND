@@ -41,6 +41,9 @@ private:
     SDL_Texture* playerHealthHeartTexture;
     SDL_Texture* playerHealthHalfHeartTexture;
 
+    SDL_Rect gameOverTextureFrame;
+    SDL_Texture* gameOverTexture;
+
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
     void loadNPCTextures();
@@ -64,6 +67,9 @@ public:
     ~UIManager();
 
     void render(Room* currentRoom, Player* player, int selectedPlayerAction);
+
+    void renderDeathScreen();
+
     int checkUIButtonPress(int mouseX, int mouseY);
     void toggleButton(int button);
 

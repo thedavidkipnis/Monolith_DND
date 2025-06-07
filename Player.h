@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
-#include "Room.h"
+#include "Constants.h"
 #include <string>
 
 
@@ -30,7 +30,6 @@ public:
     int getYTile() const;
 
     // Movement
-    bool tryMove(int deltaX, int deltaY, const Room& room);
     void setPosition(int newX, int newY);
 
     int getMovementSpeed() const { return movementSpeed; }
@@ -47,7 +46,6 @@ public:
     int getWhichDirectionIsFacing() const { return whichDirectionIsFacing; }
     void setWhichDirectionIsFacing(int direction);
 
-    bool tryMoveTurnBased(int destX, int destY, const Room& room);
     void makeMoveTurnBased(int mouseX, int mouseY);
 
     bool tryAttacking(int destX, int destY);

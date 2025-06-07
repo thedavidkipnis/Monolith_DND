@@ -66,6 +66,9 @@ void UIManager::loadTextures() {
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
 
+    gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/game_over.png", gameOverTexture);
+
 }
 
 void UIManager::loadNPCTextures() {
@@ -352,6 +355,13 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     }
     frameCount++;
 };
+
+void UIManager::renderDeathScreen() {
+    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+    SDL_RenderClear(renderer);
+
+    SDL_RenderCopy(renderer, gameOverTexture, nullptr, &gameOverTextureFrame);
+}
 
 void UIManager::renderActionableTiles(int playerX, int playerY) {
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);

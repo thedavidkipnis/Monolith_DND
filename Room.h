@@ -7,6 +7,7 @@
 #include <random>
 #include <ctime>
 #include "Constants.h"
+#include "Player.h"
 #include "NPC.h"
 
 class Room {
@@ -30,7 +31,7 @@ public:
     void setTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
     bool isWalkable(int x, int y) const;
-    bool isWalkableTurnBased(int x, int y) const;
+    bool isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const;
 
     // NPC access
     std::vector<NPC*>* getListOfNPCs();
@@ -61,6 +62,6 @@ public:
     void processPlayerAttack(int mouseX, int mouseY, int damage);
 
     // NPC Logic
-    void processNPCActions(int playerLocationX, int playerLocationY);
+    void processNPCActions(Player* player);
     void processNPCAttack(int mouseX, int mouseY, int damage);
 };

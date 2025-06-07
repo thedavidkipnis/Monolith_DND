@@ -171,6 +171,7 @@
     <Image Include="drop_ladder.png" />
     <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
+    <Image Include="game_over.png" />
     <Image Include="goblin.png" />
     <Image Include="half_red_heart.png" />
     <Image Include="knight.png" />

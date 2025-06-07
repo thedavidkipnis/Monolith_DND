@@ -63,10 +63,10 @@ bool Room::isWalkable(int x, int y) const {
     return tile != WALL; // Both FLOOR and DOOR are walkable
 }
 
-bool Room::isWalkableTurnBased(int x, int y) const {
+bool Room::isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const {
     if (!isValidPosition(x, y)) return false;
     int tile = tiles[y][x];
-    return (tile != WALL && tile != DOOR); // Both FLOOR and DOOR are walkable
+    return (tile != WALL && tile != DOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance)); // Both FLOOR and DOOR are walkable
 }
 
 void Room::generateBasicRoom() {
@@ -179,14 +179,15 @@ void Room::processNPCAttack(int mouseX, int mouseY, int damage) {
 
 }
 
-void Room::processNPCActions(int playerLocationX, int playerLocationY) {
+void Room::processNPCActions(Player* player) {
     int actionTaken = NPC_ACTION_NONE;
     for (NPC* npc : roomNPCs)
     {
-        actionTaken = npc->triggerBehavior(this, playerLocationX, playerLocationY);
+        actionTaken = npc->triggerBehavior(this, player->getX(), player->getY());
         switch (actionTaken) {
         case NPC_ATTACK_PLAYER:
             std::cout << "NPC ATTACKING PLAYER with " << npc->getDamage() << " damage\n";
+            player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
             break;
         case NPC_MOVE:
             std::cout << "NPC MOVED\n";
