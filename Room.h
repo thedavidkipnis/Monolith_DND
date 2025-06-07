@@ -6,6 +6,7 @@
 #include <iostream>
 #include <random>
 #include <ctime>
+#include <functional>
 #include "Constants.h"
 #include "Player.h"
 #include "NPC.h"

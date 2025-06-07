@@ -20,6 +20,9 @@ private:
     SDL_Rect rightUIPanel;
     SDL_Rect bottomUIPanel;
 
+    SDL_Rect UITextBoxFrame;
+    std::string currentTextBoxText;
+
     int frameCount;
 
     SDL_Cursor* cursorTexture = nullptr;
@@ -32,6 +35,7 @@ private:
     SDL_Texture* NPCTexture = nullptr;
 
     std::unordered_map<int, SDL_Texture*> NPCTextures;
+    std::unordered_map<char, SDL_Texture*> AlphabetTextures;
 
     SDL_Texture* wallTexture = nullptr;
     SDL_Texture* ladderTexture = nullptr;
@@ -46,12 +50,14 @@ private:
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
+    void loadAlphabetTextures();
     void loadNPCTextures();
     void loadUIButtons();
     void renderGameView(Room* currentRoom, Player* player);
     void renderUIPanel(SDL_Rect panel);
     void renderUIButton(UIButton* button);
     void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
+    void renderUITextBox();
     void renderPlayerStats(int healthPoints);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
@@ -67,6 +73,7 @@ public:
     ~UIManager();
 
     void render(Room* currentRoom, Player* player, int selectedPlayerAction);
+    void setUITextboxText(std::string text);
 
     void renderDeathScreen();
 

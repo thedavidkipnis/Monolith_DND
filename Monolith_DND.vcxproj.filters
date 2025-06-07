@@ -16,6 +16,9 @@
     <Filter Include="NPC Behaviors">
       <UniqueIdentifier>{e46aa9fd-e587-41be-a346-a8486b4c2087}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\UI Characters">
+      <UniqueIdentifier>{1fdcafe1-61f4-403e-b139-73d6646a28dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_game.cpp">
@@ -186,6 +189,132 @@
     </Image>
     <Image Include="game_over.png">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="upper_a.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_z.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_y.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_x.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_w.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_v.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_u.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_t.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_s.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_r.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_q.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_p.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_o.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_n.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_m.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_l.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_k.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_j.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_i.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_h.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_g.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_f.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_e.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_d.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_c.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="upper_b.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_6.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_5.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_4.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_3.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_2.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_1.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_0.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_9.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_8.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\num_7.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\prompt_start.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\!.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\semi_colon.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\colon.png">
+      <Filter>Resource Files\UI Characters</Filter>
+    </Image>
+    <Image Include="question_mark.png">
+      <Filter>Resource Files\UI Characters</Filter>
     </Image>
   </ItemGroup>
 </Project>

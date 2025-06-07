@@ -73,6 +73,7 @@ void Game::handleInput() {
         // this is for skipping turn to trigger properly
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
             selectedPlayerAction = END_TURN;
+            visualsManager->setUITextboxText("ENDING TURN...");
         }
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
@@ -82,20 +83,20 @@ void Game::handleInput() {
                 || (e.button.y < GAMEVIEW_START_Y || e.button.y > GAMEVIEW_START_Y + GAMEVIEW_HEIGHT)) {
                 switch (visualsManager->checkUIButtonPress(e.button.x, e.button.y)) {
                     case ATTACK:
-                        std::cout << "Selected ATTACK.\n";
                         selectedPlayerAction = ATTACK;
+                        visualsManager->setUITextboxText("SELECTED ATTACK");
                         break;
                     case END_TURN:
-                        std::cout << "Ending turn...\n";
                         selectedPlayerAction = END_TURN;
+                        visualsManager->setUITextboxText("ENDING TURN...");
                         break;
                     case MOVE:
-                        std::cout << "Selected MOVE.\n";
                         selectedPlayerAction = MOVE;
+                        visualsManager->setUITextboxText("SELECTED MOVE");
                         break;
                     default:
-                        std::cout << "Outside game view. No button press.\n";
                         selectedPlayerAction = NONE;
+                        visualsManager->setUITextboxText("");
                         break;
                 }
             }
@@ -110,15 +111,11 @@ void Game::handleInput() {
                 switch (selectedPlayerAction) {
                 case ATTACK:
                     if (player->tryAttacking(mouseX, mouseY)) {
-                        player->attack(mouseX, mouseY);
+                        //player->attack(mouseX, mouseY);
                         dungeon->getCurrentRoom()->processPlayerAttack(mouseX, mouseY, player->getDamage());
                     }
                     else {
-                        std::cout << "Can't attack: ";
-                        std::cout << mouseX;
-                        std::cout << " ";
-                        std::cout << mouseY;
-                        std::cout << ". Too far.\n";
+                        visualsManager->setUITextboxText("TOO FAR TO ATTACK");
                     }
                     break;
                 case END_TURN: // SHOULD NEVER BE AN OPTION
@@ -129,11 +126,12 @@ void Game::handleInput() {
                         player->makeMoveTurnBased(mouseX, mouseY);
                     }
                     else {
-                        std::cout << "Not enough movement speed to move to: ";
-                        std::cout << mouseX;
-                        std::cout << " ";
-                        std::cout << mouseY;
-                        std::cout << "\n";
+                        if (findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()) > player->getMovementSpeedLeft()) {
+                            visualsManager->setUITextboxText("NOT ENOUGHT MOVEMENT SPEED LEFT");
+                        }
+                        else {
+                            visualsManager->setUITextboxText("INVALID LOCATION");
+                        }
                     }
                     break;
                 default:
@@ -154,9 +152,11 @@ void Game::handleInput() {
         // see if user is trying to switch actions
         if (keyState[SDL_SCANCODE_2]) {
             selectedPlayerAction = MOVE;
+            visualsManager->setUITextboxText("SELECTED MOVE");
         }
         if (keyState[SDL_SCANCODE_3]) {
             selectedPlayerAction = ATTACK;
+            visualsManager->setUITextboxText("SELECTED ATTACK");
         }
 
 
@@ -209,14 +209,13 @@ void Game::update() {
     if(!curRoom->hasRoomBeenVisited())
     {
         if (curRoom->isRoomEncounter()) {
-            std::cout << "entered encounter room. ";
+            visualsManager->setUITextboxText(
+                "ENCOUNTERED " + std::to_string(curRoom->getListOfNPCs()->size()) + " ENEMIES!"
+            );
         }
         else {
-            std::cout << "not an encounter. ";
+            visualsManager->setUITextboxText("NOTHING HERE...");
         }
-        std::cout << "room has ";
-        std::cout << curRoom->getListOfNPCs()->size();
-        std::cout << " NPC(s).\n";
 
         curRoom->setRoomVisited(true);
     }
@@ -228,7 +227,6 @@ void Game::update() {
         curRoom->setRoomEncounterState(false);
         isPlayerInEncounter = false;
         player->setMovementSpeedLeft(player->getMovementSpeed());
-        selectedPlayerAction = NONE;
     }
 
     if (selectedPlayerAction == END_TURN) {
