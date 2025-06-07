@@ -63,6 +63,9 @@ void UIManager::loadTextures() {
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);
 
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
+
 }
 
 void UIManager::loadNPCTextures() {
@@ -80,7 +83,7 @@ void UIManager::loadUIButtons() {
     SDL_Texture* buttonActive = nullptr;
     SDL_Texture* buttonInactive = nullptr;
 
-    SDL_Rect attackButtonFrame = { GAMEVIEW_START_X + (2 * (BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    SDL_Rect attackButtonFrame = { GAMEVIEW_START_X + (2 * (BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (1.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_non_clicked.png", buttonInactive);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_clicked.png", buttonActive);
 
@@ -89,7 +92,7 @@ void UIManager::loadUIButtons() {
     buttonActive = nullptr;
     buttonInactive = nullptr;
 
-    SDL_Rect moveButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    SDL_Rect moveButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (1.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", buttonInactive);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", buttonActive);
 
@@ -98,22 +101,12 @@ void UIManager::loadUIButtons() {
     buttonActive = nullptr;
     buttonInactive = nullptr;
 
-    SDL_Rect endTurnButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (TILE_SIZE / 2), BUTTON_WIDTH, BUTTON_HEIGHT };
+    SDL_Rect endTurnButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (1.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", buttonInactive);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", buttonActive);
 
     endTurnButton = new UIButton(endTurnButtonFrame, buttonActive, buttonInactive, INACTIVE, END_TURN);
 }
-
-void UIManager::renderGameView(Room* currentRoom, Player* player) {
-    renderCurrentRoom(currentRoom);
-    renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
-    renderCurrentRoomObjects(currentRoom);
-    renderCurrentRoomNPCs(currentRoom);
-    renderDarkness(player->getXTile(), player->getYTile());
-
-    //renderActionableTiles(player->getXTile(), player->getYTile());
-};
 
 void UIManager::renderUIPanel(SDL_Rect panel) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
@@ -138,7 +131,7 @@ void UIManager::renderUIButton(UIButton* button) {
     SDL_RenderDrawRect(renderer, &button->getButtonArea());
 };
 
-void UIManager::renderUI() {
+void UIManager::renderUI(int playerHP) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
@@ -146,6 +139,108 @@ void UIManager::renderUI() {
     renderUIButton(attackButton);
     renderUIButton(moveButton);
     renderUIButton(endTurnButton);
+
+    renderPlayerStats(playerHP);
+};
+
+int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
+
+    if ((mouseX > attackButton->getButtonArea().x && mouseX < attackButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > attackButton->getButtonArea().y && mouseY < attackButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+
+        attackButton->setButtonState(ACTIVE);
+        return ATTACK;
+    }
+
+    if ((mouseX > moveButton->getButtonArea().x && mouseX < moveButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > moveButton->getButtonArea().y && mouseY < moveButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+
+        moveButton->setButtonState(ACTIVE);
+        return MOVE;
+    }
+
+    if ((mouseX > endTurnButton->getButtonArea().x && mouseX < endTurnButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > endTurnButton->getButtonArea().y && mouseY < endTurnButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        moveButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+
+        endTurnButton->setButtonState(ACTIVE);
+        return END_TURN;
+    }
+
+    return NONE;
+}
+
+void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
+    switch (selectedPlayerAction) {
+    case ATTACK:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(ACTIVE);
+        break;
+    case END_TURN:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(ACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    case MOVE:
+        moveButton->setButtonState(ACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    default:
+        moveButton->setButtonState(INACTIVE);
+        endTurnButton->setButtonState(INACTIVE);
+        attackButton->setButtonState(INACTIVE);
+        break;
+    }
+}
+
+void UIManager::renderPlayerStats(int healthPoints) {
+    int healthRenderStartX = GAMEVIEW_START_X;
+    int healthRenderStartY = GAMEVIEW_START_Y + GAMEVIEW_HEIGHT + (0.25 * TILE_SIZE);
+
+    int curHeartOffset = 0;
+    while (healthPoints > 1) {
+        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE);
+        SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, playerHealthHeartTexture, nullptr, &heartArea);
+        curHeartOffset++;
+        healthPoints -= 2;
+    }
+    if (healthPoints == 1) {
+        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE);
+        SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, playerHealthHalfHeartTexture, nullptr, &heartArea);
+    }
+    /*for (int i = 0; i < healthPoints; i++)
+    {
+        if (healthPoints % 2) {
+            int renderStartX = healthRenderStartX + (i * TILE_SIZE);
+            SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
+            SDL_RenderCopy(renderer, playerHealthHeartTexture, nullptr, &heartArea);
+        }
+        int renderStartX = healthRenderStartX + (i * TILE_SIZE);
+        SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, playerHealthHeartTexture, nullptr, &heartArea);
+    }*/
+}
+
+void UIManager::renderGameView(Room* currentRoom, Player* player) {
+    renderCurrentRoom(currentRoom);
+    renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
+    renderCurrentRoomObjects(currentRoom);
+    renderCurrentRoomNPCs(currentRoom);
+    renderDarkness(player->getXTile(), player->getYTile());
+
+    //renderActionableTiles(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
@@ -248,7 +343,7 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
-    renderUI();
+    renderUI(player->getHealthPoints());
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     renderGameView(currentRoom, player);
 
@@ -257,66 +352,6 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     }
     frameCount++;
 };
-
-int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
-
-    if ((mouseX > attackButton->getButtonArea().x && mouseX < attackButton->getButtonArea().x + BUTTON_WIDTH)
-        && (mouseY > attackButton->getButtonArea().y && mouseY < attackButton->getButtonArea().y + BUTTON_HEIGHT)) {
-        
-        moveButton->setButtonState(INACTIVE);
-        endTurnButton->setButtonState(INACTIVE);
-        
-        attackButton->setButtonState(ACTIVE);
-        return ATTACK;
-    }
-
-    if ((mouseX > moveButton->getButtonArea().x && mouseX < moveButton->getButtonArea().x + BUTTON_WIDTH)
-        && (mouseY > moveButton->getButtonArea().y && mouseY < moveButton->getButtonArea().y + BUTTON_HEIGHT)) {
-
-        endTurnButton->setButtonState(INACTIVE);
-        attackButton->setButtonState(INACTIVE);
-
-        moveButton->setButtonState(ACTIVE);
-        return MOVE;
-    }
-
-    if ((mouseX > endTurnButton->getButtonArea().x && mouseX < endTurnButton->getButtonArea().x + BUTTON_WIDTH)
-        && (mouseY > endTurnButton->getButtonArea().y && mouseY < endTurnButton->getButtonArea().y + BUTTON_HEIGHT)) {
-
-        moveButton->setButtonState(INACTIVE);
-        attackButton->setButtonState(INACTIVE);
-
-        endTurnButton->setButtonState(ACTIVE);
-        return END_TURN;
-    }
-
-    return NONE;
-} 
-
-void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
-    switch (selectedPlayerAction) {
-    case ATTACK:
-        moveButton->setButtonState(INACTIVE);
-        endTurnButton->setButtonState(INACTIVE);
-        attackButton->setButtonState(ACTIVE);
-        break;
-    case END_TURN:
-        moveButton->setButtonState(INACTIVE);
-        endTurnButton->setButtonState(ACTIVE);
-        attackButton->setButtonState(INACTIVE);
-        break;
-    case MOVE:
-        moveButton->setButtonState(ACTIVE);
-        endTurnButton->setButtonState(INACTIVE);
-        attackButton->setButtonState(INACTIVE);
-        break;
-    default:
-        moveButton->setButtonState(INACTIVE);
-        endTurnButton->setButtonState(INACTIVE);
-        attackButton->setButtonState(INACTIVE);
-        break;
-    }
-}
 
 void UIManager::renderActionableTiles(int playerX, int playerY) {
     SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);

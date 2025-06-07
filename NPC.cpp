@@ -5,20 +5,22 @@
 NPC::NPC(int startX, int startY, int typeID) : 
     x(startX), 
     y(startY), 
-    typeID(typeID),
-    healthPoints(healthPoints) {
+    typeID(typeID) {
 
     switch (typeID) {
     case GOBLIN:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 5;
+        movementSpeed = 3;
         break;
     case SPIDER:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 2;
+        movementSpeed = 6;
         break;
     default:
-
+        healthPoints = 0;
+        movementSpeed = 0;
         break;
     }
 
@@ -39,6 +41,10 @@ void NPC::setTypeID(int type) {
 
 void NPC::setHealthPoints(int hp) {
     healthPoints = hp;
+}
+
+void NPC::setMovementSpeed(int ms) {
+    movementSpeed = ms;
 }
 
 

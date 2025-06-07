@@ -20,7 +20,6 @@ private:
     int whichDirectionIsFacing;
 
 public:
-    Player();
     Player(int startX, int startY, int movementSpeed, int healthPoints, int attackRange, int damage);
 
     // Getters

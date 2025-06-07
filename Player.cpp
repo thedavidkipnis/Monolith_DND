@@ -45,6 +45,10 @@ void Player::setMovementSpeedLeft(int sp) {
     movementSpeedLeft = sp;
 }
 
+void Player::setHealthPoints(int hp) {
+    healthPoints = hp;
+}
+
 void Player::setWhichDirectionIsFacing(int direction) {
     whichDirectionIsFacing = direction;
 }

@@ -14,6 +14,7 @@ private:
     int typeID;
 
     int healthPoints;
+    int movementSpeed;
 
     std::unique_ptr<NPCBehavior> behavior;
 
@@ -30,6 +31,9 @@ public:
 
     int getHealthPoints() const { return healthPoints; }
     void setHealthPoints(int hp);
+
+    int getMovementSpeed() const { return movementSpeed; }
+    void setMovementSpeed(int ms);
 
     // Movement
     void setPosition(int newX, int newY);

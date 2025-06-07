@@ -38,6 +38,9 @@ private:
     SDL_Texture* floorTexture = nullptr;
     SDL_Texture* doorTexture = nullptr;
 
+    SDL_Texture* playerHealthHeartTexture;
+    SDL_Texture* playerHealthHalfHeartTexture;
+
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTextures();
     void loadNPCTextures();
@@ -46,13 +49,14 @@ private:
     void renderUIPanel(SDL_Rect panel);
     void renderUIButton(UIButton* button);
     void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
+    void renderPlayerStats(int healthPoints);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
     void renderActionableTiles(int playerX, int playerY);
-    void renderUI();
+    void renderUI(int playerHP);
 
 public:
 

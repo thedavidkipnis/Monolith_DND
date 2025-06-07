@@ -1,24 +1,40 @@
 #include "BehaviorAttackPlayerMelee.h"
+#include "Constants.h"
 #include <iostream> 
 
 void BehaviorAttackPlayerMelee::behave(NPC* npc, Room* room, int playerX, int playerY) {
-    int npcX = npc->getX();
-    int npcY = npc->getY();
 
-    int dx = playerX - npcX;
-    int dy = playerY - npcY;
+    int distance = npc->getMovementSpeed();
 
-    int stepX = 0;
-    int stepY = 0;
+    for (int i = 0; i < distance; ++i) {
+        int npcX = npc->getX();
+        int npcY = npc->getY();
 
-    // Prioritize horizontal movement first (or you can prioritize vertical if you'd prefer)
-    if (std::abs(dx) > std::abs(dy)) {
-        stepX = (dx > 0) ? 1 : -1;
+        // Check if already adjacent to the player — stop early
+        if (std::abs(npcX - playerX) + std::abs(npcY - playerY) <= 1) {
+            break;
+        }
+
+        int dx = playerX - npcX;
+        int dy = playerY - npcY;
+
+        int stepX = 0;
+        int stepY = 0;
+
+        // Prioritize horizontal movement
+        if (std::abs(dx) > std::abs(dy)) {
+            stepX = (dx > 0) ? 1 : -1;
+        }
+        else if (dy != 0) {
+            stepY = (dy > 0) ? 1 : -1;
+        }
+
+        int nextX = npcX + stepX;
+        int nextY = npcY + stepY;
+
+        // Later we'll check if blocked
+        npc->setPosition(nextX, nextY);
+
     }
-    else if (dy != 0) {
-        stepY = (dy > 0) ? 1 : -1;
-    }
-
-    // You might want to check for collisions here (e.g., with walls or other NPCs)
-    npc->setPosition(npcX + stepX, npcY + stepY);
+    
 }
