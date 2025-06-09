@@ -82,7 +82,7 @@ public:
 
     void renderDeathScreen();
 
-    void renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord);
+    void renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord, bool mapMode);
 
     int checkUIButtonPress(int mouseX, int mouseY);
 

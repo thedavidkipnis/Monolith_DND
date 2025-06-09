@@ -494,18 +494,28 @@ void UIManager::renderDeathScreen() {
     SDL_RenderCopy(renderer, gameOverTexture, nullptr, &gameOverTextureFrame);
 }
 
-void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord) {
-    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
-    SDL_RenderClear(renderer);
+void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord, bool mapMode) {
 
-    int centerScreenTileY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
-    int centerScreenTileX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
+    int startRenderX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
+    int startRenderY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
+    ;
+    int tileScale = 1;
+
+    if (!mapMode) {
+        tileScale = 2;
+        startRenderX = GAMEVIEW_START_X + GAMEVIEW_WIDTH + (2 * TILE_SIZE);
+        startRenderY = UI_SIDE_PANEL_HEIGHT / 2;
+    }
+    else {
+        SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+        SDL_RenderClear(renderer);
+    }
 
     for (const auto& [coord, room] : *rooms) {
         SDL_Rect roomTileFrame = { 
-            centerScreenTileX + (coord.x * TILE_SIZE),
-            centerScreenTileY + (coord.y * TILE_SIZE),
-            TILE_SIZE,TILE_SIZE };
+            startRenderX + (coord.x * TILE_SIZE / tileScale),
+            startRenderY + (coord.y * TILE_SIZE / tileScale),
+            TILE_SIZE / tileScale, TILE_SIZE / tileScale };
 
         if (curRoomCoord.x == coord.x && curRoomCoord.y == coord.y) {
             SDL_SetRenderDrawColor(renderer, COLOR_BLUE.r, COLOR_BLUE.g, COLOR_BLUE.b, COLOR_BLUE.a);

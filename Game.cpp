@@ -254,11 +254,13 @@ void Game::render() {
     }
     else {
         if (mapView) {
-            visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord());
+            visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
         }
         else {
             Room* currentRoom = dungeon->getCurrentRoom();
             visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+            visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
+
         } 
     }
 
