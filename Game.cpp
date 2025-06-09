@@ -14,6 +14,7 @@ Game::Game()
     isPlayerInEncounter(false), 
     selectedPlayerAction(NONE),
     lastMoveTime(0),
+    mapView(false),
     keyState(nullptr) {
 }
 
@@ -54,7 +55,7 @@ bool Game::initialize() {
     player = std::make_unique<Player>(12, 9, 5, 8, 1, 3);
 
     dungeon = std::make_unique<Dungeon>();
-    dungeon->generateInitialRooms();
+    dungeon->generateFloorRooms(30);
 
     isPlayerInEncounter = false;
 
@@ -74,6 +75,10 @@ void Game::handleInput() {
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
             selectedPlayerAction = END_TURN;
             visualsManager->setUITextboxText("ENDING TURN...");
+        }
+
+        if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_M) {
+            mapView = false;
         }
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
@@ -149,6 +154,10 @@ void Game::handleInput() {
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastMoveTime > MOVE_DELAY) {
 
+        if (keyState[SDL_SCANCODE_M]) {
+            mapView = true;
+        }
+
         // see if user is trying to switch actions
         if (keyState[SDL_SCANCODE_2]) {
             selectedPlayerAction = MOVE;
@@ -216,7 +225,7 @@ void Game::update() {
         else {
             visualsManager->setUITextboxText("NOTHING HERE...");
         }
-
+        std::cout << "ROOMS COORDS: " << dungeon->getCurRoomCoord().x << "|" << dungeon->getCurRoomCoord().y << "\n";
         curRoom->setRoomVisited(true);
     }
 
@@ -244,8 +253,13 @@ void Game::render() {
         visualsManager->renderDeathScreen();
     }
     else {
-        Room* currentRoom = dungeon->getCurrentRoom();
-        visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+        if (mapView) {
+            visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord());
+        }
+        else {
+            Room* currentRoom = dungeon->getCurrentRoom();
+            visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+        } 
     }
 
     SDL_RenderPresent(renderer);

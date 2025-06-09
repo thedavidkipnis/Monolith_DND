@@ -1,12 +1,13 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(int startX, int startY, int movementSpeed, int healthPoints, int attackRange, int damage) :
+Player::Player(int startX, int startY, int movementSpeed, int maxHealthPoints, int attackRange, int damage) :
     x(startX),
     y(startY),
     movementSpeed(movementSpeed),
     movementSpeedLeft(movementSpeed),
-    healthPoints(healthPoints),
+    maxHealthPoints(maxHealthPoints),
+    healthPoints(maxHealthPoints),
     attackRange(attackRange),
     damage(damage),
     whichDirectionIsFacing(1){}
@@ -30,6 +31,10 @@ void Player::setMovementSpeed(int sp) {
 
 void Player::setMovementSpeedLeft(int sp) {
     movementSpeedLeft = sp;
+}
+
+void Player::setMaxHealthPoints(int hp) {
+    maxHealthPoints = hp;
 }
 
 void Player::setHealthPoints(int hp) {

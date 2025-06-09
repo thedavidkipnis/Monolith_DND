@@ -70,6 +70,7 @@ void UIManager::loadTextures() {
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png", playerEmptyHeartTexture);
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png", playerMovementSpeedTexture);
 
@@ -253,7 +254,7 @@ void UIManager::setUITextboxText(std::string text) {
     currentTextBoxText = text;
 }
 
-void UIManager::renderUI(int playerHP, int playerMP) {
+void UIManager::renderUI(Player* player) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
@@ -264,7 +265,7 @@ void UIManager::renderUI(int playerHP, int playerMP) {
 
     renderUITextBox();
 
-    renderPlayerStats(playerHP, playerMP);
+    renderPlayerStats(player);
 
 };
 
@@ -328,25 +329,29 @@ void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
     }
 }
 
-void UIManager::renderPlayerStats(int healthPoints, int movementSpeed) {
+void UIManager::renderPlayerStats(Player* player) {
 
     // health
     int healthRenderStartX = TILE_SIZE;
     int healthRenderStartY = TILE_SIZE;
 
+    int healthPoints = player->getHealthPoints();
+    int movementSpeed = player->getMovementSpeedLeft();
+
     int curHeartOffset = 0;
     while (healthPoints > 1) {
-        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE);
+        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, playerHealthHeartTexture, nullptr, &heartArea);
         curHeartOffset++;
         healthPoints -= 2;
     }
     if (healthPoints == 1) {
-        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE);
+        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, playerHealthHalfHeartTexture, nullptr, &heartArea);
     }
+
 
     // movement speed
     int movementSpeedRenderStartX = TILE_SIZE;
@@ -472,7 +477,7 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
-    renderUI(player->getHealthPoints(), player->getMovementSpeedLeft());
+    renderUI(player);
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     renderGameView(currentRoom, player);
 
@@ -489,8 +494,33 @@ void UIManager::renderDeathScreen() {
     SDL_RenderCopy(renderer, gameOverTexture, nullptr, &gameOverTextureFrame);
 }
 
-void UIManager::renderActionableTiles(int playerX, int playerY) {
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-    SDL_Rect n = {playerX - (TILE_SIZE), playerY, TILE_SIZE, TILE_SIZE};
-    SDL_RenderDrawRect(renderer, &n);
+void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord) {
+    SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+    SDL_RenderClear(renderer);
+
+    int centerScreenTileY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
+    int centerScreenTileX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
+
+    for (const auto& [coord, room] : *rooms) {
+        SDL_Rect roomTileFrame = { 
+            centerScreenTileX + (coord.x * TILE_SIZE),
+            centerScreenTileY + (coord.y * TILE_SIZE),
+            TILE_SIZE,TILE_SIZE };
+
+        if (curRoomCoord.x == coord.x && curRoomCoord.y == coord.y) {
+            SDL_SetRenderDrawColor(renderer, COLOR_BLUE.r, COLOR_BLUE.g, COLOR_BLUE.b, COLOR_BLUE.a);
+            SDL_RenderFillRect(renderer, &roomTileFrame);
+        } 
+        else if (room->isRoomEncounter())
+        {
+            SDL_SetRenderDrawColor(renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, COLOR_RED.a);
+            SDL_RenderFillRect(renderer, &roomTileFrame);
+        }
+        else {
+            SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+            SDL_RenderDrawRect(renderer, &roomTileFrame);
+        }
+    }
+
+
 }

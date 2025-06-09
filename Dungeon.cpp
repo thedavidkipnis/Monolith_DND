@@ -3,62 +3,79 @@
 #include "Constants.h"
 #include <iostream>
 
+// Directions
+const std::vector<RoomCoord> directions = {
+    {0, -1},  // North
+    {1, 0},   // East
+    {0, 1},   // South
+    {-1, 0}   // West
+};
+
 Dungeon::Dungeon() : currentRoomCoord(0, 0) {
 }
 
-void Dungeon::generateInitialRooms() {
-    // Create a simple 3x3 grid of rooms for testing
-    // You can expand this to be more sophisticated later
+void Dungeon::generateFloorRooms(int maxRoomsOnFloor) {
 
-    // Create center room and immediate neighbors
-    std::vector<NPC*> emptyVector;
-    createRoom(RoomCoord(0, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // Center
-    createRoom(RoomCoord(0, -1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);  // North
-    createRoom(RoomCoord(0, -2), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);
-    createRoom(RoomCoord(-1, -1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);  // North West
-    createRoom(RoomCoord(1, 0), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // East
-    createRoom(RoomCoord(0, 1), ROOM_WIDTH, ROOM_HEIGHT, false, emptyVector);   // South
-    createRoom(RoomCoord(-1, 0), ROOM_WIDTH, ROOM_HEIGHT, true, emptyVector);  // West
+    std::vector<RoomCoord> roomFrontier; // Rooms we can expand from
+    std::set<RoomCoord> visited;         // Set of coordinates we’ve already placed rooms at
+
+    RoomCoord startCoord(0, 0);
+    createRoom(startCoord, ROOM_WIDTH, ROOM_HEIGHT, false);
+    roomFrontier.push_back(startCoord);
+    visited.insert(startCoord);
+
+    std::random_device rd;
+    std::mt19937 rng(rd());
+
+    while (rooms.size() < maxRoomsOnFloor && !roomFrontier.empty()) {
+        // Pick a random room to expand from
+        std::uniform_int_distribution<int> frontierDist(0, roomFrontier.size() - 1);
+        int frontierIndex = frontierDist(rng);
+        RoomCoord baseCoord = roomFrontier[frontierIndex];
+
+        // Shuffle directions to randomize which direction we try first
+        std::vector<RoomCoord> shuffledDirs = directions;
+        std::shuffle(shuffledDirs.begin(), shuffledDirs.end(), rng);
+
+        bool roomCreated = false;
+        for (const auto& dir : shuffledDirs) {
+            RoomCoord newCoord(baseCoord.x + dir.x, baseCoord.y + dir.y);
+
+            if (visited.count(newCoord) == 0) {
+                // Create the room
+                bool isEncounter = (rooms.size() >= 3 && rng() % 5 == 0); // ~20% chance for encounter after 3 rooms
+                createRoom(newCoord, ROOM_WIDTH, ROOM_HEIGHT, isEncounter);
+                roomFrontier.push_back(newCoord);
+                visited.insert(newCoord);
+                roomCreated = true;
+                break; // only create one room per iteration
+            }
+        }
+
+        if (!roomCreated) {
+            // All neighbors were taken, remove this room from frontier
+            roomFrontier.erase(roomFrontier.begin() + frontierIndex);
+        }
+    }
+
 
     // Setup connections for all rooms
     for (auto& [coord, room] : rooms) {
+        if (room.get()->isRoomEncounter()) {
+            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_2.csv");
+            parseAndPopulateRoomNPCs(room.get(), "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_2.csv");
+        }
+        else {
+            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/starter_room_tiles.csv");
+        }
+
         setupRoomConnections(coord);
+
     }
-
-    // create some NPCs to test rendering
-    rooms[RoomCoord(0, -2)]->addNPCToRoom(10, 10, GOBLIN);
-    rooms[RoomCoord(0, -2)]->addNPCToRoom(22, 2, SPIDER);
-
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(3, 3, GOBLIN);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(19, 7, SPIDER);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(4, 7, GOBLIN);
-    rooms[RoomCoord(-1, 0)]->addNPCToRoom(8, 12, SPIDER);
 }
 
-void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter, std::vector<NPC*> npcs) {
-    rooms[coord] = std::make_unique<Room>(width, height, isEncounter, npcs);
-}
-
-void Dungeon::parseAndPopulateRoomTiles(const std::string& filename) {
-    std::ifstream file(filename);
-
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file '" << filename << "'\n";
-        return;
-    }
-
-    char c;
-    while (file.get(c)) {
-        std::cout << c;
-    }
-
-    file.close();
-}
-void Dungeon::parseAndPopulateRoomNPCs(const std::string& filename) {
-
-}
-void Dungeon::parseAndPopulateRoomObjects(const std::string& filename) {
-
+void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter) {
+    rooms[coord] = std::make_unique<Room>(width, height, isEncounter);
 }
 
 void Dungeon::setupRoomConnections(const RoomCoord& coord) {
@@ -67,7 +84,71 @@ void Dungeon::setupRoomConnections(const RoomCoord& coord) {
     bool south = hasNeighbor(coord, SOUTH);
     bool west = hasNeighbor(coord, WEST);
 
-    rooms[coord]->generateRoomWithConnections(north, east, south, west);
+    rooms[coord]->addDoors(north, east, south, west);
+}
+
+void Dungeon::parseAndPopulateRoomTiles(Room* room, const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file '" << filename << "'\n";
+        return;
+    }
+
+    int roomIndexX = 0;
+    int roomIndexY = 0;
+
+    char c;
+    while (file.get(c)) {
+
+        if (c == '\n') {
+            roomIndexX ++;
+            roomIndexY = 0;
+        }
+        else if(c != ',' && c != ' ')
+        {
+            int ca = c - '0';
+
+            room->setTile(roomIndexY, roomIndexX, ca);
+            roomIndexY++;
+        }
+    }
+
+    file.close();
+}
+void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file '" << filename << "'\n";
+        return;
+    }
+
+    int roomIndexX = 0;
+    int roomIndexY = 0;
+
+    char c;
+    while (file.get(c)) {
+
+        if (c == '\n') {
+            roomIndexX++;
+            roomIndexY = 0;
+        }
+        else if (c != ',' && c != ' ')
+        {
+            int ca = c - '0';
+
+            if (ca != 0) {
+                room->addNPCToRoom(roomIndexY, roomIndexX, ca);
+            } 
+            roomIndexY++;
+        }
+    }
+
+    file.close();
+}
+void Dungeon::parseAndPopulateRoomObjects(Room* room, const std::string& filename) {
+
 }
 
 Room* Dungeon::getCurrentRoom() {
@@ -79,6 +160,11 @@ Room* Dungeon::getRoom(const RoomCoord& coord) {
     auto it = rooms.find(coord);
     return (it != rooms.end()) ? it->second.get() : nullptr;
 }
+
+std::map<RoomCoord, std::unique_ptr<Room>>* Dungeon::getRooms() {
+    return &rooms;
+}
+
 
 bool Dungeon::hasRoom(const RoomCoord& coord) const {
     return rooms.find(coord) != rooms.end();

@@ -4,11 +4,13 @@
 #include <SDL_image.h>
 #include "Constants.h"
 #include "Room.h"
+#include "Dungeon.h"
 #include "Player.h"
 #include "UIButton.h"
 #include <unordered_map>
 #include <iostream>
 #include <cmath>
+#include <map>
 
 
 class UIManager {
@@ -44,6 +46,7 @@ private:
 
     SDL_Texture* playerHealthHeartTexture;
     SDL_Texture* playerHealthHalfHeartTexture;
+    SDL_Texture* playerEmptyHeartTexture;
 
     SDL_Texture* playerMovementSpeedTexture;
 
@@ -61,14 +64,13 @@ private:
     void renderUIButton(UIButton* button);
     void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
     void renderUITextBox();
-    void renderPlayerStats(int healthPoints, int movementSpeed);
+    void renderPlayerStats(Player* player);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
-    void renderActionableTiles(int playerX, int playerY);
-    void renderUI(int playerHP, int playerMP);
+    void renderUI(Player* player);
 
 public:
 
@@ -80,7 +82,8 @@ public:
 
     void renderDeathScreen();
 
+    void renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord);
+
     int checkUIButtonPress(int mouseX, int mouseY);
-    void toggleButton(int button);
 
 };

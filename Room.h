@@ -39,8 +39,6 @@ public:
     void addNPCToRoom(int x, int y, int type);
 
     // Room generation
-    void generateBasicRoom();
-    void generateRoomWithConnections(bool north, bool east, bool south, bool west);
     void addWalls();
     void addDoors(bool north, bool east, bool south, bool west);
 

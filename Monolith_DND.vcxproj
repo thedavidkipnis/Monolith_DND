@@ -184,6 +184,7 @@
     <Image Include="cursor_2.png" />
     <Image Include="dirt_1.png" />
     <Image Include="drop_ladder.png" />
+    <Image Include="empty_heart.png" />
     <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
     <Image Include="game_over.png" />
@@ -237,6 +238,14 @@
     <Image Include="tree.png" />
     <Image Include="x_bnw_clicked.png" />
     <Image Include="x_bnw_non_clicked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="npcs_mapping_encounter_1.csv" />
+    <None Include="tile_mapping_encounter_1.csv" />
+    <None Include="npcs_mapping_encounter_2.csv" />
+    <None Include="starter_room_tiles.csv" />
+    <None Include="template.csv" />
+    <None Include="tile_mapping_encounter_2.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

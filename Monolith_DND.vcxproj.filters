@@ -340,5 +340,28 @@
     <Image Include="movement_point.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="empty_heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="starter_room_tiles.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="tile_mapping_encounter_1.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="npcs_mapping_encounter_1.csv">
+      <Filter>Rooms\RoomNPCMappings</Filter>
+    </None>
+    <None Include="npcs_mapping_encounter_2.csv">
+      <Filter>Rooms\RoomNPCMappings</Filter>
+    </None>
+    <None Include="tile_mapping_encounter_2.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="template.csv">
+      <Filter>Rooms\RoomNPCMappings</Filter>
+    </None>
   </ItemGroup>
 </Project>

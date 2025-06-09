@@ -22,6 +22,8 @@ private:
     bool isPlayerInEncounter;
     int selectedPlayerAction;
 
+    bool mapView;
+
     const Uint8* keyState;
     Uint32 lastMoveTime;
     static const Uint32 MOVE_DELAY = 90;
@@ -33,8 +35,6 @@ public:
     bool initialize();
     void run();
     void cleanup();
-
-    SDL_Renderer* getRenderer() const { return renderer; }
 
 private:
     void handleInput();

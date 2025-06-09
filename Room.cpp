@@ -60,29 +60,13 @@ bool Room::isValidPosition(int x, int y) const {
 bool Room::isWalkable(int x, int y) const {
     if (!isValidPosition(x, y)) return false;
     int tile = tiles[y][x];
-    return tile != WALL; // Both FLOOR and DOOR are walkable
+    return tile == FLOOR || tile == DOOR; // Both FLOOR and DOOR are walkable
 }
 
 bool Room::isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const {
     if (!isValidPosition(x, y)) return false;
     int tile = tiles[y][x];
-    return (tile != WALL && tile != DOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance)); // Both FLOOR and DOOR are walkable
-}
-
-void Room::generateBasicRoom() {
-    generateRoomWithConnections(false, false, false, false);
-}
-
-void Room::generateRoomWithConnections(bool north, bool east, bool south, bool west) {
-    // Fill with floor
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            tiles[y][x] = FLOOR;
-        }
-    }
-
-    addWalls();
-    addDoors(north, east, south, west);
+    return (tile == FLOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance));
 }
 
 void Room::addWalls() {

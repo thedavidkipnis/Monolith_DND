@@ -70,6 +70,7 @@ const SDL_Color COLOR_BLACK = { 0, 0, 0, 255 };
 const SDL_Color COLOR_WHITE = { 255, 255, 255, 255 };
 const SDL_Color COLOR_GRAY = { 128, 128, 128, 255 };
 const SDL_Color COLOR_BLUE = { 0, 100, 255, 255 };
+const SDL_Color COLOR_RED = { 255, 0, 0, 255 };
 
 // Tile types
 enum TileType {
@@ -104,7 +105,7 @@ enum facingDirectionsForRendering {
 
 
 enum NPCTypes {
-    BAT = 0,
+    NO_NPC = 0,
     GOBLIN = 1,
     SPIDER = 2
 };
