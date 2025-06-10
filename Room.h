@@ -7,14 +7,16 @@
 #include <random>
 #include <ctime>
 #include <functional>
+#include "Tile.h"
 #include "Constants.h"
 #include "Player.h"
 #include "NPC.h"
 
 class Room {
 private:
-    std::vector<std::vector<int>> tiles;
     int width, height;
+
+    std::vector<std::vector<Tile>> Tiles;
 
     bool isRoomAnEncounter;
     bool roomVisitedState;
@@ -27,9 +29,10 @@ public:
     Room(int w, int h, bool isRoomAnEncounter, std::vector<NPC*> npcs);
 
     // Tile access
-    std::vector<std::vector<int>>* getTiles();
-    int getTile(int x, int y) const;
-    void setTile(int x, int y, int tileType);
+    std::vector<std::vector<Tile>>* getTiles();
+    Tile* getTile(int x, int y) ;
+    void setTile(int x, int y, Tile tile);
+    void createNewTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
     bool isWalkable(int x, int y) const;
     bool isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const;
@@ -39,12 +42,11 @@ public:
     void addNPCToRoom(int x, int y, int type);
 
     // Room generation
-    void addWalls();
     void addDoors(bool north, bool east, bool south, bool west);
 
     // Door checking
-    bool isDoor(int x, int y) const;
-    Direction getDoorDirection(int x, int y) const;
+    bool isDoor(int x, int y);
+    Direction getDoorDirection(int x, int y);
 
     // Getters
     int getWidth() const { return width; }

@@ -1,6 +1,5 @@
 #include "Tile.h"
 #include <string>
 
-Tile::Tile(int x, int y, int type, bool walkable, std::string texture) :
-	x(x), y(y), type(type), isWalkable(walkable), textureID(texture)
-{}
+Tile::Tile(int type, bool walkable, std::string texture, std::string tileDescription)
+    : typeID(type), isWalkable(walkable), textureID(texture), tileDescription(tileDescription) {}

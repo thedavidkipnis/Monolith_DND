@@ -2,30 +2,51 @@
 
 
 Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
-    tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
 }
 
 Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false) {
-    tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
 }
 
 Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false), roomNPCs(npcs) {
-    tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
 }
 
-std::vector<std::vector<int>>* Room::getTiles() {
-    return &tiles;
+std::vector<std::vector<Tile>>* Room::getTiles() {
+    return &Tiles;
 }
 
-int Room::getTile(int x, int y) const {
-    if (!isValidPosition(x, y)) return WALL;
-    return tiles[y][x];
+Tile* Room::getTile(int x, int y) {
+    if (!isValidPosition(x, y)) return nullptr;
+    return &Tiles[y][x];
 }
 
-void Room::setTile(int x, int y, int tileType) {
+void Room::setTile(int x, int y, Tile tile) {
     if (isValidPosition(x, y)) {
-        tiles[y][x] = tileType;
+        Tiles[y][x] = tile;
     }
+}
+
+void Room::createNewTile(int x, int y, int tileType) {
+    Tile newTile = Tile(0, false, "none", "???");
+
+    switch (tileType) {
+    case WALL:
+        newTile.setType(WALL);
+        newTile.setIsWalkable(false);
+        newTile.setTexture("stone_wall"); // will eventually randomly pick textures based on this
+        newTile.setTileDescription("A STURDY COBBLESTONE WALL");
+        break;
+    case FLOOR:
+        newTile.setType(WALL);
+        newTile.setIsWalkable(true);
+        newTile.setTexture("dirt_1");
+        newTile.setTileDescription("ITS JUST DIRT...");
+        break;
+    }
+
+    Tiles[x][y] = newTile;
 }
 
 std::vector<NPC*>* Room::getListOfNPCs() {
@@ -59,25 +80,14 @@ bool Room::isValidPosition(int x, int y) const {
 
 bool Room::isWalkable(int x, int y) const {
     if (!isValidPosition(x, y)) return false;
-    int tile = tiles[y][x];
-    return tile == FLOOR || tile == DOOR; // Both FLOOR and DOOR are walkable
+    Tile tile = Tiles[y][x];
+    return tile.getIsWalkable();
 }
 
 bool Room::isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const {
     if (!isValidPosition(x, y)) return false;
-    int tile = tiles[y][x];
-    return (tile == FLOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance));
-}
-
-void Room::addWalls() {
-    // Create walls around the perimeter
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
-                tiles[y][x] = WALL;
-            }
-        }
-    }
+    Tile tile = Tiles[y][x];
+    return (tile.getIsWalkable() && tile.getType() != DOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance));
 }
 
 void Room::addDoors(bool north, bool east, bool south, bool west) {
@@ -85,24 +95,24 @@ void Room::addDoors(bool north, bool east, bool south, bool west) {
     int centerY = height / 2;
 
     if (north) {
-        setTile(centerX, 0, DOOR);
+        setTile(centerX, 0, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (south) {
-        setTile(centerX, height - 1, DOOR);
+        setTile(centerX, height - 1, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (east) {
-        setTile(width - 1, centerY, DOOR);
+        setTile(width - 1, centerY, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (west) {
-        setTile(0, centerY, DOOR);
+        setTile(0, centerY, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
     }
 }
 
-bool Room::isDoor(int x, int y) const {
-    return getTile(x, y) == DOOR;
+bool Room::isDoor(int x, int y) {
+    return getTile(x, y)->getType() == DOOR;
 }
 
-Direction Room::getDoorDirection(int x, int y) const {
+Direction Room::getDoorDirection(int x, int y) {
     if (!isDoor(x, y)) return NORTH; // Default, shouldn't be used
 
     int centerX = width / 2;

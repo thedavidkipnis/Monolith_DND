@@ -105,11 +105,11 @@ void Dungeon::parseAndPopulateRoomTiles(Room* room, const std::string& filename)
             roomIndexX ++;
             roomIndexY = 0;
         }
-        else if(c != ',' && c != ' ')
+        else if(c != ',' && c != ' ') // means we found one with an actual tile ID
         {
-            int ca = c - '0';
+            int type = c - '0';
+            room->createNewTile(roomIndexX, roomIndexY, type);
 
-            room->setTile(roomIndexY, roomIndexX, ca);
             roomIndexY++;
         }
     }

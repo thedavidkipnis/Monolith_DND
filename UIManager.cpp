@@ -17,9 +17,6 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 }
 
 UIManager::~UIManager() {
-    if (wallTexture) {
-        SDL_DestroyTexture(wallTexture);
-    }
     if (doorTexture) {
         SDL_DestroyTexture(doorTexture);
     }
@@ -40,6 +37,23 @@ void UIManager::loadTexture(const char* filePath, SDL_Texture*& destinationTextu
     if (!destinationTexture) {
         std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
     }
+}
+
+void UIManager::loadTileTexture(const char* filePath) {
+    SDL_Surface* surface = IMG_Load(filePath);
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    }
+
+    SDL_Texture* newTileTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!newTileTexture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    }
+    std::string newTileTextureID = extractFileName(filePath);
+
+    TileTextures[newTileTextureID] = newTileTexture;
 }
 
 void UIManager::loadTextures() {
@@ -63,10 +77,10 @@ void UIManager::loadTextures() {
 
     loadPlayerTextures();
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/stone_wall.png", wallTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png", doorTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png", ladderTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png", floorTexture);
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/stone_wall.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
 
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
@@ -397,20 +411,7 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
                                     TILE_SIZE,
                                     TILE_SIZE };
 
-            switch (currentRoom->getTile(x, y)) {
-            case WALL:
-                SDL_RenderCopy(renderer, wallTexture, nullptr, &tileRect);
-                break;
-            case DOOR:
-                SDL_RenderCopy(renderer, doorTexture, nullptr, &tileRect);
-                break;
-            case FLOOR:
-                SDL_RenderCopy(renderer, floorTexture, nullptr, &tileRect);
-                break;
-            case LADDER:
-                SDL_RenderCopy(renderer, ladderTexture, nullptr, &tileRect);
-                break;
-            }
+            SDL_RenderCopy(renderer, TileTextures[currentRoom->getTile(x,y)->getTexture()], nullptr, &tileRect);
         }
     }
 };

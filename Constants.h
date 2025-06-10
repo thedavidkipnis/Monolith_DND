@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <cmath>
 #include <algorithm>
+#include <string>
 
 // Tile system
 const int TILE_SIZE = 55;
@@ -135,3 +136,10 @@ inline int findTileDistanceForShading(int x1, int y1, int x2, int y2) {
     }
     return std::max(abs(x2 - x1), abs(y2 - y1)) / TILE_SIZE;
 };
+
+inline std::string extractFileName(const std::string& path) {
+    size_t lastSlash = path.find_last_of("/\\");
+    std::string fileNameWithExt = (lastSlash == std::string::npos) ? path : path.substr(lastSlash + 1);
+    size_t dotPos = fileNameWithExt.find_last_of('.');
+    return (dotPos == std::string::npos) ? fileNameWithExt : fileNameWithExt.substr(0, dotPos);
+}
