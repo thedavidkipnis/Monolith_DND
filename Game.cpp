@@ -264,6 +264,7 @@ void Game::processNPCLogic() {
         case NPC_ATTACK_PLAYER:
             NPCActionDisplayString += "NPC ATTACKED PLAYER WITH " + std::to_string(npc->getDamage()) + " DAMAGE\n";
             player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
+            std::cout << player->getHealthPoints() << "\n";
             break;
         case NPC_MOVE:
             NPCActionDisplayString += "NPC MOVED\n";

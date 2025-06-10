@@ -87,6 +87,7 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_movement_point.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/game_over.png", gameOverTexture);
@@ -357,6 +358,26 @@ void UIManager::updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction) {
     }
 }
 
+void UIManager::renderGameView(Room* currentRoom, Player* player) {
+    renderCurrentRoom(currentRoom);
+    renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
+    renderCurrentRoomObjects(currentRoom);
+    renderCurrentRoomNPCs(currentRoom);
+    //renderDarkness(player->getXTile(), player->getYTile());
+};
+
+void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
+    SDL_Rect destRect = {
+        playerLocationX,
+        playerLocationY,
+        TILE_SIZE,
+        TILE_SIZE
+    };
+    int curPlayerFrame = frameCount / (MAX_FRAME_COUNT / playerTextures.size());
+    SDL_RenderCopyEx(renderer, playerTextures[curPlayerFrame], nullptr, &destRect, 0.0, nullptr, facingDirection ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+
+}
+
 void UIManager::renderPlayerStats(Player* player) {
 
     // health
@@ -364,7 +385,7 @@ void UIManager::renderPlayerStats(Player* player) {
     int healthRenderStartY = TILE_SIZE;
 
     int healthPoints = player->getHealthPoints();
-    int movementSpeed = player->getMovementSpeedLeft();
+    int emptyHealth = player->getMaxHealthPoints() - healthPoints;
 
     int curHeartOffset = 0;
     while (healthPoints > 1) {
@@ -378,43 +399,40 @@ void UIManager::renderPlayerStats(Player* player) {
         int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, TileTextures["half_red_heart"], nullptr, &heartArea);
+        curHeartOffset++;
+        emptyHealth--;
+    }
+    while (emptyHealth > 0) {
+        int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
+        SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, TileTextures["empty_heart"], nullptr, &heartArea);
+        curHeartOffset++;
+        emptyHealth -= 2;
     }
 
+    int movementSpeedLeft = player->getMovementSpeedLeft();
+    int emptyMovementSpeed = player->getMovementSpeed() - movementSpeedLeft;
 
     // movement speed
     int movementSpeedRenderStartX = TILE_SIZE;
     int movementSpeedRenderStartY = 2 * TILE_SIZE;
     int curMPOffset = 0;
-    while (movementSpeed > 0) {
+    while (movementSpeedLeft > 0) {
         int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
         SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, TileTextures["movement_point"], nullptr, &MPArea);
 
         curMPOffset++;
-        movementSpeed--;
+        movementSpeedLeft--;
     }
-}
+    while (emptyMovementSpeed > 0) {
+        int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
+        SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, TileTextures["empty_movement_point"], nullptr, &MPArea);
 
-void UIManager::renderGameView(Room* currentRoom, Player* player) {
-    renderCurrentRoom(currentRoom);
-    renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
-    renderCurrentRoomObjects(currentRoom);
-    renderCurrentRoomNPCs(currentRoom);
-    renderDarkness(player->getXTile(), player->getYTile());
-
-    //renderActionableTiles(player->getXTile(), player->getYTile());
-};
-
-void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
-    SDL_Rect destRect = {
-        playerLocationX,
-        playerLocationY,
-        TILE_SIZE,
-        TILE_SIZE
-    };
-    int curPlayerFrame = frameCount / (MAX_FRAME_COUNT / playerTextures.size());
-    SDL_RenderCopyEx(renderer, playerTextures[curPlayerFrame], nullptr, &destRect, 0.0, nullptr, facingDirection ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
-
+        curMPOffset++;
+        emptyMovementSpeed--;
+    }
 }
 
 void UIManager::renderCurrentRoom(Room* currentRoom) {
