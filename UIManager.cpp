@@ -411,20 +411,7 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
                                     TILE_SIZE,
                                     TILE_SIZE };
 
-            switch (currentRoom->getTile(x, y)) {
-            case WALL:
-                SDL_RenderCopy(renderer, TileTextures["stone_wall"], nullptr, &tileRect);
-                break;
-            case DOOR:
-                SDL_RenderCopy(renderer, TileTextures["wood_door"], nullptr, &tileRect);
-                break;
-            case FLOOR:
-                SDL_RenderCopy(renderer, TileTextures["dirt_1"], nullptr, &tileRect);
-                break;
-            case LADDER:
-                SDL_RenderCopy(renderer, TileTextures["drop_ladder"], nullptr, &tileRect);
-                break;
-            }
+            SDL_RenderCopy(renderer, TileTextures[currentRoom->getTile(x,y)->getTexture()], nullptr, &tileRect);
         }
     }
 };
