@@ -1,43 +1,26 @@
 #include "BehaviorAttackPlayerMelee.h"
 #include "Constants.h"
+#include "MathConstants.h"
 #include <iostream> 
 
 int BehaviorAttackPlayerMelee::behave(NPC* npc, Room* room, int playerX, int playerY) {
 
-    int walkableDistance = npc->getMovementSpeed();
-    int actionTaken = NPC_ACTION_NONE;
+    int npcX = npc->getX();
+    int npcY = npc->getY();
 
-    for (int i = 0; i < walkableDistance; ++i) {
-        int npcX = npc->getX();
-        int npcY = npc->getY();
+    if (std::abs(npcX - playerX) + std::abs(npcY - playerY) <= 1) {
+        return NPC_ATTACK_PLAYER;
+    }
 
-        // Check if already adjacent to the player — stop early
-        if (std::abs(npcX - playerX) + std::abs(npcY - playerY) <= 1) {
-            return NPC_ATTACK_PLAYER;
-            break;
-        }
+    auto path = findPath(room, npcX, npcY, playerX, playerY);
 
-        int dx = playerX - npcX;
-        int dy = playerY - npcY;
-
-        int stepX = 0;
-        int stepY = 0;
-
-        // Prioritize horizontal movement
-        if (std::abs(dx) > std::abs(dy)) {
-            stepX = (dx > 0) ? 1 : -1;
-        }
-        else if (dy != 0) {
-            stepY = (dy > 0) ? 1 : -1; 
-        }
-
-        int nextX = npcX + stepX;
-        int nextY = npcY + stepY;
-
-        // Later we'll check if blocked
+    // First step is the current tile — skip it
+    if (path.size() > 1) {
+        int steps = std::min(static_cast<int>(path.size()) - 1, npc->getMovementSpeed());
+        auto [nextX, nextY] = path[steps];
         npc->setPosition(nextX, nextY);
-        actionTaken = NPC_MOVE;
-    }    
+        return NPC_MOVE;
+    }
 
-    return actionTaken;
+    return NPC_ACTION_NONE; // No path found
 }

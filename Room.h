@@ -60,8 +60,4 @@ public:
 
     // Player interaction
     void processPlayerAttack(int mouseX, int mouseY, int damage);
-
-    // NPC Logic
-    void processNPCActions(Player* player);
-    void processNPCAttack(int mouseX, int mouseY, int damage);
 };

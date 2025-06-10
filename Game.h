@@ -37,6 +37,7 @@ public:
 
 private:
     void handleInput();
+    void processNPCLogic();
     void update();
     void render();
 };

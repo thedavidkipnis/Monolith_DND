@@ -12,6 +12,8 @@
 #include <cmath>
 #include <map>
 #include <string>
+#include <chrono>
+#include <thread>
 
 
 class UIManager {
@@ -75,5 +77,8 @@ public:
     void renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord, bool mapMode);
 
     int checkUIButtonPress(int mouseX, int mouseY);
+
+
+    // animation
 
 };

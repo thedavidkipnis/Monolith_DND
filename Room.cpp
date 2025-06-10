@@ -32,18 +32,24 @@ void Room::createNewTile(int x, int y, int tileType) {
     Tile newTile = Tile(0, false, false, "none", "???");
 
     switch (tileType) {
-    case WALL:
-        newTile.setType(WALL);
-        newTile.setIsWalkable(false);
-        newTile.setTexture("stone_wall"); // will eventually randomly pick textures based on this
-        newTile.setTileDescription("A STURDY COBBLESTONE WALL");
-        break;
-    case FLOOR:
-        newTile.setType(WALL);
-        newTile.setIsWalkable(true);
-        newTile.setTexture("dirt_1");
-        newTile.setTileDescription("ITS JUST DIRT...");
-        break;
+        case WALL:
+            newTile.setType(WALL);
+            newTile.setIsWalkable(false);
+            newTile.setTexture("stone_wall"); // will eventually randomly pick textures based on this
+            newTile.setTileDescription("A STURDY COBBLESTONE WALL");
+            break;
+        case FLOOR:
+            newTile.setType(WALL);
+            newTile.setIsWalkable(true);
+            newTile.setTexture("dirt_1");
+            newTile.setTileDescription("IT'S JUST DIRT...");
+            break;
+        case TREE:
+            newTile.setType(WALL);
+            newTile.setIsWalkable(true);
+            newTile.setTexture("tree_1");
+            newTile.setTileDescription("A GOOD OL' TREE.");
+            break;
     }
 
     Tiles[x][y] = newTile;
@@ -95,16 +101,16 @@ void Room::addDoors(bool north, bool east, bool south, bool west) {
     int centerY = height / 2;
 
     if (north) {
-        setTile(centerX, 0, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(centerX, 0, Tile(DOOR, true, false, "wood_door", "IT'S A WOODEN DOOR."));
     }
     if (south) {
-        setTile(centerX, height - 1, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(centerX, height - 1, Tile(DOOR, true, false, "wood_door", "IT'S A WOODEN DOOR."));
     }
     if (east) {
-        setTile(width - 1, centerY, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(width - 1, centerY, Tile(DOOR, true, false, "wood_door", "IT'S A WOODEN DOOR."));
     }
     if (west) {
-        setTile(0, centerY, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(0, centerY, Tile(DOOR, true, false, "wood_door", "IT'S A WOODEN DOOR."));
     }
 }
 
@@ -146,30 +152,6 @@ void Room::processPlayerAttack(int mouseX, int mouseY, int damage) {
         }
         else {
             ++it;
-        }
-    }
-}
-
-void Room::processNPCAttack(int mouseX, int mouseY, int damage) {
-
-}
-
-void Room::processNPCActions(Player* player) {
-    int actionTaken = NPC_ACTION_NONE;
-    for (NPC* npc : roomNPCs)
-    {
-        actionTaken = npc->triggerBehavior(this, player->getX(), player->getY());
-        switch (actionTaken) {
-        case NPC_ATTACK_PLAYER:
-            std::cout << "NPC ATTACKING PLAYER with " << npc->getDamage() << " damage\n";
-            player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
-            break;
-        case NPC_MOVE:
-            std::cout << "NPC MOVED\n";
-            break;
-        default:
-            std::cout << "NO NPC ACTION TAKEN\n";
-            break;
         }
     }
 }

@@ -80,6 +80,8 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/pine_1.png");
 
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
@@ -156,6 +158,7 @@ void UIManager::loadAlphabetTextures() {
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/semi_colon.png", letterTexture); AlphabetTextures[';'] = letterTexture;
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/!.png", letterTexture); AlphabetTextures['!'] = letterTexture;
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/question_mark.png", letterTexture); AlphabetTextures['?'] = letterTexture;
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/'.png", letterTexture); AlphabetTextures['\''] = letterTexture;
 
     std::cout << "Successfully loaded alphabet textures.\n";
 
@@ -248,16 +251,29 @@ void UIManager::renderUITextBox() {
         charOffset++;
 
         for (char c : currentTextBoxText) {
-            charFrame = { startRenderX + (UI_TEXTBOX_CHAR_SIZE * charOffset) / 2,
+            if (c == '\n') { // rendering new line of text
+
+                charOffset = 0;
+
+                startRenderY += UI_TEXTBOX_CHAR_SIZE;
+                startRenderX = UI_TEXTBOX_START_X;
+                charFrame = { startRenderX + (UI_TEXTBOX_CHAR_SIZE * charOffset) / 2,
+                            startRenderY,
+                            UI_TEXTBOX_CHAR_SIZE, UI_TEXTBOX_CHAR_SIZE };
+                SDL_RenderCopy(renderer, AlphabetTextures['>'], nullptr, &charFrame);
+
+                charOffset++;
+            }
+            else {
+
+                charFrame = { startRenderX + (UI_TEXTBOX_CHAR_SIZE * charOffset) / 2,
                             startRenderY,
                             UI_TEXTBOX_CHAR_SIZE, UI_TEXTBOX_CHAR_SIZE };
 
-            if (c == '.') {
+                SDL_RenderCopy(renderer, AlphabetTextures[c], nullptr, &charFrame);
 
+                charOffset++;
             }
-
-            SDL_RenderCopy(renderer, AlphabetTextures[c], nullptr, &charFrame);
-            charOffset++;
         }
     }
 }
@@ -533,3 +549,6 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
 
 
 }
+
+
+// ANIMATION

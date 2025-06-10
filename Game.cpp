@@ -241,9 +241,39 @@ void Game::update() {
         player->setMovementSpeedLeft(player->getMovementSpeed());
         selectedPlayerAction = NONE;
 
-        dungeon->getCurrentRoom()->processNPCActions(player.get());
+        processNPCLogic();
     }
 
+}
+
+void Game::processNPCLogic() {
+
+    Room* currentRoom = dungeon->getCurrentRoom();
+    std::vector<NPC*>* npcs = currentRoom->getListOfNPCs();
+
+    int actionTaken = NPC_ACTION_NONE;
+    std::string NPCActionDisplayString = "";
+
+    for (NPC* npc : *npcs)
+    {
+        int oldNpcX = npc->getX();
+        int oldNpcY = npc->getY();
+        actionTaken = npc->triggerBehavior(currentRoom, player->getX(), player->getY());
+
+        switch (actionTaken) {
+        case NPC_ATTACK_PLAYER:
+            NPCActionDisplayString += "NPC ATTACKED PLAYER WITH " + std::to_string(npc->getDamage()) + " DAMAGE\n";
+            player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
+            break;
+        case NPC_MOVE:
+            NPCActionDisplayString += "NPC MOVED\n";
+            break;
+        default:
+            NPCActionDisplayString += "NO NPC ACTION TAKEN\n";
+            break;
+        }
+    }
+    visualsManager->setUITextboxText(NPCActionDisplayString);
 }
 
 void Game::render() {

@@ -79,7 +79,8 @@ enum TileType {
     WALL = 1,
     FLOOR = 2,
     DOOR = 3,
-    LADDER = 4
+    LADDER = 4,
+    TREE = 5
 };
 
 // Directions for room connections

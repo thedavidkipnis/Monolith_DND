@@ -150,6 +150,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MathConstants.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="NPCBehavior.h" />
     <ClInclude Include="Player.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="%27.png" />
     <Image Include="..png" />
     <Image Include="..\..\..\Downloads\!.png" />
     <Image Include="..\..\..\Downloads\colon.png" />
