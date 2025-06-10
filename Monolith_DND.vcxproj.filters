@@ -66,6 +66,9 @@
     <ClCompile Include="BehaviorAttackPlayerMelee.cpp">
       <Filter>NPC Behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="BehaviorAttackPlayerMelee.h">
       <Filter>NPC Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

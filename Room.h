@@ -7,6 +7,7 @@
 #include <random>
 #include <ctime>
 #include <functional>
+#include "Tile.h"
 #include "Constants.h"
 #include "Player.h"
 #include "NPC.h"
@@ -15,6 +16,8 @@ class Room {
 private:
     std::vector<std::vector<int>> tiles;
     int width, height;
+
+    std::vector<std::vector<Tile>> Tiles;
 
     bool isRoomAnEncounter;
     bool roomVisitedState;

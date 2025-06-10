@@ -1,31 +1,26 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h> 
+#include <string>
 
 class Tile {
 private:
-	int x;
-	int y;
 
-	int type;
-	bool isWalkable;
+    int typeID;
+    bool isWalkable;
 
     std::string textureID;
 
 public:
 
-    Tile(int x, int y, int type, bool walkable, std::string texture);
+    Tile(int type, bool walkable, std::string texture);
     // Getters
-    int getX() const { return x; }
-    int getY() const { return y; }
-    int getType() const { return type; }
+    int getType() const { return typeID; }
     bool getIsWalkable() const { return isWalkable; }
     std::string getTexture() const { return textureID; }
 
     // Setters
-    void setX(int newX) { x = newX; }
-    void setY(int newY) { y = newY; }
-    void setType(int newType) { type = newType; }
+    void setType(int newType) { typeID = newType; }
     void setIsWalkable(bool walkable) { isWalkable = walkable; }
-    void setTexture(std::string texture) const { texture = texture; }
+    void setTexture(const std::string& texture) { textureID = texture; }
 };

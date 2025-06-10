@@ -3,14 +3,24 @@
 
 Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none")));
+    std::cout << Tiles.size() << "\n";
+    /*for (size_t i = 0; i < height; i++)
+    {
+        for (size_t j = 0; j < width; j++) {
+            Tile t = Tile(0,0,0,false,"none");
+        }
+    }*/
 }
 
 Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none")));
 }
 
 Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false), roomNPCs(npcs) {
     tiles.resize(height, std::vector<int>(width, FLOOR));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none")));
 }
 
 std::vector<std::vector<int>>* Room::getTiles() {
