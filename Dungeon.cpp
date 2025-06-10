@@ -108,22 +108,8 @@ void Dungeon::parseAndPopulateRoomTiles(Room* room, const std::string& filename)
         else if(c != ',' && c != ' ') // means we found one with an actual tile ID
         {
             int type = c - '0';
-            Tile newTile = Tile(0,false,"none");
+            room->createNewTile(roomIndexX, roomIndexY, type);
 
-            switch (type) {
-            case WALL:
-                newTile.setType(WALL);
-                newTile.setIsWalkable(false);
-                newTile.setTexture("stone_wall");
-                break;
-            case FLOOR:
-                newTile.setType(WALL);
-                newTile.setIsWalkable(true);
-                newTile.setTexture("dirt_1");
-                break;
-            }
-
-            room->setTile(roomIndexY, roomIndexX, newTile);
             roomIndexY++;
         }
     }

@@ -32,6 +32,7 @@ public:
     std::vector<std::vector<Tile>>* getTiles();
     Tile* getTile(int x, int y) ;
     void setTile(int x, int y, Tile tile);
+    void createNewTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
     bool isWalkable(int x, int y) const;
     bool isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const;

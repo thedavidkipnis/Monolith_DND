@@ -55,7 +55,7 @@ bool Game::initialize() {
     player = std::make_unique<Player>(12, 9, 5, 8, 1, 3);
 
     dungeon = std::make_unique<Dungeon>();
-    dungeon->generateFloorRooms(30);
+    dungeon->generateFloorRooms(15);
 
     isPlayerInEncounter = false;
 
@@ -75,6 +75,7 @@ void Game::handleInput() {
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
             selectedPlayerAction = END_TURN;
             visualsManager->setUITextboxText("ENDING TURN...");
+
         }
 
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_M) {
@@ -140,8 +141,7 @@ void Game::handleInput() {
                     }
                     break;
                 default:
-                    // NO ACTION
-                    // COULD ADD TILE INSPECT FUNCTIONALITY HERE
+                    visualsManager->setUITextboxText(dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getTileDescription());
                     break;
                 }
 
@@ -225,7 +225,6 @@ void Game::update() {
         else {
             visualsManager->setUITextboxText("NOTHING HERE...");
         }
-        std::cout << "ROOMS COORDS: " << dungeon->getCurRoomCoord().x << "|" << dungeon->getCurRoomCoord().y << "\n";
         curRoom->setRoomVisited(true);
     }
 
