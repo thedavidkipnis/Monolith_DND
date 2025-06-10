@@ -17,12 +17,11 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 }
 
 UIManager::~UIManager() {
-    if (doorTexture) {
-        SDL_DestroyTexture(doorTexture);
-    }
-    if (NPCTexture) {
+    // TODO: implement so it clears the map of textures
+
+    /*if (NPCTexture) {
         SDL_DestroyTexture(NPCTexture);
-    }
+    }*/
 }
 
 void UIManager::loadTexture(const char* filePath, SDL_Texture*& destinationTexture) {
@@ -82,11 +81,10 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png", playerHealthHeartTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png", playerHealthHalfHeartTexture);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png", playerEmptyHeartTexture);
-
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png", playerMovementSpeedTexture);
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/game_over.png", gameOverTexture);
@@ -356,14 +354,14 @@ void UIManager::renderPlayerStats(Player* player) {
     while (healthPoints > 1) {
         int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
-        SDL_RenderCopy(renderer, playerHealthHeartTexture, nullptr, &heartArea);
+        SDL_RenderCopy(renderer, TileTextures["full_red_heart"], nullptr, &heartArea);
         curHeartOffset++;
         healthPoints -= 2;
     }
     if (healthPoints == 1) {
         int renderStartX = healthRenderStartX + (curHeartOffset * TILE_SIZE / 1.25);
         SDL_Rect heartArea = { renderStartX , healthRenderStartY, TILE_SIZE, TILE_SIZE };
-        SDL_RenderCopy(renderer, playerHealthHalfHeartTexture, nullptr, &heartArea);
+        SDL_RenderCopy(renderer, TileTextures["half_red_heart"], nullptr, &heartArea);
     }
 
 
@@ -374,7 +372,7 @@ void UIManager::renderPlayerStats(Player* player) {
     while (movementSpeed > 0) {
         int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
         SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
-        SDL_RenderCopy(renderer, playerMovementSpeedTexture, nullptr, &MPArea);
+        SDL_RenderCopy(renderer, TileTextures["movement_point"], nullptr, &MPArea);
 
         curMPOffset++;
         movementSpeed--;

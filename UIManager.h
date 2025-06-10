@@ -35,22 +35,9 @@ private:
     UIButton* endTurnButton = nullptr;
 
     std::vector<SDL_Texture*> playerTextures;
-    SDL_Texture* NPCTexture = nullptr;
-
     std::unordered_map<std::string, SDL_Texture*> TileTextures;
-
     std::unordered_map<int, SDL_Texture*> NPCTextures;
     std::unordered_map<char, SDL_Texture*> AlphabetTextures;
-
-    SDL_Texture* ladderTexture = nullptr;
-    SDL_Texture* floorTexture = nullptr;
-    SDL_Texture* doorTexture = nullptr;
-
-    SDL_Texture* playerHealthHeartTexture;
-    SDL_Texture* playerHealthHalfHeartTexture;
-    SDL_Texture* playerEmptyHeartTexture;
-
-    SDL_Texture* playerMovementSpeedTexture;
 
     SDL_Rect gameOverTextureFrame;
     SDL_Texture* gameOverTexture;

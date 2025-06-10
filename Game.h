@@ -16,7 +16,6 @@ private:
     UIManager* visualsManager;
 
     std::unique_ptr<Player> player;
-    std::unique_ptr<Room> currentRoom;
     std::unique_ptr<Dungeon> dungeon;
 
     bool isPlayerInEncounter;
