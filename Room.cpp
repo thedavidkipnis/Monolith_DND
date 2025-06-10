@@ -2,15 +2,15 @@
 
 
 Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
-    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
 Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false) {
-    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
 Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false), roomNPCs(npcs) {
-    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, "none", "???")));
+    Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
 std::vector<std::vector<Tile>>* Room::getTiles() {
@@ -29,7 +29,7 @@ void Room::setTile(int x, int y, Tile tile) {
 }
 
 void Room::createNewTile(int x, int y, int tileType) {
-    Tile newTile = Tile(0, false, "none", "???");
+    Tile newTile = Tile(0, false, false, "none", "???");
 
     switch (tileType) {
     case WALL:
@@ -95,16 +95,16 @@ void Room::addDoors(bool north, bool east, bool south, bool west) {
     int centerY = height / 2;
 
     if (north) {
-        setTile(centerX, 0, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(centerX, 0, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (south) {
-        setTile(centerX, height - 1, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(centerX, height - 1, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (east) {
-        setTile(width - 1, centerY, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(width - 1, centerY, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
     }
     if (west) {
-        setTile(0, centerY, Tile(DOOR, true, "wood_door", "ITS A WOODEN DOOR."));
+        setTile(0, centerY, Tile(DOOR, true, false, "wood_door", "ITS A WOODEN DOOR."));
     }
 }
 
