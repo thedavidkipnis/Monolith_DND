@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+#include <random>
 
 // Tile system
 const int TILE_SIZE = 55;
@@ -143,4 +144,12 @@ inline std::string extractFileName(const std::string& path) {
     std::string fileNameWithExt = (lastSlash == std::string::npos) ? path : path.substr(lastSlash + 1);
     size_t dotPos = fileNameWithExt.find_last_of('.');
     return (dotPos == std::string::npos) ? fileNameWithExt : fileNameWithExt.substr(0, dotPos);
+}
+
+inline int getRandomIntInRange(int min, int max) {
+    static std::random_device rd;   // Seed
+    static std::mt19937 gen(rd());  // Mersenne Twister RNG
+
+    std::uniform_int_distribution<> dist(min, max);
+    return dist(gen);
 }

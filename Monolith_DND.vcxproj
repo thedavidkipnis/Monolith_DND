@@ -177,7 +177,6 @@
     <Image Include="..\..\..\Downloads\num_9.png" />
     <Image Include="..\..\..\Downloads\prompt_start.png" />
     <Image Include="..\..\..\Downloads\semi_colon.png" />
-    <Image Include="..\..\..\Downloads\tree.png" />
     <Image Include="action_point_half.png" />
     <Image Include="camp_fire.png" />
     <Image Include="chest.png" />
@@ -211,6 +210,8 @@
     <Image Include="sword.png" />
     <Image Include="sword_bnw_clicked.png" />
     <Image Include="sword_bnw_non_clicked.png" />
+    <Image Include="tree_1.png" />
+    <Image Include="tree_2.png" />
     <Image Include="upper_a.png" />
     <Image Include="upper_b.png" />
     <Image Include="upper_c.png" />
@@ -238,12 +239,12 @@
     <Image Include="upper_y.png" />
     <Image Include="upper_z.png" />
     <Image Include="wall.png" />
-    <Image Include="tree.png" />
     <Image Include="x_bnw_clicked.png" />
     <Image Include="x_bnw_non_clicked.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="npcs_mapping_encounter_1.csv" />
+    <None Include="rand_tree_room.csv" />
     <None Include="tile_mapping_encounter_1.csv" />
     <None Include="npcs_mapping_encounter_2.csv" />
     <None Include="starter_room_tiles.csv" />

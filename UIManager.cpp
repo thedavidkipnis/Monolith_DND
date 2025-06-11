@@ -80,8 +80,10 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_2.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_3.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_1.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/pine_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_2.png");
 
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
@@ -442,7 +444,6 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
                                     (y * TILE_SIZE) + GAMEVIEW_START_Y,
                                     TILE_SIZE,
                                     TILE_SIZE };
-
             SDL_RenderCopy(renderer, TileTextures[currentRoom->getTile(x,y)->getTexture()], nullptr, &tileRect);
         }
     }

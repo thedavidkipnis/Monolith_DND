@@ -40,7 +40,6 @@ inline std::vector<std::pair<int, int>> findPath(Room* room, int startX, int sta
     openList.push_back({ startX, startY, 0, heuristic(startX, startY, targetX, targetY), nullptr });
 
     while (!openList.empty()) {
-        // Sort by fCost
         std::sort(openList.begin(), openList.end(), [](const PathNode& a, const PathNode& b) {
             return a.fCost() < b.fCost();
             });
@@ -49,8 +48,8 @@ inline std::vector<std::pair<int, int>> findPath(Room* room, int startX, int sta
         openList.erase(openList.begin());
         closed[current.y][current.x] = true;
 
-        if (current.x == targetX && current.y == targetY) {
-            // Reconstruct path
+        // Stop if we're adjacent to the target (player)
+        if (std::abs(current.x - targetX) + std::abs(current.y - targetY) == 1) {
             std::vector<std::pair<int, int>> path;
             for (PathNode* p = &current; p != nullptr; p = p->parent) {
                 path.push_back({ p->x, p->y });
@@ -63,13 +62,16 @@ inline std::vector<std::pair<int, int>> findPath(Room* room, int startX, int sta
             int nx = current.x + dx;
             int ny = current.y + dy;
 
-            if (!inBounds(nx, ny) || !room->getTile(nx,ny)->getIsWalkable() || closed[ny][nx])
+            if (!inBounds(nx, ny) || !room->getTile(nx, ny)->getIsWalkable() || closed[ny][nx])
+                continue;
+
+            // Don't allow stepping onto the player's tile
+            if (nx == targetX && ny == targetY)
                 continue;
 
             int gCost = current.gCost + 1;
             int hCost = heuristic(nx, ny, targetX, targetY);
 
-            // Avoid inserting duplicates
             bool inOpen = false;
             for (const auto& node : openList) {
                 if (node.x == nx && node.y == ny && node.gCost <= gCost) {
