@@ -37,6 +37,7 @@ public:
 
 private:
     void handleInput();
+    void movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int newX, int newY);
     void processNPCLogic();
     void update();
     void render();

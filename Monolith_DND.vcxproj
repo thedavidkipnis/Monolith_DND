@@ -190,6 +190,11 @@
     <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
     <Image Include="game_over.png" />
+    <Image Include="game_over_2.png" />
+    <Image Include="game_over_3.png" />
+    <Image Include="game_over_4.png" />
+    <Image Include="game_over_5.png" />
+    <Image Include="game_over_6.png" />
     <Image Include="goblin.png" />
     <Image Include="half_red_heart.png" />
     <Image Include="knight_1.png" />

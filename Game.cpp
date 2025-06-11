@@ -71,6 +71,14 @@ void Game::handleInput() {
             running = false;
         }
 
+        // for quitting out of the death screen
+        if (player->getHealthPoints() < 1) {
+            if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_SPACE) {
+                running = false;
+
+            }
+        }
+
         // this is for skipping turn to trigger properly
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
             selectedPlayerAction = END_TURN;
@@ -141,6 +149,11 @@ void Game::handleInput() {
                     }
                     break;
                 default:
+
+                    if (dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
+                        // render entity description box
+                    }
+
                     visualsManager->setUITextboxText(dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getTileDescription());
                     break;
                 }
@@ -246,6 +259,12 @@ void Game::update() {
 
 }
 
+void Game::movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int newX, int newY) {
+    player->makeMoveTurnBased(newX, newY);
+    dungeon->getCurrentRoom()->getTile(oldX, oldY)->setIsOccupied(false);
+    dungeon->getCurrentRoom()->getTile(newX, newY)->setIsOccupied(true);
+}
+
 void Game::processNPCLogic() {
 
     Room* currentRoom = dungeon->getCurrentRoom();
@@ -260,16 +279,24 @@ void Game::processNPCLogic() {
         int oldNpcY = npc->getY();
         actionTaken = npc->triggerBehavior(currentRoom, player->getX(), player->getY());
 
+        if (NPCActionDisplayString.size() > 0) {
+            NPCActionDisplayString += "\n";
+        }
+
         switch (actionTaken) {
         case NPC_ATTACK_PLAYER:
-            NPCActionDisplayString += "NPC ATTACKED PLAYER WITH " + std::to_string(npc->getDamage()) + " DAMAGE\n";
+            NPCActionDisplayString += "NPC ATTACKED PLAYER WITH " + std::to_string(npc->getDamage()) + " DAMAGE";
             player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
             break;
         case NPC_MOVE:
-            NPCActionDisplayString += "NPC MOVED\n";
+            NPCActionDisplayString += "NPC MOVED";
+
+            currentRoom->getTile(oldNpcX, oldNpcY)->setIsOccupied(false);
+            currentRoom->getTile(npc->getX(), npc->getY())->setIsOccupied(true);
+
             break;
         default:
-            NPCActionDisplayString += "NO NPC ACTION TAKEN\n";
+            NPCActionDisplayString += "NO NPC ACTION TAKEN";
             break;
         }
     }

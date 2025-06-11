@@ -13,6 +13,8 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 
     UITextBoxFrame = { UI_TEXTBOX_START_X, UI_TEXTBOX_START_Y, UI_TEXTBOX_WIDTH, UI_TEXTBOX_HEIGHT };
 
+    UIMiniMapFrame = { UI_MINIMAP_START_X, UI_MINIMAP_START_Y, UI_MINIMAP_WIDTH, UI_MINIMAP_HEIGHT };
+
     std::cout << "Successfully intialized UIManager.\n===============================\n";
 }
 
@@ -85,6 +87,8 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_1.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_2.png");
 
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/chest.png");
+
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
@@ -92,7 +96,12 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_movement_point.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/game_over.png", gameOverTexture);
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_2.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_3.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_4.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_5.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_6.png");
 
     std::cout << "Successfully loaded base textures.\n";
 
@@ -525,20 +534,34 @@ void UIManager::renderDeathScreen() {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, gameOverTexture, nullptr, &gameOverTextureFrame);
+    int curFrame = frameCount / (MAX_FRAME_COUNT / 7) + 1;
+    if (curFrame > 6) {
+        curFrame = 1;
+    }
+    SDL_RenderCopy(renderer, TileTextures["game_over_" + std::to_string(curFrame)], nullptr, &gameOverTextureFrame);
+
+    if (frameCount >= MAX_FRAME_COUNT - 1) {
+        frameCount = 0;
+    }
+    frameCount++;
 }
 
 void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord, bool mapMode) {
 
     int startRenderX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
     int startRenderY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
-    ;
+    int roomOffsetX = 0;
+    int roomOffsetY = 0;
     int tileScale = 1;
 
-    if (!mapMode) {
+    if (!mapMode) { // if we're in mini map mode
         tileScale = 2;
-        startRenderX = GAMEVIEW_START_X + GAMEVIEW_WIDTH + (2 * TILE_SIZE);
-        startRenderY = UI_SIDE_PANEL_HEIGHT / 2;
+        startRenderX = UI_MINIMAP_START_X + (UI_MINIMAP_WIDTH / 2) - (TILE_SIZE / 4);
+        startRenderY = UI_MINIMAP_START_Y + (UI_MINIMAP_HEIGHT / 2) - (TILE_SIZE / 4);
+
+        SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+        SDL_RenderDrawRect(renderer, &UIMiniMapFrame);
+
     }
     else {
         SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
@@ -546,23 +569,53 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
     }
 
     for (const auto& [coord, room] : *rooms) {
+        if(!mapMode) // setting offset for when we're in minimap mode
+        {
+            roomOffsetX = coord.x - curRoomCoord.x;
+            roomOffsetY = coord.y - curRoomCoord.y;
+        }
+        else {
+            roomOffsetX = coord.x;
+            roomOffsetY = coord.y;
+        }
         SDL_Rect roomTileFrame = { 
-            startRenderX + (coord.x * TILE_SIZE / tileScale),
-            startRenderY + (coord.y * TILE_SIZE / tileScale),
+            startRenderX + (roomOffsetX * TILE_SIZE / tileScale),
+            startRenderY + (roomOffsetY * TILE_SIZE / tileScale),
             TILE_SIZE / tileScale, TILE_SIZE / tileScale };
 
         if (curRoomCoord.x == coord.x && curRoomCoord.y == coord.y) {
+            room->setRoomNoticedOnMap(true);
             SDL_SetRenderDrawColor(renderer, COLOR_BLUE.r, COLOR_BLUE.g, COLOR_BLUE.b, COLOR_BLUE.a);
             SDL_RenderFillRect(renderer, &roomTileFrame);
         } 
-        else if (room->isRoomEncounter())
+        else if(room->hasRoomBeenVisited()) // an already visited room
         {
-            SDL_SetRenderDrawColor(renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, COLOR_RED.a);
-            SDL_RenderFillRect(renderer, &roomTileFrame);
+            room->setRoomNoticedOnMap(true);
+            if (room->isRoomEncounter())
+            {
+                SDL_SetRenderDrawColor(renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, COLOR_RED.a);
+                SDL_RenderFillRect(renderer, &roomTileFrame);
+            }
+            else {
+                SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+                SDL_RenderDrawRect(renderer, &roomTileFrame);
+            }
         }
-        else {
-            SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-            SDL_RenderDrawRect(renderer, &roomTileFrame);
+        else if (!room->hasRoomBeenVisited()) { // checking for neighbor rooms
+
+            bool onlyHorizontal = abs(curRoomCoord.x - coord.x) == 1 && abs(curRoomCoord.y - coord.y) == 0;
+            bool onlyVertical = abs(curRoomCoord.x - coord.x) == 0 && abs(curRoomCoord.y - coord.y) == 1;
+
+            if (onlyHorizontal || onlyVertical) {
+                room->setRoomNoticedOnMap(true);
+                SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
+                SDL_RenderFillRect(renderer, &roomTileFrame);
+            }
+            if (room->getRoomNoticedOnMap()) {
+                SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
+                SDL_RenderFillRect(renderer, &roomTileFrame);
+            }
+
         }
     }
 

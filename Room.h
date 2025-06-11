@@ -20,6 +20,7 @@ private:
 
     bool isRoomAnEncounter;
     bool roomVisitedState;
+    bool roomNoticedOnMap;
 
     std::vector<NPC*> roomNPCs;
 
@@ -57,6 +58,9 @@ public:
 
     bool hasRoomBeenVisited() const;
     void setRoomVisited(bool state);
+
+    bool getRoomNoticedOnMap() const { return roomNoticedOnMap; }
+    void setRoomNoticedOnMap(bool noticed) { roomNoticedOnMap = noticed; }
 
     // Player interaction
     void processPlayerAttack(int mouseX, int mouseY, int damage);

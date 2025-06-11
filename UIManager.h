@@ -28,6 +28,8 @@ private:
     SDL_Rect UITextBoxFrame;
     std::string currentTextBoxText;
 
+    SDL_Rect UIMiniMapFrame;
+
     int frameCount;
 
     SDL_Cursor* cursorTexture = nullptr;
@@ -42,7 +44,6 @@ private:
     std::unordered_map<char, SDL_Texture*> AlphabetTextures;
 
     SDL_Rect gameOverTextureFrame;
-    SDL_Texture* gameOverTexture;
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTileTexture(const char* filePath);

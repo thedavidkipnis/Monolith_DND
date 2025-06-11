@@ -1,15 +1,28 @@
 #include "Room.h"
 
 
-Room::Room() : width(ROOM_WIDTH), height(ROOM_HEIGHT), isRoomAnEncounter(false), roomVisitedState(false) {
+Room::Room() : 
+    width(ROOM_WIDTH), height(ROOM_HEIGHT), 
+    isRoomAnEncounter(false), 
+    roomVisitedState(false), 
+    roomNoticedOnMap(false) {
     Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
-Room::Room(int w, int h, bool isEncounter) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false) {
+Room::Room(int w, int h, bool isEncounter) : 
+    width(w), height(h), 
+    isRoomAnEncounter(isEncounter), 
+    roomVisitedState(false), 
+    roomNoticedOnMap(false) {
     Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
-Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : width(w), height(h), isRoomAnEncounter(isEncounter), roomVisitedState(false), roomNPCs(npcs) {
+Room::Room(int w, int h, bool isEncounter, std::vector<NPC*> npcs) : 
+    width(w), height(h), 
+    isRoomAnEncounter(isEncounter), 
+    roomVisitedState(false), 
+    roomNoticedOnMap(false), 
+    roomNPCs(npcs) {
     Tiles.resize(height, std::vector<Tile>(width, Tile(0, false, false, "none", "???")));
 }
 
@@ -72,6 +85,7 @@ std::vector<NPC*>* Room::getListOfNPCs() {
 void Room::addNPCToRoom(int x, int y, int type) {
     NPC* newNPC = new NPC(x,y, type);
     roomNPCs.push_back(newNPC);
+    Tiles[y][x].setIsOccupied(true);
 }
 
 bool Room::isRoomEncounter() const {

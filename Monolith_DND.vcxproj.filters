@@ -57,9 +57,6 @@
     <ClCompile Include="UIButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BehaviorWander.cpp">
       <Filter>NPC Behaviors</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
     <ClInclude Include="UIButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NPCBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -108,6 +102,9 @@
       <Filter>NPC Behaviors</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,9 +118,6 @@
     <Image Include="goblin.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="tree.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="coins.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -134,9 +128,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="pine.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\Downloads\tree.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\..\..\Downloads\full_red_heart.png">
@@ -349,6 +340,33 @@
     <Image Include="empty_heart.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="%27.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="empty_movement_point.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="tree_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="tree_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="game_over_5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="game_over_4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="game_over_3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="game_over_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="game_over_6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="starter_room_tiles.csv">
@@ -369,5 +387,6 @@
     <None Include="template.csv">
       <Filter>Rooms\RoomNPCMappings</Filter>
     </None>
+    <None Include="rand_tree_room.csv" />
   </ItemGroup>
 </Project>
