@@ -65,6 +65,9 @@ bool Game::initialize() {
 }
 
 void Game::handleInput() {
+
+    Room* curRoom = dungeon->getCurrentRoom();
+
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT) {
@@ -126,7 +129,7 @@ void Game::handleInput() {
                 case ATTACK:
                     if (player->tryAttacking(mouseX, mouseY)) {
                         //player->attack(mouseX, mouseY);
-                        dungeon->getCurrentRoom()->processPlayerAttack(mouseX, mouseY, player->getDamage());
+                        curRoom->processPlayerAttack(mouseX, mouseY, player->getDamage());
                     }
                     else {
                         visualsManager->setUITextboxText("TOO FAR TO ATTACK");
@@ -136,7 +139,7 @@ void Game::handleInput() {
                     std::cout << "Attempting END TURN\n";
                     break;
                 case MOVE:
-                    if (dungeon->getCurrentRoom()->isWalkableTurnBased(player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft())) {
+                    if (curRoom->isWalkableTurnBased(player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft())) {
                         player->makeMoveTurnBased(mouseX, mouseY);
                     }
                     else {
@@ -148,13 +151,15 @@ void Game::handleInput() {
                         }
                     }
                     break;
-                default:
+                default: // when user clicks on gameview with no selected action
 
                     if (dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
-                        // render entity description box
+                        visualsManager->setFocusedNPC(curRoom->getNPCAt(mouseX, mouseY));
+                        visualsManager->setUITextboxText(curRoom->getNPCAt(mouseX, mouseY)->getDescription());
                     }
-
-                    visualsManager->setUITextboxText(dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getTileDescription());
+                    else {
+                        visualsManager->setUITextboxText(curRoom->getTile(mouseX, mouseY)->getTileDescription());
+                    }
                     break;
                 }
 
@@ -202,8 +207,7 @@ void Game::handleInput() {
 
             // Try to move player
             if (deltaX != 0 || deltaY != 0) {
-                Room* currentRoom = dungeon->getCurrentRoom();
-                if (currentRoom && currentRoom->isWalkable(deltaX + player->getX(), deltaY + player->getY())) {
+                if (curRoom && curRoom->isWalkable(deltaX + player->getX(), deltaY + player->getY())) {
                     player->setPosition(deltaX + player->getX(), deltaY + player->getY());
                     lastMoveTime = currentTime;
 
@@ -316,7 +320,6 @@ void Game::render() {
             Room* currentRoom = dungeon->getCurrentRoom();
             visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
             visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
-
         } 
     }
 

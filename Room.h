@@ -40,6 +40,7 @@ public:
 
     // NPC access
     std::vector<NPC*>* getListOfNPCs();
+    NPC* getNPCAt(int x, int y);
     void addNPCToRoom(int x, int y, int type);
 
     // Room generation

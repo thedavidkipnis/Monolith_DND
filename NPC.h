@@ -12,6 +12,7 @@ class NPC {
 private:
     int x, y;
     int typeID;
+    std::string description;
 
     int healthPoints;
     int movementSpeed;
@@ -38,6 +39,8 @@ public:
     void setMovementSpeed(int ms);
 
     int getDamage() const { return damage; }
+
+    std::string getDescription() const { return description; }
 
     // Movement
     void setPosition(int newX, int newY);

@@ -6,6 +6,7 @@
 #include "Room.h"
 #include "Dungeon.h"
 #include "Player.h"
+#include "NPC.h"
 #include "UIButton.h"
 #include <unordered_map>
 #include <iostream>
@@ -29,6 +30,10 @@ private:
     std::string currentTextBoxText;
 
     SDL_Rect UIMiniMapFrame;
+
+    SDL_Rect UINPCFocusBoxFrame;
+    NPC* focusedNPC;
+    SDL_Rect focusedNPCFrame;
 
     int frameCount;
 
@@ -57,6 +62,7 @@ private:
     void renderUIButton(UIButton* button);
     void updateUIButtonsBasedOnSelectedAction(int selectedPlayerAction);
     void renderUITextBox();
+    void renderNPCFocusBox();
     void renderPlayerStats(Player* player);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
@@ -72,6 +78,8 @@ public:
 
     void render(Room* currentRoom, Player* player, int selectedPlayerAction);
     void setUITextboxText(std::string text);
+
+    void setFocusedNPC(NPC* npc);
 
     void renderDeathScreen();
 

@@ -13,17 +13,20 @@ NPC::NPC(int startX, int startY, int typeID) :
         healthPoints = 5;
         movementSpeed = 3;
         damage = 2;
+        description = "A PESKY GOBLIN";
         break;
     case SPIDER:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 2;
         movementSpeed = 6;
         damage = 1;
+        description = "AN OVERSIZED ARACHNID";
         break;
     default:
         healthPoints = 0;
         movementSpeed = 0;
         damage = 0;
+        description = "MISSING ENTITY DESCRIPTION";
         break;
     }
 };

@@ -82,6 +82,16 @@ std::vector<NPC*>* Room::getListOfNPCs() {
     return &roomNPCs;
 }
 
+NPC* Room::getNPCAt(int x, int y) {
+    for (NPC* npc : roomNPCs) {
+        if (npc->getX() == x && npc->getY() == y) {
+            return npc;
+        }
+    }
+    return nullptr;
+}
+
+
 void Room::addNPCToRoom(int x, int y, int type) {
     NPC* newNPC = new NPC(x,y, type);
     roomNPCs.push_back(newNPC);

@@ -15,6 +15,12 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 
     UIMiniMapFrame = { UI_MINIMAP_START_X, UI_MINIMAP_START_Y, UI_MINIMAP_WIDTH, UI_MINIMAP_HEIGHT };
 
+    UINPCFocusBoxFrame = { UI_NPC_FOCUS_BOX_START_X, UI_NPC_FOCUS_BOX_START_Y, UI_NPC_FOCUS_BOX_WIDTH, UI_NPC_FOCUS_BOX_HEIGHT };
+    focusedNPCFrame = { 
+        UI_NPC_FOCUS_BOX_START_X + (UI_NPC_FOCUS_BOX_WIDTH / 2) - (TILE_SIZE * 2),
+        UI_NPC_FOCUS_BOX_START_Y + TILE_SIZE,
+        TILE_SIZE * 4, TILE_SIZE * 4 };
+
     std::cout << "Successfully intialized UIManager.\n===============================\n";
 }
 
@@ -94,6 +100,14 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_movement_point.png");
+
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_small.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_large.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_explored_small.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_explored_large.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_small.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_large.png");
+
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
@@ -294,6 +308,32 @@ void UIManager::setUITextboxText(std::string text) {
     currentTextBoxText = text;
 }
 
+void UIManager::renderNPCFocusBox() {
+    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    SDL_RenderDrawRect(renderer, &UINPCFocusBoxFrame);
+
+    int focusBoxCenterX = UI_NPC_FOCUS_BOX_START_X + (UI_NPC_FOCUS_BOX_WIDTH / 2);
+    int focusBoxCenterY = UI_NPC_FOCUS_BOX_START_Y + (UI_NPC_FOCUS_BOX_HEIGHT / 2);
+
+    if (focusedNPC) {
+        SDL_RenderCopy(renderer, NPCTextures[1], nullptr, &focusedNPCFrame);
+    }
+    else {
+        focusBoxCenterX -= (1.5 * UI_TEXTBOX_CHAR_SIZE);
+        for(int i = 0; i < 3; i++)
+        {
+            SDL_Rect charFrame = { focusBoxCenterX + (i * UI_TEXTBOX_CHAR_SIZE),
+                                focusBoxCenterY - (UI_TEXTBOX_CHAR_SIZE / 2),
+                                UI_TEXTBOX_CHAR_SIZE, UI_TEXTBOX_CHAR_SIZE };
+            SDL_RenderCopy(renderer, AlphabetTextures['.'], nullptr, &charFrame);
+        }
+    }
+}
+
+void UIManager::setFocusedNPC(NPC* npc) {
+    focusedNPC = npc;
+}
+
 void UIManager::renderUI(Player* player) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
@@ -304,6 +344,8 @@ void UIManager::renderUI(Player* player) {
     renderUIButton(endTurnButton);
 
     renderUITextBox();
+
+    renderNPCFocusBox();
 
     renderPlayerStats(player);
 
@@ -581,8 +623,9 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
 
         if (curRoomCoord.x == coord.x && curRoomCoord.y == coord.y) {
             room->setRoomNoticedOnMap(true);
-            SDL_SetRenderDrawColor(renderer, COLOR_BLUE.r, COLOR_BLUE.g, COLOR_BLUE.b, COLOR_BLUE.a);
-            SDL_RenderFillRect(renderer, &roomTileFrame);
+            SDL_RenderCopy(renderer, 
+                mapMode ? TileTextures["minimap_room_current_large"] : TileTextures["minimap_room_current_small"], 
+                nullptr, &roomTileFrame);
         } 
         else if(room->hasRoomBeenVisited()) // an already visited room
         {
@@ -593,8 +636,9 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
                 SDL_RenderFillRect(renderer, &roomTileFrame);
             }
             else {
-                SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-                SDL_RenderDrawRect(renderer, &roomTileFrame);
+                SDL_RenderCopy(renderer,
+                    mapMode ? TileTextures["minimap_room_explored_large"] : TileTextures["minimap_room_explored_small"],
+                    nullptr, &roomTileFrame);
             }
         }
         else if (!room->hasRoomBeenVisited()) { // checking for neighbor rooms
@@ -604,18 +648,20 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
 
             if (onlyHorizontal || onlyVertical) {
                 room->setRoomNoticedOnMap(true);
-                SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
-                SDL_RenderFillRect(renderer, &roomTileFrame);
+                SDL_RenderCopy(renderer,
+                    mapMode ? TileTextures["minimap_room_unexplored_large"] : TileTextures["minimap_room_unexplored_small"],
+                    nullptr, &roomTileFrame);
             }
             if (room->getRoomNoticedOnMap()) {
-                SDL_SetRenderDrawColor(renderer, COLOR_GRAY.r, COLOR_GRAY.g, COLOR_GRAY.b, COLOR_GRAY.a);
-                SDL_RenderFillRect(renderer, &roomTileFrame);
+                SDL_RenderCopy(renderer,
+                    mapMode ? TileTextures["minimap_room_unexplored_large"] : TileTextures["minimap_room_unexplored_small"],
+                    nullptr, &roomTileFrame);
             }
 
         }
     }
 
-    if (!mapMode) {
+    if (!mapMode) { // minimap frame and mask
 
         SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
         SDL_RenderDrawRect(renderer, &UIMiniMapFrame);
