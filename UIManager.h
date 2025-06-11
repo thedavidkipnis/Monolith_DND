@@ -45,13 +45,14 @@ private:
 
     std::vector<SDL_Texture*> playerTextures;
     std::unordered_map<std::string, SDL_Texture*> TileTextures;
-    std::unordered_map<int, SDL_Texture*> NPCTextures;
+    std::unordered_map<std::string, SDL_Texture*> NPCTextures;
     std::unordered_map<char, SDL_Texture*> AlphabetTextures;
 
     SDL_Rect gameOverTextureFrame;
 
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTileTexture(const char* filePath);
+    void loadNPCTexture(const char* filePath);
     void loadTextures();
     void loadPlayerTextures();
     void loadAlphabetTextures();

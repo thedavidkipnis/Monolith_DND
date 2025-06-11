@@ -14,6 +14,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         movementSpeed = 3;
         damage = 2;
         description = "A PESKY GOBLIN";
+        textureID = "goblin";
         break;
     case SPIDER:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
@@ -21,12 +22,14 @@ NPC::NPC(int startX, int startY, int typeID) :
         movementSpeed = 6;
         damage = 1;
         description = "AN OVERSIZED ARACHNID";
+        textureID = "spider";
         break;
     default:
         healthPoints = 0;
         movementSpeed = 0;
         damage = 0;
         description = "MISSING ENTITY DESCRIPTION";
+        textureID = "none";
         break;
     }
 };

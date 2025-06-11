@@ -13,6 +13,7 @@ private:
     int x, y;
     int typeID;
     std::string description;
+    std::string textureID;
 
     int healthPoints;
     int movementSpeed;
@@ -41,6 +42,10 @@ public:
     int getDamage() const { return damage; }
 
     std::string getDescription() const { return description; }
+    void setDescription(std::string des) { description = des; }
+
+    std::string getTextureID() const { return textureID; }
+    void setTextureID(std::string texture) { textureID = texture; }
 
     // Movement
     void setPosition(int newX, int newY);
