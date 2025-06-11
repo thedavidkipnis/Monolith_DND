@@ -558,10 +558,6 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
         tileScale = 2;
         startRenderX = UI_MINIMAP_START_X + (UI_MINIMAP_WIDTH / 2) - (TILE_SIZE / 4);
         startRenderY = UI_MINIMAP_START_Y + (UI_MINIMAP_HEIGHT / 2) - (TILE_SIZE / 4);
-
-        SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-        SDL_RenderDrawRect(renderer, &UIMiniMapFrame);
-
     }
     else {
         SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
@@ -617,6 +613,44 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
             }
 
         }
+    }
+
+    if (!mapMode) {
+
+        SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+        SDL_RenderDrawRect(renderer, &UIMiniMapFrame);
+
+        // mini map mask
+        SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
+        SDL_Rect miniMapMask = {
+            UI_MINIMAP_START_X - (TILE_SIZE / 2) + 1,
+            UI_MINIMAP_START_Y - (TILE_SIZE / 2) + 1,
+            UI_MINIMAP_WIDTH + TILE_SIZE - 2,
+            (TILE_SIZE / 2) - 1
+        };
+        SDL_RenderFillRect(renderer, &miniMapMask);
+        miniMapMask = {
+            UI_MINIMAP_START_X - (TILE_SIZE / 2) + 1,
+            UI_MINIMAP_START_Y - (TILE_SIZE / 2) + 1,
+            (TILE_SIZE / 2) - 1,
+            UI_MINIMAP_HEIGHT + TILE_SIZE - 3
+        };
+        SDL_RenderFillRect(renderer, &miniMapMask);
+        miniMapMask = {
+            UI_MINIMAP_START_X - (TILE_SIZE / 2) + 1,
+            UI_MINIMAP_START_Y + UI_MINIMAP_HEIGHT,
+            UI_MINIMAP_WIDTH + TILE_SIZE - 2,
+            (TILE_SIZE / 2) - 1
+        };
+        SDL_RenderFillRect(renderer, &miniMapMask);
+        miniMapMask = {
+            UI_MINIMAP_START_X + UI_MINIMAP_WIDTH,
+            UI_MINIMAP_START_Y - (TILE_SIZE / 2) + 1,
+            (TILE_SIZE / 2),
+            UI_MINIMAP_HEIGHT + TILE_SIZE - 3
+        };
+        SDL_RenderFillRect(renderer, &miniMapMask);
+
     }
 
 
