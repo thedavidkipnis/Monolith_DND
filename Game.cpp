@@ -89,8 +89,8 @@ void Game::handleInput() {
 
         }
 
-        if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_M) {
-            mapView = false;
+        if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_M && e.key.repeat == 0) {
+            mapView = !mapView;
         }
 
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
@@ -170,10 +170,6 @@ void Game::handleInput() {
     // Handle continuous key presses with timing
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastMoveTime > MOVE_DELAY) {
-
-        if (keyState[SDL_SCANCODE_M]) {
-            mapView = true;
-        }
 
         // see if user is trying to switch actions
         if (keyState[SDL_SCANCODE_2]) {
