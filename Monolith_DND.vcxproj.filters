@@ -367,6 +367,12 @@
     <Image Include="game_over_6.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="fitz_with_table.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fitz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="starter_room_tiles.csv">

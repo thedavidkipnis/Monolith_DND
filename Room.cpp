@@ -165,27 +165,3 @@ Direction Room::getDoorDirection(int x, int y) {
 
     return NORTH; // Default
 }
-
-void Room::processPlayerAttack(int mouseX, int mouseY, int damage) {
-    for (auto it = roomNPCs.begin(); it != roomNPCs.end(); ) {
-        int location_x = (*it)->getX();
-        int location_y = (*it)->getY();
-
-        if (mouseX == location_x && mouseY == location_y) { // hit
-            int remainingHealth = (*it)->getHealthPoints() - damage;
-            if (remainingHealth > 0) {
-                (*it)->setHealthPoints(remainingHealth);
-                std::cout << "Hit NPC for " << damage << " damage, " << remainingHealth << " health left.\n";
-                ++it;
-            }
-            else {
-                delete* it;
-                it = roomNPCs.erase(it);
-                std::cout << "NPC Died >:)\n";
-            }
-        }
-        else {
-            ++it;
-        }
-    }
-}

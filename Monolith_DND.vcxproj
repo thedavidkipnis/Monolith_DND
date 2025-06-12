@@ -187,6 +187,8 @@
     <Image Include="drop_ladder.png" />
     <Image Include="empty_heart.png" />
     <Image Include="empty_movement_point.png" />
+    <Image Include="fitz.png" />
+    <Image Include="fitz_with_table.png" />
     <Image Include="full_action_point.png" />
     <Image Include="g-chest.png" />
     <Image Include="game_over.png" />

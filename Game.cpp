@@ -128,8 +128,7 @@ void Game::handleInput() {
                 switch (selectedPlayerAction) {
                 case ATTACK:
                     if (player->tryAttacking(mouseX, mouseY)) {
-                        //player->attack(mouseX, mouseY);
-                        curRoom->processPlayerAttack(mouseX, mouseY, player->getDamage());
+                        processPlayerAttack(mouseX, mouseY);
                     }
                     else {
                         visualsManager->setUITextboxText("TOO FAR TO ATTACK");
@@ -267,6 +266,49 @@ void Game::movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int new
     player->makeMoveTurnBased(newX, newY);
     dungeon->getCurrentRoom()->getTile(oldX, oldY)->setIsOccupied(false);
     dungeon->getCurrentRoom()->getTile(newX, newY)->setIsOccupied(true);
+}
+
+void Game::processPlayerAttack(int mouseX, int mouseY) {
+
+    std::string NPCActionDisplayString = "";
+
+    std::vector<NPC*>* roomNPCs = dungeon->getCurrentRoom()->getListOfNPCs();
+    for (auto it = roomNPCs->begin(); it != roomNPCs->end(); ) {
+        int location_x = (*it)->getX();
+        int location_y = (*it)->getY();
+
+        if (mouseX == location_x && mouseY == location_y) { // hit
+
+            if (NPCActionDisplayString.size() > 0) {
+                NPCActionDisplayString += "\n";
+            }
+
+            int remainingHealth = (*it)->getHealthPoints() - player->getDamage();
+            NPCActionDisplayString += "HIT NPC FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
+            if (remainingHealth > 0) {
+                (*it)->setHealthPoints(remainingHealth);
+                ++it;
+            }
+            else {
+
+                if (NPCActionDisplayString.size() > 0) {
+                    NPCActionDisplayString += "\n";
+                }
+
+                visualsManager->setFocusedNPC(nullptr);
+                delete* it;
+                it = roomNPCs->erase(it);
+                NPCActionDisplayString += "NPC DIED.";
+            }
+        }
+        else {
+            ++it;
+        }
+    }
+    if (NPCActionDisplayString.size() < 1) {
+        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.\n";
+    }
+    visualsManager->setUITextboxText(NPCActionDisplayString);
 }
 
 void Game::processNPCLogic() {

@@ -16,7 +16,7 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
     UIMiniMapFrame = { UI_MINIMAP_START_X, UI_MINIMAP_START_Y, UI_MINIMAP_WIDTH, UI_MINIMAP_HEIGHT };
 
     UINPCFocusBoxFrame = { UI_NPC_FOCUS_BOX_START_X, UI_NPC_FOCUS_BOX_START_Y, UI_NPC_FOCUS_BOX_WIDTH, UI_NPC_FOCUS_BOX_HEIGHT };
-    focusedNPCFrame = { 
+    focusedNPCTextureFrame = {
         UI_NPC_FOCUS_BOX_START_X + (UI_NPC_FOCUS_BOX_WIDTH / 2) - (TILE_SIZE * 2),
         UI_NPC_FOCUS_BOX_START_Y + TILE_SIZE,
         TILE_SIZE * 4, TILE_SIZE * 4 };
@@ -133,6 +133,10 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_4.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_5.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_6.png");
+
+
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/fitz_with_table.png");
+
 
     std::cout << "Successfully loaded base textures.\n";
 
@@ -328,9 +332,20 @@ void UIManager::renderNPCFocusBox() {
     int focusBoxCenterY = UI_NPC_FOCUS_BOX_START_Y + (UI_NPC_FOCUS_BOX_HEIGHT / 2);
 
     if (focusedNPC) {
-        SDL_RenderCopy(renderer, NPCTextures[focusedNPC->getTextureID()], nullptr, &focusedNPCFrame);
+        // actual npc texture
+        SDL_RenderCopy(renderer, NPCTextures[focusedNPC->getTextureID()], nullptr, &focusedNPCTextureFrame);
+
+        // npc stats
+        SDL_Rect NPCStatsFrame = { UI_NPC_FOCUS_BOX_START_X + TILE_SIZE, focusBoxCenterY, TILE_SIZE, TILE_SIZE};
+        SDL_RenderCopy(renderer, TileTextures["full_red_heart"], nullptr, &NPCStatsFrame);
+        NPCStatsFrame.x += TILE_SIZE / 2;
+        NPCStatsFrame.y -= TILE_SIZE / 4;
+        SDL_RenderCopy(renderer, AlphabetTextures[':'], nullptr, &NPCStatsFrame);
+        NPCStatsFrame.x += TILE_SIZE / 2;
+        SDL_RenderCopy(renderer, AlphabetTextures[focusedNPC->getHealthPoints() + '0'], nullptr, &NPCStatsFrame);
+
     }
-    else {
+    else { // if no focused NPC, rendering 3 dots instead
         focusBoxCenterX -= (1.5 * UI_TEXTBOX_CHAR_SIZE);
         for(int i = 0; i < 3; i++)
         {

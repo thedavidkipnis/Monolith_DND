@@ -33,7 +33,7 @@ private:
 
     SDL_Rect UINPCFocusBoxFrame;
     NPC* focusedNPC;
-    SDL_Rect focusedNPCFrame;
+    SDL_Rect focusedNPCTextureFrame;
 
     int frameCount;
 
