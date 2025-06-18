@@ -387,7 +387,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="starter_room_tiles.csv">
+    <None Include="tile_mapping_standard_0_1.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
     <None Include="tile_mapping_encounter_1.csv">
@@ -405,6 +405,12 @@
     <None Include="template.csv">
       <Filter>Rooms\RoomNPCMappings</Filter>
     </None>
-    <None Include="rand_tree_room.csv" />
+    <None Include="tile_mapping_standard_0_2.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="rand_tree_room.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="tile_mapping_standard_0_3.csv" />
   </ItemGroup>
 </Project>

@@ -49,7 +49,7 @@ void Room::createNewTile(int x, int y, int tileType) {
         {
             newTile.setType(WALL);
             newTile.setIsWalkable(false);
-            newTile.setTexture("stone_wall"); // will eventually randomly pick textures based on this
+            newTile.setTexture("stone_wall");
             newTile.setTileDescription("A STURDY COBBLESTONE WALL");
             break;
         }
@@ -73,6 +73,14 @@ void Room::createNewTile(int x, int y, int tileType) {
             newTile.setTileDescription("A GOOD OL' TREE.");
             break;
         }
+        case ROCK:
+            newTile.setType(ROCK);
+            newTile.setIsWalkable(false);
+
+            std::string randDirtSuffix = std::to_string(getRandomIntInRange(1, 2));
+            newTile.setTexture("rock_" + randDirtSuffix);
+            newTile.setTileDescription("IT'S JUST A ROCK...");
+            break;
     }
 
     Tiles[x][y] = newTile;

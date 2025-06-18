@@ -107,6 +107,8 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_2.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_3.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/rock_1.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/rock_2.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_1.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_2.png");
 
@@ -447,7 +449,7 @@ void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
-    renderDarkness(player->getXTile(), player->getYTile());
+    //renderDarkness(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
@@ -534,6 +536,9 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
                                     (y * TILE_SIZE) + GAMEVIEW_START_Y,
                                     TILE_SIZE,
                                     TILE_SIZE };
+            if (currentRoom->getTile(x, y)->getType() == ROCK || currentRoom->getTile(x, y)->getType() == TREE) {
+                SDL_RenderCopy(renderer, TileTextures["dirt_1"], nullptr, &tileRect);
+            }
             SDL_RenderCopy(renderer, TileTextures[currentRoom->getTile(x,y)->getTexture()], nullptr, &tileRect);
         }
     }

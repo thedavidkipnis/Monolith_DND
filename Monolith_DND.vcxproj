@@ -258,9 +258,11 @@
     <None Include="rand_tree_room.csv" />
     <None Include="tile_mapping_encounter_1.csv" />
     <None Include="npcs_mapping_encounter_2.csv" />
-    <None Include="starter_room_tiles.csv" />
+    <None Include="tile_mapping_standard_0_1.csv" />
     <None Include="template.csv" />
     <None Include="tile_mapping_encounter_2.csv" />
+    <None Include="tile_mapping_standard_0_2.csv" />
+    <None Include="tile_mapping_standard_0_3.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

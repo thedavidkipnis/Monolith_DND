@@ -66,7 +66,8 @@ void Dungeon::generateFloorRooms(int maxRoomsOnFloor) {
             parseAndPopulateRoomNPCs(room.get(), "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_2.csv");
         }
         else {
-            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/starter_room_tiles.csv");
+            std::string randRoomSuffix = std::to_string(getRandomIntInRange(1, 3));
+            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_standard_0_" + randRoomSuffix + ".csv");
         }
 
         setupRoomConnections(coord);

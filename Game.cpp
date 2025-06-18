@@ -155,8 +155,6 @@ void Game::handleInput() {
                     }
                     break;
                 }
-
-                SDL_Point mousePoint = { mouseX, mouseY };              
             }
         }
     }
@@ -325,6 +323,8 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
                     delete* it;
                     it = roomNPCs->erase(it);
                     NPCActionDisplayString += "NPC DIED.";
+
+                    dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->setIsOccupied(false);
                 }
 
                 player->setActionCountRemaining(player->getActionCountRemaining() - 1);
