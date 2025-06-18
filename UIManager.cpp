@@ -443,7 +443,7 @@ void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
-    //renderDarkness(player->getXTile(), player->getYTile());
+    renderDarkness(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {

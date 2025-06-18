@@ -302,7 +302,7 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
         }
     }
     if (NPCActionDisplayString.size() < 1) {
-        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.\n";
+        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
     }
     visualsManager->setUITextboxText(NPCActionDisplayString);
 }

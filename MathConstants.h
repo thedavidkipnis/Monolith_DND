@@ -62,7 +62,12 @@ inline std::vector<std::pair<int, int>> findPath(Room* room, int startX, int sta
             int nx = current.x + dx;
             int ny = current.y + dy;
 
-            if (!inBounds(nx, ny) || !room->getTile(nx, ny)->getIsWalkable() || closed[ny][nx])
+            if (!inBounds(nx, ny))
+                continue;
+
+            auto tile = room->getTile(nx, ny);
+
+            if (!tile->getIsWalkable() || tile->getIsOccupied() || closed[ny][nx])
                 continue;
 
             // Don't allow stepping onto the player's tile
