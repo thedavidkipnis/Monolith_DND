@@ -15,6 +15,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 2;
         description = "A PESKY GOBLIN";
         textureID = "goblin";
+        name = "GOBLIN";
         break;
     case SPIDER:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
@@ -23,6 +24,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 1;
         description = "AN OVERSIZED ARACHNID";
         textureID = "spider";
+        name = "SPIDER";
         break;
     case BANDIT:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
@@ -31,6 +33,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 2;
         description = "A MISCREANT";
         textureID = "bandit_" + std::to_string(getRandomIntInRange(1, 2));
+        name = "BANDIT";
         break;
     default:
         healthPoints = 0;
@@ -38,6 +41,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 0;
         description = "MISSING ENTITY DESCRIPTION";
         textureID = "none";
+        name = "NONE";
         break;
     }
 };

@@ -13,6 +13,7 @@ private:
     int x, y;
     int typeID;
     std::string description;
+    std::string name;
     std::string textureID;
 
     int healthPoints;
@@ -46,6 +47,9 @@ public:
 
     std::string getTextureID() const { return textureID; }
     void setTextureID(std::string texture) { textureID = texture; }
+
+    const std::string& getName() const { return name; }
+    void setName(const std::string& val) { name = val; }
 
     // Movement
     void setPosition(int newX, int newY);

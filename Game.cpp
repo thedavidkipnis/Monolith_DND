@@ -301,6 +301,8 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
             int location_x = (*it)->getX();
             int location_y = (*it)->getY();
 
+            std::string npcName = (*it)->getName();
+
             if (mouseX == location_x && mouseY == location_y) { // hit
 
                 if (NPCActionDisplayString.size() > 0) {
@@ -308,7 +310,7 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
                 }
 
                 int remainingHealth = (*it)->getHealthPoints() - player->getDamage();
-                NPCActionDisplayString += "HIT NPC FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
+                NPCActionDisplayString += "HIT " + npcName + " FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
                 if (remainingHealth > 0) {
                     (*it)->setHealthPoints(remainingHealth);
                     ++it;
@@ -322,7 +324,7 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
                     visualsManager->setFocusedNPC(nullptr);
                     delete* it;
                     it = roomNPCs->erase(it);
-                    NPCActionDisplayString += "NPC DIED.";
+                    NPCActionDisplayString += npcName + " DIED.";
 
                     dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->setIsOccupied(false);
                 }
@@ -352,6 +354,7 @@ void Game::processNPCLogic() {
         int oldNpcX = npc->getX();
         int oldNpcY = npc->getY();
         actionTaken = npc->triggerBehavior(currentRoom, player->getX(), player->getY());
+        std::string name = npc->getName();
 
         if (NPCActionDisplayString.size() > 0) {
             NPCActionDisplayString += "\n";
@@ -359,18 +362,18 @@ void Game::processNPCLogic() {
 
         switch (actionTaken) {
         case NPC_ATTACK_PLAYER:
-            NPCActionDisplayString += "NPC ATTACKED PLAYER WITH " + std::to_string(npc->getDamage()) + " DAMAGE";
+            NPCActionDisplayString += name + " ATTACKED PLAYER FOR " + std::to_string(npc->getDamage()) + " DAMAGE";
             player->setHealthPoints(player->getHealthPoints() - npc->getDamage());
             break;
         case NPC_MOVE:
-            NPCActionDisplayString += "NPC MOVED";
+            NPCActionDisplayString += name + " MOVED";
 
             currentRoom->getTile(oldNpcX, oldNpcY)->setIsOccupied(false);
             currentRoom->getTile(npc->getX(), npc->getY())->setIsOccupied(true);
 
             break;
         default:
-            NPCActionDisplayString += "NO NPC ACTION TAKEN";
+            NPCActionDisplayString += "NO ACTION TAKEN BY " + name;
             break;
         }
     }
