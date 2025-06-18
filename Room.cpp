@@ -58,8 +58,7 @@ void Room::createNewTile(int x, int y, int tileType) {
             newTile.setType(FLOOR);
             newTile.setIsWalkable(true);
 
-            std::string randDirtSuffix = std::to_string(getRandomIntInRange(1, 3));
-            newTile.setTexture("dirt_" + randDirtSuffix);
+            newTile.setTexture("dirt_" + std::to_string(getRandomIntInRange(1, 3)));
             newTile.setTileDescription("IT'S JUST DIRT...");
             break;
         }
@@ -67,18 +66,14 @@ void Room::createNewTile(int x, int y, int tileType) {
         {
             newTile.setType(TREE);
             newTile.setIsWalkable(false);
-
-            std::string randTreeSuffix = std::to_string(getRandomIntInRange(1, 2));
-            newTile.setTexture("tree_" + randTreeSuffix);
+            newTile.setTexture("tree_" + std::to_string(getRandomIntInRange(1, 2)));
             newTile.setTileDescription("A GOOD OL' TREE.");
             break;
         }
         case ROCK:
             newTile.setType(ROCK);
             newTile.setIsWalkable(false);
-
-            std::string randDirtSuffix = std::to_string(getRandomIntInRange(1, 2));
-            newTile.setTexture("rock_" + randDirtSuffix);
+            newTile.setTexture("rock_" + std::to_string(getRandomIntInRange(1, 2)));
             newTile.setTileDescription("IT'S JUST A ROCK...");
             break;
     }

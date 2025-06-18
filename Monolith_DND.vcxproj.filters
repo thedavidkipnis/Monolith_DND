@@ -385,21 +385,27 @@
     <Image Include="action_point.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="bandit_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bandit_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="tile_mapping_standard_0_1.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_1.csv">
+    <None Include="tile_mapping_encounter_0_1.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="npcs_mapping_encounter_1.csv">
+    <None Include="npcs_mapping_encounter_0_1.csv">
       <Filter>Rooms\RoomNPCMappings</Filter>
     </None>
-    <None Include="npcs_mapping_encounter_2.csv">
+    <None Include="npcs_mapping_encounter_0_2.csv">
       <Filter>Rooms\RoomNPCMappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_2.csv">
+    <None Include="tile_mapping_encounter_0_2.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
     <None Include="template.csv">
@@ -408,9 +414,14 @@
     <None Include="tile_mapping_standard_0_2.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="rand_tree_room.csv">
+    <None Include="tile_mapping_standard_0_3.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="tile_mapping_standard_0_3.csv" />
+    <None Include="tile_mapping_encounter_0_3.csv">
+      <Filter>Rooms\RoomTileMappings</Filter>
+    </None>
+    <None Include="npcs_mapping_encounter_0_3.csv">
+      <Filter>Rooms\RoomNPCMappings</Filter>
+    </None>
   </ItemGroup>
 </Project>

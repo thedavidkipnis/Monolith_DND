@@ -123,7 +123,8 @@ enum facingDirectionsForRendering {
 enum NPCTypes {
     NO_NPC = 0,
     GOBLIN = 1,
-    SPIDER = 2
+    SPIDER = 2,
+    BANDIT = 3
 };
 
 enum NPCActionTypes {

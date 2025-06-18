@@ -43,7 +43,7 @@ void Dungeon::generateFloorRooms(int maxRoomsOnFloor) {
 
             if (visited.count(newCoord) == 0) {
                 // Create the room
-                bool isEncounter = (rooms.size() >= 3 && rng() % 5 == 0); // ~20% chance for encounter after 3 rooms
+                bool isEncounter = (rooms.size() >= 2 && rng() % 2 == 0); // ~50% chance for encounter after 3 rooms
                 createRoom(newCoord, ROOM_WIDTH, ROOM_HEIGHT, isEncounter);
                 roomFrontier.push_back(newCoord);
                 visited.insert(newCoord);
@@ -62,8 +62,9 @@ void Dungeon::generateFloorRooms(int maxRoomsOnFloor) {
     // Setup connections for all rooms
     for (auto& [coord, room] : rooms) {
         if (room.get()->isRoomEncounter()) {
-            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_2.csv");
-            parseAndPopulateRoomNPCs(room.get(), "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_2.csv");
+            std::string roomEncounterSpec = std::to_string(getRandomIntInRange(1, 3));
+            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+            parseAndPopulateRoomNPCs(room.get(), "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_0_" + roomEncounterSpec + ".csv");
         }
         else {
             std::string randRoomSuffix = std::to_string(getRandomIntInRange(1, 3));

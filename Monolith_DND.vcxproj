@@ -180,6 +180,8 @@
     <Image Include="action_point.png" />
     <Image Include="action_point_empty.png" />
     <Image Include="action_point_half.png" />
+    <Image Include="bandit_1.png" />
+    <Image Include="bandit_2.png" />
     <Image Include="bonus_action_point.png" />
     <Image Include="bonus_action_point_empty.png" />
     <Image Include="camp_fire.png" />
@@ -254,13 +256,14 @@
     <Image Include="x_bnw_non_clicked.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="npcs_mapping_encounter_1.csv" />
-    <None Include="rand_tree_room.csv" />
-    <None Include="tile_mapping_encounter_1.csv" />
-    <None Include="npcs_mapping_encounter_2.csv" />
+    <None Include="npcs_mapping_encounter_0_1.csv" />
+    <None Include="npcs_mapping_encounter_0_3.csv" />
+    <None Include="tile_mapping_encounter_0_1.csv" />
+    <None Include="npcs_mapping_encounter_0_2.csv" />
+    <None Include="tile_mapping_encounter_0_3.csv" />
     <None Include="tile_mapping_standard_0_1.csv" />
     <None Include="template.csv" />
-    <None Include="tile_mapping_encounter_2.csv" />
+    <None Include="tile_mapping_encounter_0_2.csv" />
     <None Include="tile_mapping_standard_0_2.csv" />
     <None Include="tile_mapping_standard_0_3.csv" />
   </ItemGroup>

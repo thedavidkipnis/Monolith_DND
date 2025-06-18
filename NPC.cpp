@@ -24,6 +24,14 @@ NPC::NPC(int startX, int startY, int typeID) :
         description = "AN OVERSIZED ARACHNID";
         textureID = "spider";
         break;
+    case BANDIT:
+        behavior = std::make_unique<BehaviorAttackPlayerMelee>();
+        healthPoints = 3;
+        movementSpeed = 3;
+        damage = 2;
+        description = "A MISCREANT";
+        textureID = "bandit_" + std::to_string(getRandomIntInRange(1, 2));
+        break;
     default:
         healthPoints = 0;
         movementSpeed = 0;

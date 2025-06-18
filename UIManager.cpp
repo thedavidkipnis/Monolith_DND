@@ -220,6 +220,8 @@ void UIManager::loadAlphabetTextures() {
 void UIManager::loadNPCTextures() {
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/spider.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_1.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_2.png");
 
     std::cout << "Successfully loaded NPC textures.\n";
 
