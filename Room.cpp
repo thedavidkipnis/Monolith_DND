@@ -124,12 +124,6 @@ bool Room::isWalkable(int x, int y) const {
     return tile.getIsWalkable();
 }
 
-bool Room::isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const {
-    if (!isValidPosition(x, y)) return false;
-    Tile tile = Tiles[y][x];
-    return (tile.getIsWalkable() && tile.getType() != DOOR && (findDistanceInTiles(startX, startY, x, y) <= availableDistance));
-}
-
 void Room::addDoors(bool north, bool east, bool south, bool west) {
     int centerX = width / 2;
     int centerY = height / 2;

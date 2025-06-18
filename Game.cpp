@@ -4,6 +4,7 @@
 #include "Dungeon.h"
 #include "Room.h"
 #include "Constants.h"
+#include "MathConstants.h"
 #include <iostream>
 
 Game::Game()
@@ -141,17 +142,7 @@ void Game::handleInput() {
                     std::cout << "Attempting END TURN\n";
                     break;
                 case MOVE:
-                    if (curRoom->isWalkableTurnBased(player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft())) {
-                        player->makeMoveTurnBased(mouseX, mouseY);
-                    }
-                    else {
-                        if (findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()) > player->getMovementSpeedLeft()) {
-                            visualsManager->setUITextboxText("NOT ENOUGHT MOVEMENT SPEED LEFT");
-                        }
-                        else {
-                            visualsManager->setUITextboxText("INVALID LOCATION");
-                        }
-                    }
+                    processPlayerMove(mouseX, mouseY);
                     break;
                 default: // when user clicks on gameview with no selected action
 
@@ -269,6 +260,25 @@ void Game::movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int new
     player->makeMoveTurnBased(newX, newY);
     dungeon->getCurrentRoom()->getTile(oldX, oldY)->setIsOccupied(false);
     dungeon->getCurrentRoom()->getTile(newX, newY)->setIsOccupied(true);
+}
+
+void Game::processPlayerMove(int mouseX, int mouseY) {
+
+    std::string NPCActionDisplayString = "";
+    Tile* moveToTile = dungeon->getCurrentRoom()->getTile(mouseX, mouseY);
+
+    if (findPathForPlayer(dungeon->getCurrentRoom(), player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft()).size() < 1) {
+        NPCActionDisplayString = "TOO FAR TO MOVE TO.";
+    }
+    else if (!moveToTile->getIsWalkable() || moveToTile->getIsOccupied() || moveToTile->getType() == DOOR) {
+        NPCActionDisplayString = "INVALID LOCATION.";
+    }
+    else {
+        player->setMovementSpeedLeft(player->getMovementSpeedLeft() - findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()));
+        player->setPosition(mouseX, mouseY);
+    }
+
+    visualsManager->setUITextboxText(NPCActionDisplayString);
 }
 
 void Game::processPlayerAttack(int mouseX, int mouseY) {

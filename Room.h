@@ -36,7 +36,6 @@ public:
     void createNewTile(int x, int y, int tileType);
     bool isValidPosition(int x, int y) const;
     bool isWalkable(int x, int y) const;
-    bool isWalkableTurnBased(int startX, int startY, int x, int y, int availableDistance) const;
 
     // NPC access
     std::vector<NPC*>* getListOfNPCs();
