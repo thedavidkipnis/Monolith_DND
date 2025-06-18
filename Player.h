@@ -15,22 +15,33 @@ private:
     int maxHealthPoints;
     int healthPoints;
 
+    int maxActionCount;
+    int actionCountRemaining;
+    int maxBonusActionCount;
+    int bonusActionCountRemaining;
+
     int attackRange;
     int damage;
 
     int whichDirectionIsFacing;
 
 public:
-    Player(int startX, int startY, int movementSpeed, int maxHealthPoints, int attackRange, int damage);
+    Player(
+        int startX, 
+        int startY, 
+        int movementSpeed, 
+        int maxHealthPoints, 
+        int maxActionCount,
+        int maxBonusActionCount,
+        int attackRange, 
+        int damage);
 
-    // Getters
     int getX() const { return x; }
     int getY() const { return y; }
 
     int getXTile() const;
     int getYTile() const;
 
-    // Movement
     void setPosition(int newX, int newY);
 
     int getMovementSpeed() const { return movementSpeed; }
@@ -45,14 +56,24 @@ public:
     int getHealthPoints() const { return healthPoints; }
     void setHealthPoints(int hp);
 
+    int getMaxActionCount() const { return maxActionCount; }
+    void setMaxActionCount(int val) { maxActionCount = val; }
+
+    int getActionCountRemaining() const { return actionCountRemaining; }
+    void setActionCountRemaining(int val) { actionCountRemaining = val; }
+
+    int getMaxBonusActionCount() const { return maxBonusActionCount; }
+    void setMaxBonusActionCount(int val) { maxBonusActionCount = val; }
+
+    int getBonusActionCountRemaining() const { return bonusActionCountRemaining; }
+    void setBonusActionCountRemaining(int val) { bonusActionCountRemaining = val; }
+
     int getDamage() const { return damage; }
+    int getAttackRange() const { return attackRange; }
 
     int getWhichDirectionIsFacing() const { return whichDirectionIsFacing; }
     void setWhichDirectionIsFacing(int direction);
 
     void makeMoveTurnBased(int mouseX, int mouseY);
-
-    bool tryAttacking(int destX, int destY);
-    void attack(int destX, int destY); 
 
 };

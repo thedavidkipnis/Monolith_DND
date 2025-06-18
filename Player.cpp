@@ -1,13 +1,24 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(int startX, int startY, int movementSpeed, int maxHealthPoints, int attackRange, int damage) :
+Player::Player(int startX,
+    int startY,
+    int movementSpeed,
+    int maxHealthPoints,
+    int maxActionCount,
+    int maxBonusActionCount,
+    int attackRange,
+    int damage) :
     x(startX),
     y(startY),
     movementSpeed(movementSpeed),
     movementSpeedLeft(movementSpeed),
     maxHealthPoints(maxHealthPoints),
     healthPoints(maxHealthPoints),
+    maxActionCount(maxActionCount),
+    actionCountRemaining(maxActionCount),
+    maxBonusActionCount(maxBonusActionCount),
+    bonusActionCountRemaining(maxBonusActionCount),
     attackRange(attackRange),
     damage(damage),
     whichDirectionIsFacing(1){}
@@ -57,17 +68,4 @@ void Player::makeMoveTurnBased(int mouseX, int mouseY) {
     int distanceToPoint = findDistanceInTiles(x, y, mouseX, mouseY);
     setPosition(mouseX, mouseY);
     movementSpeedLeft -= distanceToPoint;
-}
-
-bool Player::tryAttacking(int destX, int destY) {
-    int distanceToDesiredPoint = findDistance(x, y, destX, destY);
-    return distanceToDesiredPoint <= attackRange;
-}
-
-void Player::attack(int destX, int destY) {
-    std::cout << "Attacked: ";
-    std::cout << destX;
-    std::cout << " ";
-    std::cout << destY;
-    std::cout << "\n";
 }

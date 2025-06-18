@@ -52,7 +52,15 @@ bool Game::initialize() {
     visualsManager = new UIManager(renderer);
 
     // Initialize game objects
-    player = std::make_unique<Player>(12, 9, 5, 8, 1, 3);
+    /*int startX,
+    int startY,
+    int movementSpeed,
+    int maxHealthPoints,
+    int maxActionCount,
+    int maxBonusActionCount,
+    int attackRange,
+    int damage*/
+    player = std::make_unique<Player>(12, 9, 5, 8, 2, 1, 1, 3);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateFloorRooms(15);
@@ -89,7 +97,7 @@ void Game::handleInput() {
 
         }
 
-        if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_M && e.key.repeat == 0) {
+        if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_TAB && e.key.repeat == 0) {
             mapView = !mapView;
         }
 
@@ -127,12 +135,7 @@ void Game::handleInput() {
 
                 switch (selectedPlayerAction) {
                 case ATTACK:
-                    if (player->tryAttacking(mouseX, mouseY)) {
-                        processPlayerAttack(mouseX, mouseY);
-                    }
-                    else {
-                        visualsManager->setUITextboxText("TOO FAR TO ATTACK");
-                    }
+                    processPlayerAttack(mouseX, mouseY);
                     break;
                 case END_TURN: // SHOULD NEVER BE AN OPTION
                     std::cout << "Attempting END TURN\n";
@@ -247,10 +250,14 @@ void Game::update() {
         curRoom->setRoomEncounterState(false);
         isPlayerInEncounter = false;
         player->setMovementSpeedLeft(player->getMovementSpeed());
+        player->setActionCountRemaining(player->getMaxActionCount());
+        player->setBonusActionCountRemaining(player->getMaxBonusActionCount());
     }
 
     if (selectedPlayerAction == END_TURN) {
         player->setMovementSpeedLeft(player->getMovementSpeed());
+        player->setActionCountRemaining(player->getMaxActionCount());
+        player->setBonusActionCountRemaining(player->getMaxBonusActionCount());
         selectedPlayerAction = NONE;
 
         processNPCLogic();
@@ -268,42 +275,57 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
 
     std::string NPCActionDisplayString = "";
 
-    std::vector<NPC*>* roomNPCs = dungeon->getCurrentRoom()->getListOfNPCs();
-    for (auto it = roomNPCs->begin(); it != roomNPCs->end(); ) {
-        int location_x = (*it)->getX();
-        int location_y = (*it)->getY();
+    int distanceToDesiredPoint = findDistance(mouseX, mouseY, player->getX(), player->getY());
+    if (distanceToDesiredPoint > player->getAttackRange()) {
+        NPCActionDisplayString = "TOO FAR TO ATTACK.";
+    }
+    else if (player->getActionCountRemaining() < 1) {
+        NPCActionDisplayString = "NOT ENOUGH ACTIONS LEFT TO ATTACK.";
+    }
+    else if (!dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
+        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
+        player->setActionCountRemaining(player->getActionCountRemaining() - 1);
+    }
+    else 
+    {
+        std::vector<NPC*>* roomNPCs = dungeon->getCurrentRoom()->getListOfNPCs();
+        for (auto it = roomNPCs->begin(); it != roomNPCs->end(); ) {
+            int location_x = (*it)->getX();
+            int location_y = (*it)->getY();
 
-        if (mouseX == location_x && mouseY == location_y) { // hit
-
-            if (NPCActionDisplayString.size() > 0) {
-                NPCActionDisplayString += "\n";
-            }
-
-            int remainingHealth = (*it)->getHealthPoints() - player->getDamage();
-            NPCActionDisplayString += "HIT NPC FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
-            if (remainingHealth > 0) {
-                (*it)->setHealthPoints(remainingHealth);
-                ++it;
-            }
-            else {
+            if (mouseX == location_x && mouseY == location_y) { // hit
 
                 if (NPCActionDisplayString.size() > 0) {
                     NPCActionDisplayString += "\n";
                 }
 
-                visualsManager->setFocusedNPC(nullptr);
-                delete* it;
-                it = roomNPCs->erase(it);
-                NPCActionDisplayString += "NPC DIED.";
+                int remainingHealth = (*it)->getHealthPoints() - player->getDamage();
+                NPCActionDisplayString += "HIT NPC FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
+                if (remainingHealth > 0) {
+                    (*it)->setHealthPoints(remainingHealth);
+                    ++it;
+                }
+                else {
+
+                    if (NPCActionDisplayString.size() > 0) {
+                        NPCActionDisplayString += "\n";
+                    }
+
+                    visualsManager->setFocusedNPC(nullptr);
+                    delete* it;
+                    it = roomNPCs->erase(it);
+                    NPCActionDisplayString += "NPC DIED.";
+                }
+
+                player->setActionCountRemaining(player->getActionCountRemaining() - 1);
+
+            }
+            else {
+                ++it;
             }
         }
-        else {
-            ++it;
-        }
     }
-    if (NPCActionDisplayString.size() < 1) {
-        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
-    }
+
     visualsManager->setUITextboxText(NPCActionDisplayString);
 }
 
