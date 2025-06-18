@@ -373,6 +373,18 @@
     <Image Include="fitz.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="bonus_action_point.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bonus_action_point_empty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="action_point_empty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="action_point.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="starter_room_tiles.csv">

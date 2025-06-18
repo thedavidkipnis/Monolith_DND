@@ -117,6 +117,10 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_movement_point.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/action_point.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/action_point_empty.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/bonus_action_point.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/bonus_action_point_empty.png");
 
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_small.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_large.png");
@@ -490,28 +494,36 @@ void UIManager::renderPlayerStats(Player* player) {
         emptyHealth -= 2;
     }
 
+    // movement speed
     int movementSpeedLeft = player->getMovementSpeedLeft();
     int emptyMovementSpeed = player->getMovementSpeed() - movementSpeedLeft;
 
-    // movement speed
-    int movementSpeedRenderStartX = TILE_SIZE;
-    int movementSpeedRenderStartY = 2 * TILE_SIZE;
-    int curMPOffset = 0;
-    while (movementSpeedLeft > 0) {
-        int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
-        SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
-        SDL_RenderCopy(renderer, TileTextures["movement_point"], nullptr, &MPArea);
+    renderPlayerStatsTile(TILE_SIZE, 2 * TILE_SIZE, movementSpeedLeft, emptyMovementSpeed, "movement_point", "empty_movement_point");
 
-        curMPOffset++;
-        movementSpeedLeft--;
+    // actions and bonus actions
+    int emptyActionPoints = player->getMaxActionCount() - player->getActionCountRemaining();
+    renderPlayerStatsTile(TILE_SIZE, 3*TILE_SIZE, player->getActionCountRemaining(), emptyActionPoints, "action_point", "action_point_empty");
+    int emptyBonusActionPoints = player->getMaxBonusActionCount() - player->getBonusActionCountRemaining();
+    renderPlayerStatsTile(TILE_SIZE, 4 * TILE_SIZE, player->getBonusActionCountRemaining(), emptyBonusActionPoints, "bonus_action_point", "bonus_action_point_empty");
+}
+
+void UIManager::renderPlayerStatsTile(int startX, int startY, int amount, int emptyAmount, std::string textureID, std::string textureLeftID) {
+    int offset = 0;
+    while (amount > 0) {
+        int renderStartX = startX + (offset * TILE_SIZE / 2);
+        SDL_Rect APArea = { renderStartX , startY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, TileTextures[textureID], nullptr, &APArea);
+
+        offset++;
+        amount--;
     }
-    while (emptyMovementSpeed > 0) {
-        int renderStartX = movementSpeedRenderStartX + (curMPOffset * TILE_SIZE / 2);
-        SDL_Rect MPArea = { renderStartX , movementSpeedRenderStartY, TILE_SIZE, TILE_SIZE };
-        SDL_RenderCopy(renderer, TileTextures["empty_movement_point"], nullptr, &MPArea);
+    while (emptyAmount > 0) {
+        int renderStartX = startX + (offset * TILE_SIZE / 2);
+        SDL_Rect APArea = { renderStartX , startY, TILE_SIZE, TILE_SIZE };
+        SDL_RenderCopy(renderer, TileTextures[textureLeftID], nullptr, &APArea);
 
-        curMPOffset++;
-        emptyMovementSpeed--;
+        offset++;
+        emptyAmount--;
     }
 }
 

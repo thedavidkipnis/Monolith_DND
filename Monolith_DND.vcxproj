@@ -177,7 +177,11 @@
     <Image Include="..\..\..\Downloads\num_9.png" />
     <Image Include="..\..\..\Downloads\prompt_start.png" />
     <Image Include="..\..\..\Downloads\semi_colon.png" />
+    <Image Include="action_point.png" />
+    <Image Include="action_point_empty.png" />
     <Image Include="action_point_half.png" />
+    <Image Include="bonus_action_point.png" />
+    <Image Include="bonus_action_point_empty.png" />
     <Image Include="camp_fire.png" />
     <Image Include="chest.png" />
     <Image Include="coins.png" />

@@ -65,6 +65,7 @@ private:
     void renderUITextBox();
     void renderNPCFocusBox();
     void renderPlayerStats(Player* player);
+    void renderPlayerStatsTile(int startX, int startY, int amount, int emptyAmount, std::string textureID, std::string textureLeftID);
     void renderPlayer(int playerLocationX, int playerLocationY, int facingDirection);
     void renderDarkness(int playerLocationX, int playerLocationY);
     void renderCurrentRoom(Room* currentRoom);
