@@ -11,7 +11,7 @@ NPC::NPC(int startX, int startY, int typeID) :
     case GOBLIN:
         behavior = std::make_unique<BehaviorAttackPlayerMelee>();
         healthPoints = 5;
-        movementSpeed = 3;
+        movementSpeed = 4;
         damage = 2;
         description = "A PESKY GOBLIN";
         textureID = "goblin";
