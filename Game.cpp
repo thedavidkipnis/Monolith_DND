@@ -293,64 +293,84 @@ void Game::processPlayerMove(int mouseX, int mouseY) {
 
 void Game::processPlayerAttack(int mouseX, int mouseY) {
 
-    std::string NPCActionDisplayString = "";
+    std::string ActionDisplayString = "";
 
     int distanceToDesiredPoint = findDistance(mouseX, mouseY, player->getX(), player->getY());
     if (distanceToDesiredPoint > player->getAttackRange()) {
-        NPCActionDisplayString = "TOO FAR TO ATTACK.";
+        ActionDisplayString = "TOO FAR TO ATTACK.";
     }
     else if (player->getActionCountRemaining() < 1) {
-        NPCActionDisplayString = "NOT ENOUGH ACTIONS LEFT TO ATTACK.";
+        ActionDisplayString = "NOT ENOUGH ACTIONS LEFT TO ATTACK.";
     }
     else if (!dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
-        NPCActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
+        ActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
         player->setActionCountRemaining(player->getActionCountRemaining() - 1);
     }
     else 
     {
-        std::vector<NPC*>* roomNPCs = dungeon->getCurrentRoom()->getListOfNPCs();
-        for (auto it = roomNPCs->begin(); it != roomNPCs->end(); ) {
-            int location_x = (*it)->getX();
-            int location_y = (*it)->getY();
+        Room* curRoom = dungeon->getCurrentRoom();
+        if (curRoom->getNPCAt(mouseX, mouseY)) { // hit npc
+            NPC* npc = curRoom->getNPCAt(mouseX, mouseY);
 
-            std::string npcName = (*it)->getName();
+            if (ActionDisplayString.size() > 0) {
+                ActionDisplayString += "\n";
+            }
 
-            if (mouseX == location_x && mouseY == location_y) { // hit
-
-                if (NPCActionDisplayString.size() > 0) {
-                    NPCActionDisplayString += "\n";
-                }
-
-                int remainingHealth = (*it)->getHealthPoints() - player->getDamage();
-                NPCActionDisplayString += "HIT " + npcName + " FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
-                if (remainingHealth > 0) {
-                    (*it)->setHealthPoints(remainingHealth);
-                    ++it;
-                }
-                else {
-
-                    if (NPCActionDisplayString.size() > 0) {
-                        NPCActionDisplayString += "\n";
-                    }
-
-                    visualsManager->setFocusedNPC(nullptr);
-                    delete* it;
-                    it = roomNPCs->erase(it);
-                    NPCActionDisplayString += npcName + " DIED.";
-
-                    dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->setIsOccupied(false);
-                }
-
-                player->setActionCountRemaining(player->getActionCountRemaining() - 1);
-
+            int remainingHealth = npc->getHealthPoints() - player->getDamage();
+            ActionDisplayString += "HIT " + npc->getName() + " FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
+            if (remainingHealth > 0) {
+                npc->setHealthPoints(remainingHealth);
             }
             else {
-                ++it;
+
+                if (ActionDisplayString.size() > 0) {
+                    ActionDisplayString += "\n";
+                }
+
+                std::vector<NPC*>* npcs = curRoom->getListOfNPCs();
+
+                visualsManager->setFocusedNPC(nullptr);
+                ActionDisplayString += npc->getName() + " DIED.";
+                delete npc;
+                npcs->erase(std::remove(npcs->begin(), npcs->end(), npc), npcs->end());
+
+                dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->setIsOccupied(false);
+            }
+
+        } 
+        else if (curRoom->getObjectAt(mouseX, mouseY)) { // hit object
+            Object* obj = curRoom->getObjectAt(mouseX, mouseY);
+
+            if (ActionDisplayString.size() > 0) {
+                ActionDisplayString += "\n";
+            }
+
+            int remainingHitPoints = obj->getHitPoints() - player->getDamage();
+            ActionDisplayString += "HIT " + obj->getName() + " FOR " + std::to_string(player->getDamage()) + " DAMAGE.";
+            if (remainingHitPoints > 0) {
+                obj->setHitPoints(remainingHitPoints);
+            }
+            else {
+
+                if (ActionDisplayString.size() > 0) {
+                    ActionDisplayString += "\n";
+                }
+
+                std::vector<Object*>* objects = curRoom->getObjects();
+
+                ActionDisplayString += obj->getName() + " BROKE INTO PIECES.";
+                delete obj;
+                objects->erase(std::remove(objects->begin(), objects->end(), obj), objects->end());
+
+                dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->setIsOccupied(false);
             }
         }
+
+        player->setActionCountRemaining(player->getActionCountRemaining() - 1);
+
     }
 
-    visualsManager->setUITextboxText(NPCActionDisplayString);
+    visualsManager->setUITextboxText(ActionDisplayString);
 }
 
 void Game::processNPCLogic() {
