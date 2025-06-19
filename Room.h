@@ -11,6 +11,7 @@
 #include "Constants.h"
 #include "Player.h"
 #include "NPC.h"
+#include "Object.h"
 
 class Room {
 private:
@@ -23,6 +24,7 @@ private:
     bool roomNoticedOnMap;
 
     std::vector<NPC*> roomNPCs;
+    std::vector<Object*> roomObjects;
 
 public:
     Room();
@@ -41,6 +43,11 @@ public:
     std::vector<NPC*>* getListOfNPCs();
     NPC* getNPCAt(int x, int y);
     void addNPCToRoom(int x, int y, int type);
+
+    // Object access
+    std::vector<Object*>* getObjects();
+    Object* getObjectAt(int x, int y);
+    void addObjectToRoom(int x, int y, int type);
 
     // Room generation
     void addDoors(bool north, bool east, bool south, bool west);

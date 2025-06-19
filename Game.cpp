@@ -146,9 +146,17 @@ void Game::handleInput() {
                     break;
                 default: // when user clicks on gameview with no selected action
 
-                    if (dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
-                        visualsManager->setFocusedNPC(curRoom->getNPCAt(mouseX, mouseY));
-                        visualsManager->setUITextboxText(curRoom->getNPCAt(mouseX, mouseY)->getDescription());
+                    if (curRoom->getTile(mouseX, mouseY)->getIsOccupied()) {
+                        if(curRoom->getNPCAt(mouseX, mouseY)) // found an npc
+                        {
+                            visualsManager->setFocusedNPC(curRoom->getNPCAt(mouseX, mouseY));
+                            visualsManager->setUITextboxText(curRoom->getNPCAt(mouseX, mouseY)->getDescription());
+                        }
+                        else if (curRoom->getObjectAt(mouseX, mouseY)) // found object
+                        {
+                            visualsManager->setFocusedNPC(nullptr);
+                            visualsManager->setUITextboxText(curRoom->getObjectAt(mouseX, mouseY)->getDescription());
+                        }
                     }
                     else {
                         visualsManager->setUITextboxText(curRoom->getTile(mouseX, mouseY)->getTileDescription());
@@ -194,7 +202,8 @@ void Game::handleInput() {
 
             // Try to move player
             if (deltaX != 0 || deltaY != 0) {
-                if (curRoom && curRoom->isWalkable(deltaX + player->getX(), deltaY + player->getY())) {
+                if (curRoom && curRoom->isWalkable(deltaX + player->getX(), deltaY + player->getY()) 
+                    && !curRoom->getTile(deltaX + player->getX(), deltaY + player->getY())->getIsOccupied()) {
                     player->setPosition(deltaX + player->getX(), deltaY + player->getY());
                     lastMoveTime = currentTime;
 
@@ -265,8 +274,11 @@ void Game::processPlayerMove(int mouseX, int mouseY) {
     std::string NPCActionDisplayString = "";
     Tile* moveToTile = dungeon->getCurrentRoom()->getTile(mouseX, mouseY);
 
-    if (findPathForPlayer(dungeon->getCurrentRoom(), player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft()).size() < 1) {
-        NPCActionDisplayString = "TOO FAR TO MOVE TO.";
+    if (findDistanceInTiles(player->getX(), player->getY(), mouseX, mouseY) > player->getMovementSpeedLeft()) {
+        NPCActionDisplayString = "TOO FAR AWAY TO MOVE THERE.";
+    }
+    else if (findPathForPlayer(dungeon->getCurrentRoom(), player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft()).size() < 1) {
+        NPCActionDisplayString = "NO PATH TO MOVE THERE.";
     }
     else if (!moveToTile->getIsWalkable() || moveToTile->getIsOccupied() || moveToTile->getType() == DOOR) {
         NPCActionDisplayString = "INVALID LOCATION.";

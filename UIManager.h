@@ -53,10 +53,12 @@ private:
     void loadTexture(const char* filePath, SDL_Texture*& destinationTexture);
     void loadTileTexture(const char* filePath);
     void loadNPCTexture(const char* filePath);
+    void loadObjectTexture(const char* filePath);
     void loadTextures();
     void loadPlayerTextures();
     void loadAlphabetTextures();
     void loadNPCTextures();
+    void loadObjectTextures();
     void loadUIButtons();
     void renderGameView(Room* currentRoom, Player* player);
     void renderUIPanel(SDL_Rect panel);

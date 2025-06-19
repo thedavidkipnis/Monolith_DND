@@ -94,11 +94,29 @@ NPC* Room::getNPCAt(int x, int y) {
     return nullptr;
 }
 
-
 void Room::addNPCToRoom(int x, int y, int type) {
     NPC* newNPC = new NPC(x,y, type);
     roomNPCs.push_back(newNPC);
     Tiles[y][x].setIsOccupied(true);
+}
+
+std::vector<Object*>* Room::getObjects() {
+    return &roomObjects;
+}
+
+Object* Room::getObjectAt(int x, int y) {
+    for (Object* obj : roomObjects) {
+        if (obj->getX() == x && obj->getY() == y) {
+            return obj;
+        }
+    }
+    return nullptr;
+}
+
+void Room::addObjectToRoom(int x, int y, int type) {
+    Object* newObj = new Object(x, y, type);
+    roomObjects.push_back(newObj);
+    Tiles[y][x].setIsOccupied(!newObj->getIsCollectable());
 }
 
 bool Room::isRoomEncounter() const {

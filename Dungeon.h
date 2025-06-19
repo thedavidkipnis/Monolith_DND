@@ -56,6 +56,7 @@ public:
 
 private:
     void createRoom(const RoomCoord& coord, int width, int height, bool isEncounter);
+    void populateRoom(Room* room);
     void parseAndPopulateRoomTiles(Room* room, const std::string& filename);
     void parseAndPopulateRoomNPCs(Room* room, const std::string& filename);
     void parseAndPopulateRoomObjects(Room* room, const std::string& filename);

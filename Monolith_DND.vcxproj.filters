@@ -31,6 +31,15 @@
     <Filter Include="Rooms\RoomNPCMappings">
       <UniqueIdentifier>{3874d286-39cd-4cae-b8f6-0581c92085f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rooms\EncounterTileMappings">
+      <UniqueIdentifier>{9896756e-5e85-4176-ab61-d7e280f5a9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rooms\EncounterObjectMappings">
+      <UniqueIdentifier>{df9b3eaa-7255-4c8a-8ee2-d2d471eae273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rooms\EncounterNPCMappings">
+      <UniqueIdentifier>{c859476f-ca72-4f96-adce-e7a576a8fd44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_game.cpp">
@@ -64,6 +73,9 @@
       <Filter>NPC Behaviors</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +117,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MathConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -396,32 +411,50 @@
     <None Include="tile_mapping_standard_0_1.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_0_1.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
-    </None>
-    <None Include="npcs_mapping_encounter_0_1.csv">
-      <Filter>Rooms\RoomNPCMappings</Filter>
-    </None>
-    <None Include="npcs_mapping_encounter_0_2.csv">
-      <Filter>Rooms\RoomNPCMappings</Filter>
-    </None>
-    <None Include="tile_mapping_encounter_0_2.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
-    </None>
-    <None Include="template.csv">
-      <Filter>Rooms\RoomNPCMappings</Filter>
-    </None>
     <None Include="tile_mapping_standard_0_2.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
     <None Include="tile_mapping_standard_0_3.csv">
       <Filter>Rooms\RoomTileMappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_0_3.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
+    <None Include="npcs_mapping_encounter_0_1.csv">
+      <Filter>Rooms\EncounterNPCMappings</Filter>
+    </None>
+    <None Include="npcs_mapping_encounter_0_2.csv">
+      <Filter>Rooms\EncounterNPCMappings</Filter>
     </None>
     <None Include="npcs_mapping_encounter_0_3.csv">
-      <Filter>Rooms\RoomNPCMappings</Filter>
+      <Filter>Rooms\EncounterNPCMappings</Filter>
+    </None>
+    <None Include="template.csv">
+      <Filter>Rooms</Filter>
+    </None>
+    <None Include="tile_mapping_encounter_0_3.csv">
+      <Filter>Rooms\EncounterTileMappings</Filter>
+    </None>
+    <None Include="tile_mapping_encounter_0_1.csv">
+      <Filter>Rooms\EncounterTileMappings</Filter>
+    </None>
+    <None Include="tile_mapping_encounter_0_2.csv">
+      <Filter>Rooms\EncounterTileMappings</Filter>
+    </None>
+    <None Include="object_mapping_standard_0_1.csv">
+      <Filter>Rooms\RoomObjectMappings</Filter>
+    </None>
+    <None Include="object_mapping_standard_0_2.csv">
+      <Filter>Rooms\RoomObjectMappings</Filter>
+    </None>
+    <None Include="object_mapping_standard_0_3.csv">
+      <Filter>Rooms\RoomObjectMappings</Filter>
+    </None>
+    <None Include="object_mapping_encounter_0_1.csv">
+      <Filter>Rooms\EncounterObjectMappings</Filter>
+    </None>
+    <None Include="object_mapping_encounter_0_2.csv">
+      <Filter>Rooms\EncounterObjectMappings</Filter>
+    </None>
+    <None Include="object_mapping_encounter_0_3.csv">
+      <Filter>Rooms\EncounterObjectMappings</Filter>
     </None>
   </ItemGroup>
 </Project>
