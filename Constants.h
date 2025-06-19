@@ -133,6 +133,14 @@ enum NPCActionTypes {
     NPC_ATTACK_PLAYER = 2
 };
 
+enum ObjectTypes {
+    NO_OBJECT = 0,
+    BARREL = 1,
+    CAMPFIRE = 2,
+    GOLD_COINS = 3,
+    CHEST = 4
+};
+
 // Math Stuff
 inline int findDistanceInTiles(int x1, int y1, int x2, int y2) {
 

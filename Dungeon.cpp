@@ -61,24 +61,29 @@ void Dungeon::generateFloorRooms(int maxRoomsOnFloor) {
 
     // Setup connections for all rooms
     for (auto& [coord, room] : rooms) {
-        if (room.get()->isRoomEncounter()) {
-            std::string roomEncounterSpec = std::to_string(getRandomIntInRange(1, 3));
-            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_0_" + roomEncounterSpec + ".csv");
-            parseAndPopulateRoomNPCs(room.get(), "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_0_" + roomEncounterSpec + ".csv");
-        }
-        else {
-            std::string randRoomSuffix = std::to_string(getRandomIntInRange(1, 3));
-            parseAndPopulateRoomTiles(room.get(), "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_standard_0_" + randRoomSuffix + ".csv");
-        }
-
+        populateRoom(room.get());
         setupRoomConnections(coord);
-
     }
 }
 
 void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isEncounter) {
     rooms[coord] = std::make_unique<Room>(width, height, isEncounter);
 }
+
+void Dungeon::populateRoom(Room* room) {
+    if (room->isRoomEncounter()) {
+        std::string roomEncounterSpec = std::to_string(getRandomIntInRange(1, 3));
+        parseAndPopulateRoomTiles(room, "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+        parseAndPopulateRoomNPCs(room, "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+        parseAndPopulateRoomObjects(room, "C:/Users/theda/source/repos/Monolith_DND/object_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+    }
+    else {
+        std::string randRoomSuffix = std::to_string(getRandomIntInRange(1, 3));
+        parseAndPopulateRoomTiles(room, "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_standard_0_" + randRoomSuffix + ".csv");
+        parseAndPopulateRoomObjects(room, "C:/Users/theda/source/repos/Monolith_DND/object_mapping_standard_0_" + randRoomSuffix + ".csv");
+    }
+}
+
 
 void Dungeon::setupRoomConnections(const RoomCoord& coord) {
     bool north = hasNeighbor(coord, NORTH);
@@ -122,7 +127,7 @@ void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) 
     std::ifstream file(filename);
 
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file '" << filename << "'\n";
+        std::cerr << "No NPC in file: '" << filename << "'\n";
         return;
     }
 
@@ -150,7 +155,35 @@ void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) 
     file.close();
 }
 void Dungeon::parseAndPopulateRoomObjects(Room* room, const std::string& filename) {
+    std::ifstream file(filename);
 
+    if (!file.is_open()) {
+        std::cerr << "No objects in file: '" << filename << "'\n";
+        return;
+    }
+
+    int roomIndexX = 0;
+    int roomIndexY = 0;
+
+    char c;
+    while (file.get(c)) {
+
+        if (c == '\n') {
+            roomIndexX++;
+            roomIndexY = 0;
+        }
+        else if (c != ',' && c != ' ')
+        {
+            int ca = c - '0';
+
+            if (ca != 0) {
+                room->addObjectToRoom(roomIndexY, roomIndexX, ca);
+            }
+            roomIndexY++;
+        }
+    }
+
+    file.close();
 }
 
 Room* Dungeon::getCurrentRoom() {

@@ -4,6 +4,7 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 	loadTextures();
     loadAlphabetTextures();
     loadNPCTextures();
+    loadObjectTextures();
     loadUIButtons();
 
     gameView = { UI_SIDE_PANEL_WIDTH, 0, GAMEVIEW_WIDTH, GAMEVIEW_HEIGHT };
@@ -78,6 +79,23 @@ void UIManager::loadNPCTexture(const char* filePath) {
     std::string newNPCTextureID = extractFileName(filePath);
 
     NPCTextures[newNPCTextureID] = newNPCTexture;
+}
+
+void UIManager::loadObjectTexture(const char* filePath) {
+    SDL_Surface* surface = IMG_Load(filePath);
+    if (!surface) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    }
+
+    SDL_Texture* newObjTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!newObjTexture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+    }
+    std::string newObjTextureID = extractFileName(filePath);
+
+    NPCTextures[newObjTextureID] = newObjTexture;
 }
 
 void UIManager::loadTextures() {
@@ -224,6 +242,16 @@ void UIManager::loadNPCTextures() {
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_2.png");
 
     std::cout << "Successfully loaded NPC textures.\n";
+
+}
+
+void UIManager::loadObjectTextures() {
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/camp_fire.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/coins.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/barrel.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/chest.png");
+
+    std::cout << "Successfully loaded Object textures.\n";
 
 }
 
@@ -451,6 +479,7 @@ void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderPlayer(player->getXTile(), player->getYTile(), player->getWhichDirectionIsFacing());
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
+    renderCurrentRoomObjects(currentRoom);
     //renderDarkness(player->getXTile(), player->getYTile());
 };
 
@@ -547,7 +576,6 @@ void UIManager::renderCurrentRoom(Room* currentRoom) {
 };
 
 void UIManager::renderCurrentRoomNPCs(Room* currentRoom) {
-
     if (currentRoom->getListOfNPCs()->size() > 0) {
         std::vector<NPC*>* npcs = currentRoom->getListOfNPCs();
         for (NPC* npc : *npcs) {
@@ -571,7 +599,26 @@ void UIManager::renderCurrentRoomNPCs(Room* currentRoom) {
 };
 
 void UIManager::renderCurrentRoomObjects(Room* currentRoom) {
+    if (currentRoom->getObjects()->size() > 0) {
+        std::vector<Object*>* objects = currentRoom->getObjects();
+        for (Object* obj : *objects) {
+            int location_x = obj->getX();
+            int location_y = obj->getY();
 
+            SDL_Rect ObjectFrame = { (location_x * TILE_SIZE) + GAMEVIEW_START_X,
+                                  (location_y * TILE_SIZE) + GAMEVIEW_START_Y,
+                                   TILE_SIZE,
+                                   TILE_SIZE };
+
+            try {
+                SDL_RenderCopy(renderer, NPCTextures[obj->getTextureID()], nullptr, &ObjectFrame);
+            }
+            catch (const std::runtime_error& e) {
+                std::cerr << "Caught exception during Object texture rendering: " << e.what() << std::endl;
+            }
+
+        }
+    }
 }
 
 void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {

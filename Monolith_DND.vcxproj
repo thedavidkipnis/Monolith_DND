@@ -138,6 +138,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="MathConstants.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="NPCBehavior.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="Tile.h" />
@@ -258,6 +260,12 @@
   <ItemGroup>
     <None Include="npcs_mapping_encounter_0_1.csv" />
     <None Include="npcs_mapping_encounter_0_3.csv" />
+    <None Include="object_mapping_encounter_0_1.csv" />
+    <None Include="object_mapping_encounter_0_2.csv" />
+    <None Include="object_mapping_encounter_0_3.csv" />
+    <None Include="object_mapping_standard_0_1.csv" />
+    <None Include="object_mapping_standard_0_2.csv" />
+    <None Include="object_mapping_standard_0_3.csv" />
     <None Include="tile_mapping_encounter_0_1.csv" />
     <None Include="npcs_mapping_encounter_0_2.csv" />
     <None Include="tile_mapping_encounter_0_3.csv" />
