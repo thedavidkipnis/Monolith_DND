@@ -51,11 +51,14 @@ bool Game::initialize() {
     int startY,
     int movementSpeed,
     int maxHealthPoints,
+    int maxInventorySize,
     int maxActionCount,
     int maxBonusActionCount,
     int attackRange,
     int damage*/
-    player = std::make_unique<Player>(12, 9, 5, 8, 1, 1, 1, 3);
+    player = std::make_unique<Player>(12, 9, 5, 8, 5, 1, 1, 1, 3);
+
+    //Object* potion1 = new Object(0,0,0);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateFloorRooms(15);
@@ -422,7 +425,7 @@ void Game::render() {
         else {
 
             Room* currentRoom = dungeon->getCurrentRoom();
-            visualsManager->render(currentRoom, player.get(), selectedPlayerAction, inventoryView);
+            visualsManager->render(currentRoom, player.get(), &playerInventory, selectedPlayerAction, inventoryView);
             visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
         } 
     }

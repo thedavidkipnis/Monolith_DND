@@ -15,6 +15,8 @@ private:
     int maxHealthPoints;
     int healthPoints;
 
+    int maxInventorySize;
+
     int maxActionCount;
     int actionCountRemaining;
     int maxBonusActionCount;
@@ -31,6 +33,7 @@ public:
         int startY, 
         int movementSpeed, 
         int maxHealthPoints, 
+        int maxInventorySize,
         int maxActionCount,
         int maxBonusActionCount,
         int attackRange, 
@@ -55,6 +58,9 @@ public:
 
     int getHealthPoints() const { return healthPoints; }
     void setHealthPoints(int hp);
+
+    int getMaxInventorySize() const { return maxInventorySize; }
+    void setMaxInventorySize(int size) { maxInventorySize = size; }
 
     int getMaxActionCount() const { return maxActionCount; }
     void setMaxActionCount(int val) { maxActionCount = val; }

@@ -486,7 +486,7 @@ void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
     renderCurrentRoomObjects(currentRoom);
-    renderDarkness(player->getXTile(), player->getYTile());
+    // renderDarkness(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
@@ -656,14 +656,14 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     }
 }
 
-void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerAction, bool inInventoryView) {
+void UIManager::render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
     renderUI(player);
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
     if (inInventoryView) {
-        renderInventory(player);
+        renderInventory(playerInventory, player->getMaxInventorySize());
     }
     else {
         renderGameView(currentRoom, player);
@@ -675,19 +675,24 @@ void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerActi
     frameCount++;
 };
 
-void UIManager::renderInventory(Player* player) {
-    int xOffset = 0;
-    int yOffset = 0;
+void UIManager::renderInventory(std::vector<Object>* playerInventory, int maxInventorySize) {
+    int possibleWidth = GAMEVIEW_WIDTH / (2*TILE_SIZE);
+    int possibleHeight = GAMEVIEW_HEIGHT / (2 * TILE_SIZE);
 
-    for (size_t i = 0; i < 12; i++)
+    for (size_t i = 0; i < possibleHeight; i++)
     {
-        for (size_t j = 0; j < 9; j++)
+        for (size_t j = 0; j < possibleWidth; j++)
         {
             SDL_Rect inventoryIconFrame = { 
-                UI_INVENTORY_START_X + (i * 2 * TILE_SIZE), 
-                UI_INVENTORY_START_Y + (j * 2 * TILE_SIZE), 
+                UI_INVENTORY_START_X + (j * 2 * TILE_SIZE), 
+                UI_INVENTORY_START_Y + (i * 2 * TILE_SIZE), 
                 TILE_SIZE * 2 , TILE_SIZE * 2};
             SDL_RenderCopy(renderer, TileTextures["inventory_empty_slot"], nullptr, &inventoryIconFrame);
+            maxInventorySize--;
+
+            if (maxInventorySize == 0) {
+                return;
+            }
         }
     }
 }

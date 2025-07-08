@@ -74,14 +74,14 @@ private:
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
     void renderUI(Player* player);
-    void renderInventory(Player* player);
+    void renderInventory(std::vector<Object>* playerInventory, int maxInventorySize);
 
 public:
 
     UIManager(SDL_Renderer* renderer);
     ~UIManager();
 
-    void render(Room* currentRoom, Player* player, int selectedPlayerAction, bool inInventoryView);
+    void render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView);
     void setUITextboxText(std::string text);
 
     void setFocusedNPC(NPC* npc);
