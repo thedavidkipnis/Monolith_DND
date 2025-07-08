@@ -298,8 +298,8 @@ void UIManager::renderUIButton(UIButton* button) {
         break;
     }
 
-    SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-    SDL_RenderDrawRect(renderer, &button->getButtonArea());
+    /*SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
+    SDL_RenderDrawRect(renderer, &button->getButtonArea());*/
 };
 
 void UIManager::renderUITextBox() {
@@ -388,14 +388,17 @@ void UIManager::setFocusedNPC(NPC* npc) {
     focusedNPC = npc;
 }
 
-void UIManager::renderUI(Player* player) {
+void UIManager::renderUI(Player* player, bool inventoryView) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
 
-    renderUIButton(attackButton);
-    renderUIButton(moveButton);
-    renderUIButton(endTurnButton);
+    if(!inventoryView)
+    {
+        renderUIButton(attackButton);
+        renderUIButton(moveButton);
+        renderUIButton(endTurnButton);
+    }
 
     renderUITextBox();
 
@@ -644,9 +647,10 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
 void UIManager::render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
-
-    renderUI(player);
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
+
+    renderUI(player, inInventoryView);
+
     if (inInventoryView) {
         renderInventory(playerInventory, player->getMaxInventorySize());
     }
@@ -661,8 +665,8 @@ void UIManager::render(Room* currentRoom, Player* player, std::vector<Object>* p
 };
 
 void UIManager::renderInventory(std::vector<Object>* playerInventory, int maxInventorySize) {
-    int possibleWidth = GAMEVIEW_WIDTH / (2*TILE_SIZE);
-    int possibleHeight = GAMEVIEW_HEIGHT / (2 * TILE_SIZE);
+    int possibleWidth = UI_INVENTORY_WIDTH / (2*TILE_SIZE);
+    int possibleHeight = UI_INVENTORY_HEIGHT / (2 * TILE_SIZE);
 
     int inventoryRenderCounter = 0;
 

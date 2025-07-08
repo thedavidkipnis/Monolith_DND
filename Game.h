@@ -22,6 +22,7 @@ private:
 
     std::unique_ptr<Player> player;
     std::vector<Object> playerInventory;
+    Object* selectedInventoryItem;
 
     std::unique_ptr<Dungeon> dungeon;
 

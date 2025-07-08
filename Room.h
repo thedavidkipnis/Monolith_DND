@@ -47,7 +47,8 @@ public:
     // Object access
     std::vector<Object*>* getObjects();
     Object* getObjectAt(int x, int y);
-    void addObjectToRoom(int x, int y, int hitPoints, bool isCollectable, std::string description, std::string name, std::string textureID);
+    void addObjectToRoom(Object* obj);
+    void removeObject(Object* target);
 
     // Room generation
     void addDoors(bool north, bool east, bool south, bool west);

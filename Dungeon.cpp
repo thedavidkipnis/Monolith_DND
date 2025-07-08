@@ -205,7 +205,8 @@ void Dungeon::parseAndPopulateRoomObjects(Room* room, const std::string& filenam
         trim(textureID);
 
         // Add the object using your existing function
-        room->addObjectToRoom(x,y,hitPoints, isCollectable, description, name, textureID);
+        Object* newObject = new Object(x, y, hitPoints, isCollectable, description, name, textureID);
+        room->addObjectToRoom(newObject);
     }
 
     file.close();

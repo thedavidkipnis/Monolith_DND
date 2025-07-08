@@ -56,6 +56,8 @@ const int UI_MINIMAP_HEIGHT = 4 * TILE_SIZE;
 // Inventory layout
 const int UI_INVENTORY_START_X = GAMEVIEW_START_X + (TILE_SIZE / 2);
 const int UI_INVENTORY_START_Y = (TILE_SIZE / 2);
+const int UI_INVENTORY_HEIGHT = GAMEVIEW_HEIGHT - TILE_SIZE;
+const int UI_INVENTORY_WIDTH = GAMEVIEW_WIDTH - TILE_SIZE;
 
 // UI NPC Focus Box
 const int UI_NPC_FOCUS_BOX_START_X = GAMEVIEW_START_X + GAMEVIEW_WIDTH + (0.5 * TILE_SIZE);
@@ -184,4 +186,14 @@ inline int getRandomIntInRange(int min, int max) {
 
     std::uniform_int_distribution<> dist(min, max);
     return dist(gen);
+}
+
+inline int getInventoryIndexAtClick(int mouseX, int mouseY) {
+
+    int maxPerRow = GAMEVIEW_WIDTH / (2 * TILE_SIZE);
+
+    int col = (mouseX - UI_INVENTORY_START_X) / (TILE_SIZE * 2);
+    int row = (mouseY - UI_INVENTORY_START_Y) / (TILE_SIZE * 2);
+
+    return (row * maxPerRow) + col;
 }

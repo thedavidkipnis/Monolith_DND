@@ -56,19 +56,20 @@ bool Game::initialize() {
     int maxBonusActionCount,
     int attackRange,
     int damage*/
-    player = std::make_unique<Player>(12, 9, 5, 8, 5, 1, 1, 1, 3);
+    player = std::make_unique<Player>(12, 9, 5, 8, 10, 1, 1, 1, 3);
+    selectedInventoryItem = nullptr;
 
-    Object potion1 = Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
-    playerInventory.push_back(potion1);
-    potion1 = Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
-    playerInventory.push_back(potion1);
-    Object potion2 = Object(-1, -1, 1, true, "AN ENERGIZING ELIXIR", "ENERGY POTION", "energy_potion");
-    playerInventory.push_back(potion2);
+    Object* potion1 = new Object(14, 9, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
+    Object* potion2 = new Object(10, 9, 1, true, "AN ENERGIZING ELIXIR", "ENERGY POTION", "energy_potion");
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateFloorRooms(15);
 
     isPlayerInEncounter = false;
+
+    dungeon->getCurrentRoom()->addObjectToRoom(potion1);
+    dungeon->getCurrentRoom()->addObjectToRoom(potion2);
+
 
     keyState = SDL_GetKeyboardState(nullptr);
     running = true;
@@ -106,10 +107,34 @@ void Game::handleInput() {
 
         if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_TAB && e.key.repeat == 0) {
             inventoryView = !inventoryView;
+            visualsManager->setUITextboxText(" ...");
             if (mapView) { mapView = false; }
         }
 
-        if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT && !mapView && !inventoryView) {
+        // Input in inventory view
+        if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT && inventoryView) {
+            // interacting with inventory view
+            if(e.button.x > UI_INVENTORY_START_X && e.button.x < UI_INVENTORY_START_X + UI_INVENTORY_WIDTH
+                && e.button.y > UI_INVENTORY_START_Y && e.button.y < UI_INVENTORY_START_Y + UI_INVENTORY_HEIGHT)
+            {
+                int invIdx = getInventoryIndexAtClick(e.button.x, e.button.y);
+                try {
+                    visualsManager->setUITextboxText(playerInventory.at(invIdx).getDescription());
+                }
+                catch (const std::out_of_range& e) {
+                    visualsManager->setUITextboxText("EMPTY INVENTORY SLOT");
+                }
+            }
+            // interacting with inventory UI
+            else if (e.button.x > UI_INVENTORY_START_X && e.button.x < UI_INVENTORY_START_X + UI_INVENTORY_WIDTH
+                && e.button.y > GAMEVIEW_HEIGHT) {
+                
+
+
+            }
+        }
+
+        else if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT && !mapView && !inventoryView) {
             
             // if click was inside of a UI panel, let UIManager handle it
             if ((e.button.x < GAMEVIEW_START_X || e.button.x > GAMEVIEW_START_X + GAMEVIEW_WIDTH)
@@ -152,8 +177,7 @@ void Game::handleInput() {
                     processPlayerMove(mouseX, mouseY);
                     break;
                 default: // when user clicks on gameview with no selected action
-
-                    if (curRoom->getTile(mouseX, mouseY)->getIsOccupied()) {
+                    if (curRoom->getTile(mouseX, mouseY)->getIsOccupied() || curRoom->getObjectAt(mouseX, mouseY)) {
                         if(curRoom->getNPCAt(mouseX, mouseY)) // found an npc
                         {
                             visualsManager->setFocusedNPC(curRoom->getNPCAt(mouseX, mouseY));
@@ -223,6 +247,21 @@ void Game::handleInput() {
                     int newPlayerX, newPlayerY;
                     if (dungeon->tryRoomTransition(player->getX(), player->getY(), newPlayerX, newPlayerY)) {
                         player->setPosition(newPlayerX, newPlayerY);
+                    }
+
+                    // Check for pick ups
+                    if (curRoom->getObjectAt(player->getX(), player->getY())) {
+                        if (playerInventory.size() == player->getMaxInventorySize()) {
+                            visualsManager->setUITextboxText("NOT ENOUGH ROOM IN INVENTORY.");
+                        }
+                        else {
+                            playerInventory.push_back(*curRoom->getObjectAt(player->getX(), player->getY()));
+                            visualsManager->setUITextboxText(
+                                "PICKED UP " + 
+                                curRoom->getObjectAt(player->getX(), player->getY())->getName() + 
+                                ".");
+                            curRoom->removeObject(curRoom->getObjectAt(player->getX(), player->getY()));
+                        }
                     }
                 }
             }

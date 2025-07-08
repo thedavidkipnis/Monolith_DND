@@ -73,7 +73,7 @@ private:
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
-    void renderUI(Player* player);
+    void renderUI(Player* player, bool inventoryView);
     void renderInventory(std::vector<Object>* playerInventory, int maxInventorySize);
 
 public:

@@ -113,10 +113,19 @@ Object* Room::getObjectAt(int x, int y) {
     return nullptr;
 }
 
-void Room::addObjectToRoom(int x, int y, int hitPoints, bool isCollectable, std::string description, std::string name, std::string textureID) {
-    Object* newObj = new Object(x, y, hitPoints, isCollectable, description, name, textureID);
+void Room::addObjectToRoom(Object* newObj) {
     roomObjects.push_back(newObj);
-    Tiles[y][x].setIsOccupied(!newObj->getIsCollectable());
+    Tiles[newObj->getY()][newObj->getX()].setIsOccupied(!newObj->getIsCollectable());
+}
+
+void Room::removeObject(Object* target) {
+    for (auto it = roomObjects.begin(); it != roomObjects.end(); ++it) {
+        if (*it == target) {           // pointer comparison!
+            delete* it;                // delete the specific object
+            roomObjects.erase(it);     // erase it from the vector
+            break;
+        }
+    }
 }
 
 bool Room::isRoomEncounter() const {
