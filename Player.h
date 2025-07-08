@@ -17,6 +17,8 @@ private:
 
     int maxInventorySize;
 
+    int playerGold;
+
     int maxActionCount;
     int actionCountRemaining;
     int maxBonusActionCount;
@@ -34,6 +36,7 @@ public:
         int movementSpeed, 
         int maxHealthPoints, 
         int maxInventorySize,
+        int playerGold,
         int maxActionCount,
         int maxBonusActionCount,
         int attackRange, 
@@ -61,6 +64,9 @@ public:
 
     int getMaxInventorySize() const { return maxInventorySize; }
     void setMaxInventorySize(int size) { maxInventorySize = size; }
+
+    int getPlayerGold() const { return playerGold; }
+    void setPlayerGold(int gold) { playerGold = gold; }
 
     int getMaxActionCount() const { return maxActionCount; }
     void setMaxActionCount(int val) { maxActionCount = val; }

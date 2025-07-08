@@ -133,7 +133,7 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_large.png");
 
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_empty_slot.png");
-
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_gold_icon.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
@@ -403,6 +403,20 @@ void UIManager::renderUI(Player* player, bool inventoryView, Object* selectedInv
         renderUIButton(endTurnButton);
     }
     else {
+        // Gold icon
+        SDL_Rect inventoryGoldIconFrame = {UI_INVENTORY_START_X, UI_INVENTORY_START_Y - (TILE_SIZE * 2), TILE_SIZE*2, TILE_SIZE*2};
+        SDL_RenderCopy(renderer, TileTextures["inventory_gold_icon"], nullptr, &inventoryGoldIconFrame);
+
+        inventoryGoldIconFrame.x = inventoryGoldIconFrame.x + TILE_SIZE;
+        inventoryGoldIconFrame.y = inventoryGoldIconFrame.y - (TILE_SIZE/2);
+        SDL_RenderCopy(renderer, AlphabetTextures[':'], nullptr, &inventoryGoldIconFrame);
+
+        for (char c : std::to_string(player->getPlayerGold())) {
+            inventoryGoldIconFrame.x = inventoryGoldIconFrame.x + (TILE_SIZE / 1.5);
+            SDL_RenderCopy(renderer, AlphabetTextures[c], nullptr, &inventoryGoldIconFrame);
+        }
+
+        // Inventory Menu Buttons
         if(selectedInventoryItem)
         {
             renderUIButton(useInventoryItemButton);

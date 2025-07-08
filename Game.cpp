@@ -46,17 +46,10 @@ bool Game::initialize() {
 
     visualsManager = new UIManager(renderer);
 
+    loadRNGObjectList();
+
     // Initialize game objects
-    /*int startX,
-    int startY,
-    int movementSpeed,
-    int maxHealthPoints,
-    int maxInventorySize,
-    int maxActionCount,
-    int maxBonusActionCount,
-    int attackRange,
-    int damage*/
-    player = std::make_unique<Player>(12, 9, 5, 8, 10, 1, 1, 1, 3);
+    player = std::make_unique<Player>(12, 9, 5, 8, 10, 0, 1, 1, 1, 3);
     selectedInventoryItem = nullptr;
 
     Object* potion1 = new Object(14, 9, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
@@ -74,6 +67,12 @@ bool Game::initialize() {
     keyState = SDL_GetKeyboardState(nullptr);
     running = true;
     return true;
+}
+
+void Game::loadRNGObjectList() {
+    RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "A BIT O' WEALTH", "GOLD COINS", "coins"));
+    RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion"));
+    RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "AN ENERGIZING ELIXIR", "ENERGY POTION", "energy_potion"));
 }
 
 void Game::handleInput() {
@@ -271,12 +270,7 @@ void Game::handleInput() {
                             visualsManager->setUITextboxText("NOT ENOUGH ROOM IN INVENTORY.");
                         }
                         else {
-                            playerInventory.push_back(*curRoom->getObjectAt(player->getX(), player->getY()));
-                            visualsManager->setUITextboxText(
-                                "PICKED UP " + 
-                                curRoom->getObjectAt(player->getX(), player->getY())->getName() + 
-                                ".");
-                            curRoom->removeObject(curRoom->getObjectAt(player->getX(), player->getY()));
+                            playerPickUpObject(curRoom->getObjectAt(player->getX(), player->getY()));
                         }
                     }
                 }
@@ -330,19 +324,32 @@ void Game::update() {
 
 }
 
+void Game::playerPickUpObject(Object* obj) {
+    if (obj->getName() == "GOLD COINS") {
+        int randCoinAmount = getRandomIntInRange(1, 5);
+        player->setPlayerGold(player->getPlayerGold() + randCoinAmount);
+
+        visualsManager->setUITextboxText("PICKED UP " + std::to_string(randCoinAmount) + " COIN" + (randCoinAmount > 1 ? "S" : "") + ".");
+    }
+    else {
+        visualsManager->setUITextboxText("PICKED UP " + obj->getName() + ".");
+        playerInventory.push_back(*obj);
+    }
+    dungeon->getCurrentRoom()->removeObject(obj);
+}
+
 void Game::processPlayerMove(int mouseX, int mouseY) {
 
-    std::string NPCActionDisplayString = "";
     Tile* moveToTile = dungeon->getCurrentRoom()->getTile(mouseX, mouseY);
 
     if (findDistanceInTiles(player->getX(), player->getY(), mouseX, mouseY) > player->getMovementSpeedLeft()) {
-        NPCActionDisplayString = "TOO FAR AWAY TO MOVE THERE.";
+        visualsManager->setUITextboxText("TOO FAR AWAY TO MOVE THERE.");
     }
     else if (findPathForPlayer(dungeon->getCurrentRoom(), player->getX(), player->getY(), mouseX, mouseY, player->getMovementSpeedLeft()).size() < 1) {
-        NPCActionDisplayString = "NO PATH TO MOVE THERE.";
+        visualsManager->setUITextboxText("NO PATH TO MOVE THERE.");
     }
     else if (!moveToTile->getIsWalkable() || moveToTile->getIsOccupied() || moveToTile->getType() == DOOR) {
-        NPCActionDisplayString = "INVALID LOCATION.";
+        visualsManager->setUITextboxText("INVALID LOCATION.");
     }
     else {
         player->setMovementSpeedLeft(player->getMovementSpeedLeft() - findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()));
@@ -350,14 +357,10 @@ void Game::processPlayerMove(int mouseX, int mouseY) {
 
         Object* isThereObjectAtTile = dungeon->getCurrentRoom()->getObjectAt(mouseX, mouseY);
         if (isThereObjectAtTile) {
-            playerInventory.push_back(*isThereObjectAtTile);
-            NPCActionDisplayString = "PICKED UP " + isThereObjectAtTile->getName() + ".";
-            dungeon->getCurrentRoom()->removeObject(isThereObjectAtTile);
+            playerPickUpObject(isThereObjectAtTile);
         }
 
     }
-
-    visualsManager->setUITextboxText(NPCActionDisplayString);
 }
 
 void Game::processPlayerAttack(int mouseX, int mouseY) {
@@ -398,11 +401,8 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
 
                 std::vector<NPC*>* npcs = curRoom->getListOfNPCs();
 
-                // RNG potion drop
-                if (getRandomIntInRange(0, 1)) {
-                    Object* newPotion = new Object(npc->getX(), npc->getY(), 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
-                    curRoom->addObjectToRoom(newPotion);
-                }
+                // RNG item drop
+                genRandomDrop(npc->getX(), npc->getY());
 
                 visualsManager->setFocusedNPC(nullptr);
                 ActionDisplayString += npc->getName() + " DIED.";
@@ -484,6 +484,7 @@ void Game::processPlayerInventoryDropItem() {
     int dropX = -1;
     int dropY = -1;
 
+    // finding nearest empty spot
     if (pX - 1 >= 0 && curRoom->getTile(pX - 1, pY)->getIsWalkable() && !curRoom->getTile(pX - 1, pY)->getIsOccupied() && !curRoom->getObjectAt(pX - 1, pY)) {
         dropX = pX - 1;
         dropY = pY;
@@ -569,6 +570,24 @@ void Game::processNPCLogic() {
         }
     }
     visualsManager->setUITextboxText(NPCActionDisplayString);
+}
+
+void Game::genRandomDrop(int x, int y) {
+
+    Room* curRoom = dungeon->getCurrentRoom();
+
+    if (!getRandomIntInRange(0, 2)) { // 33% chance to drop something
+
+        Object* refObj = RNGObjectDrops.at(getRandomIntInRange(0, RNGObjectDrops.size()-1));
+
+        Object* obj = new Object(x, y, 
+            refObj->getHitPoints(), 
+            refObj->getIsCollectable(), 
+            refObj->getDescription(),
+            refObj->getName(),
+            refObj->getTextureID());
+        curRoom->addObjectToRoom(obj);
+    }
 }
 
 void Game::render() {

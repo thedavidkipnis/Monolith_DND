@@ -20,6 +20,8 @@ private:
 
     UIManager* visualsManager;
 
+    std::vector<Object*> RNGObjectDrops;
+
     std::unique_ptr<Player> player;
     std::vector<Object> playerInventory;
     Object* selectedInventoryItem;
@@ -46,12 +48,15 @@ public:
 
 private:
     void handleInput();
+    void loadRNGObjectList();
+    void playerPickUpObject(Object* obj);
     void processPlayerMove(int mouseX, int mouseY);
     void processPlayerAttack(int mouseX, int mouseY);
     void processPlayerInventoryUseItem();
     void processPlayerInventoryDropItem();
     void removePlayerInventoryItem(Object* obj);
     void processNPCLogic();
+    void genRandomDrop(int x, int y);
     void update();
     void render();
 };
