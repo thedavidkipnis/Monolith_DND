@@ -355,9 +355,6 @@
     <Image Include="empty_heart.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="%27.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="empty_movement_point.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -405,6 +402,9 @@
     </Image>
     <Image Include="bandit_1.png">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="%27.png">
+      <Filter>Resource Files\UI Characters</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

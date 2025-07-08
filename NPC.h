@@ -15,6 +15,7 @@ private:
     std::string description;
     std::string name;
     std::string textureID;
+    std::string displayTextureID;
 
     int healthPoints;
     int movementSpeed;
@@ -47,6 +48,9 @@ public:
 
     std::string getTextureID() const { return textureID; }
     void setTextureID(std::string texture) { textureID = texture; }
+
+    std::string getDisplayTextureID() const { return displayTextureID; }
+    void setDisplayTextureID(std::string id) { displayTextureID = id; }
 
     const std::string& getName() const { return name; }
     void setName(const std::string& val) { name = val; }

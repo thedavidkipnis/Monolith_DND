@@ -15,6 +15,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 2;
         description = "A PESKY GOBLIN";
         textureID = "goblin";
+        displayTextureID = "goblin_display";
         name = "GOBLIN";
         break;
     case SPIDER:
@@ -24,6 +25,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 1;
         description = "AN OVERSIZED ARACHNID";
         textureID = "spider";
+        displayTextureID = "spider_display";
         name = "SPIDER";
         break;
     case BANDIT:
@@ -33,6 +35,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 2;
         description = "A MISCREANT";
         textureID = "bandit_" + std::to_string(getRandomIntInRange(1, 2));
+        displayTextureID = "bandit_display";
         name = "BANDIT";
         break;
     default:
@@ -41,6 +44,7 @@ NPC::NPC(int startX, int startY, int typeID) :
         damage = 0;
         description = "MISSING ENTITY DESCRIPTION";
         textureID = "none";
+        displayTextureID = "none";
         name = "NONE";
         break;
     }

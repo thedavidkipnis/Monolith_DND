@@ -23,7 +23,7 @@ Object::Object(int startX, int startY, int typeID) :
         break;
     case GOLD_COINS:
         hitPoints = 4;
-        isCollectable = false;
+        isCollectable = true;
         description = "A BIT O' WEALTH.";
         name = "GOLD COINS";
         textureID = "coins";

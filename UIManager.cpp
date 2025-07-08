@@ -18,9 +18,9 @@ UIManager::UIManager(SDL_Renderer* SDLRenderer) : renderer(SDLRenderer), frameCo
 
     UINPCFocusBoxFrame = { UI_NPC_FOCUS_BOX_START_X, UI_NPC_FOCUS_BOX_START_Y, UI_NPC_FOCUS_BOX_WIDTH, UI_NPC_FOCUS_BOX_HEIGHT };
     focusedNPCTextureFrame = {
-        UI_NPC_FOCUS_BOX_START_X + (UI_NPC_FOCUS_BOX_WIDTH / 2) - (TILE_SIZE * 2),
-        UI_NPC_FOCUS_BOX_START_Y + TILE_SIZE,
-        TILE_SIZE * 4, TILE_SIZE * 4 };
+        UI_NPC_FOCUS_BOX_START_X + 1,
+        UI_NPC_FOCUS_BOX_START_Y + 1,
+        (TILE_SIZE * 7) - 2, (TILE_SIZE * 7) };
 
     std::cout << "Successfully intialized UIManager.\n===============================\n";
 }
@@ -149,6 +149,9 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_small.png");
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_large.png");
 
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_empty_slot.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/health_potion.png");
+    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/energy_potion.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
@@ -237,9 +240,12 @@ void UIManager::loadAlphabetTextures() {
 
 void UIManager::loadNPCTextures() {
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/goblin_display.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/spider.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/spider_display.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_1.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_2.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_display.png");
 
     std::cout << "Successfully loaded NPC textures.\n";
 
@@ -369,10 +375,10 @@ void UIManager::renderNPCFocusBox() {
 
     if (focusedNPC) {
         // actual npc texture
-        SDL_RenderCopy(renderer, NPCTextures[focusedNPC->getTextureID()], nullptr, &focusedNPCTextureFrame);
+        SDL_RenderCopy(renderer, NPCTextures[focusedNPC->getDisplayTextureID()], nullptr, &focusedNPCTextureFrame);
 
         // npc stats
-        SDL_Rect NPCStatsFrame = { UI_NPC_FOCUS_BOX_START_X + TILE_SIZE, focusBoxCenterY, TILE_SIZE, TILE_SIZE};
+        SDL_Rect NPCStatsFrame = { UI_NPC_FOCUS_BOX_START_X, focusBoxCenterY + (TILE_SIZE / 2) + 1, TILE_SIZE, TILE_SIZE };
         SDL_RenderCopy(renderer, TileTextures["full_red_heart"], nullptr, &NPCStatsFrame);
         NPCStatsFrame.x += TILE_SIZE / 2;
         NPCStatsFrame.y -= TILE_SIZE / 4;
@@ -480,7 +486,7 @@ void UIManager::renderGameView(Room* currentRoom, Player* player) {
     renderCurrentRoomObjects(currentRoom);
     renderCurrentRoomNPCs(currentRoom);
     renderCurrentRoomObjects(currentRoom);
-    //renderDarkness(player->getXTile(), player->getYTile());
+    renderDarkness(player->getXTile(), player->getYTile());
 };
 
 void UIManager::renderPlayer(int playerLocationX, int playerLocationY, int facingDirection) {
@@ -650,19 +656,41 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     }
 }
 
-void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerAction) {
+void UIManager::render(Room* currentRoom, Player* player, int selectedPlayerAction, bool inInventoryView) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
 
     renderUI(player);
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
-    renderGameView(currentRoom, player);
+    if (inInventoryView) {
+        renderInventory(player);
+    }
+    else {
+        renderGameView(currentRoom, player);
+    }
 
     if (frameCount >= MAX_FRAME_COUNT - 1) {
         frameCount = 0;
     }
     frameCount++;
 };
+
+void UIManager::renderInventory(Player* player) {
+    int xOffset = 0;
+    int yOffset = 0;
+
+    for (size_t i = 0; i < 12; i++)
+    {
+        for (size_t j = 0; j < 9; j++)
+        {
+            SDL_Rect inventoryIconFrame = { 
+                UI_INVENTORY_START_X + (i * 2 * TILE_SIZE), 
+                UI_INVENTORY_START_Y + (j * 2 * TILE_SIZE), 
+                TILE_SIZE * 2 , TILE_SIZE * 2};
+            SDL_RenderCopy(renderer, TileTextures["inventory_empty_slot"], nullptr, &inventoryIconFrame);
+        }
+    }
+}
 
 void UIManager::renderDeathScreen() {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
@@ -793,6 +821,3 @@ void UIManager::renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, Roo
 
 
 }
-
-
-// ANIMATION

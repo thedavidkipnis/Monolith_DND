@@ -1,10 +1,15 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <iostream>
 #include <memory>
+#include "Constants.h"
 #include "UImanager.h"
 #include "Dungeon.h"
+#include "Room.h"
 #include "Player.h"
+#include "Dungeon.h"
+#include "MathConstants.h"
 #include "NPC.h"
 
 class Game {
@@ -16,12 +21,15 @@ private:
     UIManager* visualsManager;
 
     std::unique_ptr<Player> player;
+    std::vector<Object> playerInventory;
+
     std::unique_ptr<Dungeon> dungeon;
 
     bool isPlayerInEncounter;
     int selectedPlayerAction;
 
     bool mapView;
+    bool inventoryView;
 
     const Uint8* keyState;
     Uint32 lastMoveTime;
@@ -37,7 +45,6 @@ public:
 
 private:
     void handleInput();
-    void movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int newX, int newY);
     void processPlayerMove(int mouseX, int mouseY);
     void processPlayerAttack(int mouseX, int mouseY);
     void processNPCLogic();

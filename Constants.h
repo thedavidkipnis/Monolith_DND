@@ -53,6 +53,10 @@ const int UI_MINIMAP_START_Y = 0.5 * TILE_SIZE;
 const int UI_MINIMAP_WIDTH = UI_SIDE_PANEL_WIDTH - TILE_SIZE;
 const int UI_MINIMAP_HEIGHT = 4 * TILE_SIZE;
 
+// Inventory layout
+const int UI_INVENTORY_START_X = GAMEVIEW_START_X + (TILE_SIZE / 2);
+const int UI_INVENTORY_START_Y = (TILE_SIZE / 2);
+
 // UI NPC Focus Box
 const int UI_NPC_FOCUS_BOX_START_X = GAMEVIEW_START_X + GAMEVIEW_WIDTH + (0.5 * TILE_SIZE);
 const int UI_NPC_FOCUS_BOX_START_Y = TILE_SIZE + UI_MINIMAP_HEIGHT;
@@ -66,6 +70,12 @@ const int UI_TEXTBOX_WIDTH = 17 * TILE_SIZE;
 const int UI_TEXTBOX_HEIGHT = UI_BOTTOM_PANNEL_HEIGHT - TILE_SIZE;
 
 const int UI_TEXTBOX_CHAR_SIZE = 0.75 * TILE_SIZE;
+
+enum UIViews {
+    gameView = 0,
+    mapView = 1,
+    inventoryView = 2
+};
 
 enum ButtonIDs {
     NONE = 0,

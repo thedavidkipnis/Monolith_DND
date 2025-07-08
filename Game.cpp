@@ -1,11 +1,4 @@
 #include "Game.h"
-#include "Player.h"
-#include "NPC.h"
-#include "Dungeon.h"
-#include "Room.h"
-#include "Constants.h"
-#include "MathConstants.h"
-#include <iostream>
 
 Game::Game()
     : window(nullptr), 
@@ -16,6 +9,7 @@ Game::Game()
     selectedPlayerAction(NONE),
     lastMoveTime(0),
     mapView(false),
+    inventoryView(false),
     keyState(nullptr) {
 }
 
@@ -61,7 +55,7 @@ bool Game::initialize() {
     int maxBonusActionCount,
     int attackRange,
     int damage*/
-    player = std::make_unique<Player>(12, 9, 5, 8, 2, 1, 1, 3);
+    player = std::make_unique<Player>(12, 9, 5, 8, 1, 1, 1, 3);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateFloorRooms(15);
@@ -87,7 +81,6 @@ void Game::handleInput() {
         if (player->getHealthPoints() < 1) {
             if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_SPACE) {
                 running = false;
-
             }
         }
 
@@ -95,14 +88,20 @@ void Game::handleInput() {
         if (e.type == SDL_KEYUP && e.button.button == SDL_SCANCODE_SPACE) {
             selectedPlayerAction = END_TURN;
             visualsManager->setUITextboxText("ENDING TURN...");
+        }
 
+        // triggering map view
+        if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_M && e.key.repeat == 0) {
+            mapView = !mapView;
+            if (inventoryView) { inventoryView = false; }
         }
 
         if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_TAB && e.key.repeat == 0) {
-            mapView = !mapView;
+            inventoryView = !inventoryView;
+            if (mapView) { mapView = false; }
         }
 
-        if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT) {
+        if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT && !mapView && !inventoryView) {
             
             // if click was inside of a UI panel, let UIManager handle it
             if ((e.button.x < GAMEVIEW_START_X || e.button.x > GAMEVIEW_START_X + GAMEVIEW_WIDTH)
@@ -159,12 +158,17 @@ void Game::handleInput() {
                         }
                     }
                     else {
+                        visualsManager->setFocusedNPC(nullptr);
                         visualsManager->setUITextboxText(curRoom->getTile(mouseX, mouseY)->getTileDescription());
                     }
                     break;
                 }
             }
         }
+    }
+
+    if (mapView || inventoryView) {
+        return;
     }
 
     // Handle continuous key presses with timing
@@ -261,12 +265,6 @@ void Game::update() {
         processNPCLogic();
     }
 
-}
-
-void Game::movePlayerAndUpdateRoomTileOccupiedStatus(int oldX, int oldY, int newX, int newY) {
-    player->makeMoveTurnBased(newX, newY);
-    dungeon->getCurrentRoom()->getTile(oldX, oldY)->setIsOccupied(false);
-    dungeon->getCurrentRoom()->getTile(newX, newY)->setIsOccupied(true);
 }
 
 void Game::processPlayerMove(int mouseX, int mouseY) {
@@ -422,8 +420,9 @@ void Game::render() {
             visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
         }
         else {
+
             Room* currentRoom = dungeon->getCurrentRoom();
-            visualsManager->render(currentRoom, player.get(), selectedPlayerAction);
+            visualsManager->render(currentRoom, player.get(), selectedPlayerAction, inventoryView);
             visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
         } 
     }
