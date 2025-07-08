@@ -83,7 +83,9 @@ enum ButtonIDs {
     NONE = 0,
     END_TURN = 1,
     MOVE = 2,
-    ATTACK = 3
+    ATTACK = 3,
+    USE_INVENTORY_ITEM = 4,
+    DROP_INVENTORY_ITEM = 5
 };
 
 enum ButtonStates {

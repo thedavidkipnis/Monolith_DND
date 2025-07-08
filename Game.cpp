@@ -119,17 +119,33 @@ void Game::handleInput() {
             {
                 int invIdx = getInventoryIndexAtClick(e.button.x, e.button.y);
                 try {
-                    visualsManager->setUITextboxText(playerInventory.at(invIdx).getDescription());
+                    Object* selectedInventoryObject = &playerInventory.at(invIdx);
+                    visualsManager->setUITextboxText(selectedInventoryObject->getDescription());
+                    selectedInventoryItem = selectedInventoryObject;
                 }
                 catch (const std::out_of_range& e) {
                     visualsManager->setUITextboxText("EMPTY INVENTORY SLOT");
+                    selectedInventoryItem = nullptr;
                 }
             }
             // interacting with inventory UI
             else if (e.button.x > UI_INVENTORY_START_X && e.button.x < UI_INVENTORY_START_X + UI_INVENTORY_WIDTH
                 && e.button.y > GAMEVIEW_HEIGHT) {
                 
-
+                switch (visualsManager->checkInventoryUIButtonPress(e.button.x, e.button.y, selectedInventoryItem)) {
+                    case USE_INVENTORY_ITEM:
+                        selectedPlayerAction = USE_INVENTORY_ITEM;
+                        processPlayerInventoryUseItem();
+                        break;
+                    case DROP_INVENTORY_ITEM:
+                        selectedPlayerAction = DROP_INVENTORY_ITEM;
+                        processPlayerInventoryDropItem();
+                        break;
+                    default:
+                        selectedPlayerAction = NONE;
+                        visualsManager->setUITextboxText(" ...");
+                        break;
+                }
 
             }
         }
@@ -331,6 +347,14 @@ void Game::processPlayerMove(int mouseX, int mouseY) {
     else {
         player->setMovementSpeedLeft(player->getMovementSpeedLeft() - findDistanceInTiles(mouseX, mouseY, player->getX(), player->getY()));
         player->setPosition(mouseX, mouseY);
+
+        Object* isThereObjectAtTile = dungeon->getCurrentRoom()->getObjectAt(mouseX, mouseY);
+        if (isThereObjectAtTile) {
+            playerInventory.push_back(*isThereObjectAtTile);
+            NPCActionDisplayString = "PICKED UP " + isThereObjectAtTile->getName() + ".";
+            dungeon->getCurrentRoom()->removeObject(isThereObjectAtTile);
+        }
+
     }
 
     visualsManager->setUITextboxText(NPCActionDisplayString);
@@ -347,7 +371,7 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
     else if (player->getActionCountRemaining() < 1) {
         ActionDisplayString = "NOT ENOUGH ACTIONS LEFT TO ATTACK.";
     }
-    else if (!dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied()) {
+    else if (!dungeon->getCurrentRoom()->getTile(mouseX, mouseY)->getIsOccupied() && !dungeon->getCurrentRoom()->getObjectAt(mouseX, mouseY)) {
         ActionDisplayString = "YOU DIDN\'T HIT ANYTHING.";
         player->setActionCountRemaining(player->getActionCountRemaining() - 1);
     }
@@ -373,6 +397,12 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
                 }
 
                 std::vector<NPC*>* npcs = curRoom->getListOfNPCs();
+
+                // RNG potion drop
+                if (getRandomIntInRange(0, 1)) {
+                    Object* newPotion = new Object(npc->getX(), npc->getY(), 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
+                    curRoom->addObjectToRoom(newPotion);
+                }
 
                 visualsManager->setFocusedNPC(nullptr);
                 ActionDisplayString += npc->getName() + " DIED.";
@@ -416,6 +446,90 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
     }
 
     visualsManager->setUITextboxText(ActionDisplayString);
+}
+
+void Game::processPlayerInventoryUseItem() {
+    if (!selectedInventoryItem) {
+        return;
+    }
+
+    std::string itemName = selectedInventoryItem->getName();
+    std::string result = "";
+    if (itemName == "HEALTH POTION") {
+        
+        player->setHealthPoints(std::min(player->getMaxHealthPoints(), player->getHealthPoints() + 5));
+
+        result += "DRANK " + selectedInventoryItem->getName() + ".\n";
+        result += "RECOVERED 5 HIT POINTS.";
+        visualsManager->setUITextboxText(result);
+
+    }
+    else if (itemName == "ENERGY POTION") {
+
+        player->setMovementSpeedLeft(std::min(player->getMovementSpeed(), player->getMovementSpeedLeft() + 3));
+
+        result += "DRANK " + selectedInventoryItem->getName() + ".\n";
+        result += "RECOVERED 3 MOVEMENT POINTS.";
+        visualsManager->setUITextboxText(result);
+    }
+    removePlayerInventoryItem(selectedInventoryItem);
+    selectedInventoryItem = nullptr;
+}
+
+void Game::processPlayerInventoryDropItem() {
+    Room* curRoom = dungeon->getCurrentRoom();
+    int pX = player->getX();
+    int pY = player->getY();
+
+    int dropX = -1;
+    int dropY = -1;
+
+    if (pX - 1 >= 0 && curRoom->getTile(pX - 1, pY)->getIsWalkable() && !curRoom->getTile(pX - 1, pY)->getIsOccupied() && !curRoom->getObjectAt(pX - 1, pY)) {
+        dropX = pX - 1;
+        dropY = pY;
+    }
+    else if (pY - 1 >= 0 && curRoom->getTile(pX, pY - 1)->getIsWalkable() && !curRoom->getTile(pX, pY - 1)->getIsOccupied() && !curRoom->getObjectAt(pX, pY - 1)) {
+        dropX = pX;
+        dropY = pY - 1;
+    }
+    else if (pX + 1 < ROOM_WIDTH && curRoom->getTile(pX + 1, pY)->getIsWalkable() && !curRoom->getTile(pX + 1, pY)->getIsOccupied() && !curRoom->getObjectAt(pX + 1, pY)) {
+        dropX = pX + 1;
+        dropY = pY;
+    } 
+    else if (pY + 1 < ROOM_HEIGHT && curRoom->getTile(pX, pY + 1)->getIsWalkable() && !curRoom->getTile(pX, pY + 1)->getIsOccupied() && !curRoom->getObjectAt(pX, pY + 1)) {
+        dropX = pX;
+        dropY = pY + 1;
+    }
+
+    if (dropX < 0 || dropY < 0) {
+        visualsManager->setUITextboxText("NO ROOM TO DROP ITEM.");
+    }
+    else {
+        Object* droppedObj = new Object(
+            dropX, 
+            dropY, 
+            selectedInventoryItem->getHitPoints(),
+            selectedInventoryItem->getIsCollectable(),
+            selectedInventoryItem->getDescription(),
+            selectedInventoryItem->getName(),
+            selectedInventoryItem->getTextureID());
+
+        curRoom->addObjectToRoom(droppedObj);
+
+        visualsManager->setUITextboxText("DROPPED " + selectedInventoryItem->getName() + ".");
+
+        removePlayerInventoryItem(selectedInventoryItem);
+        selectedInventoryItem = nullptr;
+    }
+}
+
+void Game::removePlayerInventoryItem(Object* obj) {
+    for (auto it = playerInventory.begin(); it != playerInventory.end(); ++it) {
+        if (&(*it) == obj) {
+            playerInventory.erase(it);
+            break;
+        }
+    }
 }
 
 void Game::processNPCLogic() {
@@ -469,7 +583,7 @@ void Game::render() {
         else {
 
             Room* currentRoom = dungeon->getCurrentRoom();
-            visualsManager->render(currentRoom, player.get(), &playerInventory, selectedPlayerAction, inventoryView);
+            visualsManager->render(currentRoom, player.get(), &playerInventory, selectedPlayerAction, inventoryView, selectedInventoryItem);
             visualsManager->renderMap(dungeon->getRooms(), dungeon->getCurRoomCoord(), mapView);
         } 
     }

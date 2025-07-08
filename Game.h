@@ -48,6 +48,9 @@ private:
     void handleInput();
     void processPlayerMove(int mouseX, int mouseY);
     void processPlayerAttack(int mouseX, int mouseY);
+    void processPlayerInventoryUseItem();
+    void processPlayerInventoryDropItem();
+    void removePlayerInventoryItem(Object* obj);
     void processNPCLogic();
     void update();
     void render();

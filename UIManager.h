@@ -43,6 +43,11 @@ private:
     UIButton* moveButton = nullptr;
     UIButton* endTurnButton = nullptr;
 
+    // Inventory Screen buttons
+    UIButton* useInventoryItemButton = nullptr;
+    UIButton* dropInventoryItemButton = nullptr;
+
+
     std::vector<SDL_Texture*> playerTextures;
     std::unordered_map<std::string, SDL_Texture*> TileTextures;
     std::unordered_map<std::string, SDL_Texture*> NPCTextures;
@@ -73,7 +78,7 @@ private:
     void renderCurrentRoom(Room* currentRoom);
     void renderCurrentRoomNPCs(Room* currentRoom);
     void renderCurrentRoomObjects(Room* currentRoom);
-    void renderUI(Player* player, bool inventoryView);
+    void renderUI(Player* player, bool inventoryView, Object* selectedInventoryItem);
     void renderInventory(std::vector<Object>* playerInventory, int maxInventorySize);
 
 public:
@@ -81,7 +86,7 @@ public:
     UIManager(SDL_Renderer* renderer);
     ~UIManager();
 
-    void render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView);
+    void render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView, Object* selectedInventoryItem);
     void setUITextboxText(std::string text);
 
     void setFocusedNPC(NPC* npc);
@@ -91,8 +96,6 @@ public:
     void renderMap(std::map<RoomCoord, std::unique_ptr<Room>>* rooms, RoomCoord curRoomCoord, bool mapMode);
 
     int checkUIButtonPress(int mouseX, int mouseY);
-
-
-    // animation
+    int checkInventoryUIButtonPress(int mouseX, int mouseY, Object* selectedInventoryItem);
 
 };

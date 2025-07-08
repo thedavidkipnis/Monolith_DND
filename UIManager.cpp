@@ -257,23 +257,29 @@ void UIManager::loadUIButtons() {
 
     attackButton = new UIButton(attackButtonFrame, buttonActive, buttonInactive, INACTIVE, ATTACK);
 
-    buttonActive = nullptr;
-    buttonInactive = nullptr;
-
     SDL_Rect moveButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", buttonInactive);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", buttonActive);
 
     moveButton = new UIButton(moveButtonFrame, buttonActive, buttonInactive, INACTIVE, MOVE);
 
-    buttonActive = nullptr;
-    buttonInactive = nullptr;
-
     SDL_Rect endTurnButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", buttonInactive);
     loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", buttonActive);
 
     endTurnButton = new UIButton(endTurnButtonFrame, buttonActive, buttonInactive, INACTIVE, END_TURN);
+
+    SDL_Rect useItemButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/use_inventory_non_clicked.png", buttonInactive);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/use_inventory_clicked.png", buttonActive);
+
+    useInventoryItemButton = new UIButton(useItemButtonFrame, buttonActive, buttonInactive, INACTIVE, USE_INVENTORY_ITEM);
+
+    SDL_Rect dropItemButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_inventory_non_clicked.png", buttonInactive);
+    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_inventory_clicked.png", buttonActive);
+
+    dropInventoryItemButton = new UIButton(dropItemButtonFrame, buttonActive, buttonInactive, INACTIVE, DROP_INVENTORY_ITEM);
 
     std::cout << "Successfully loaded button textures.\n";
 
@@ -297,9 +303,6 @@ void UIManager::renderUIButton(UIButton* button) {
         SDL_RenderCopy(renderer, button->getButtonInactiveTexture(), nullptr, &button->getButtonArea());
         break;
     }
-
-    /*SDL_SetRenderDrawColor(renderer, COLOR_WHITE.r, COLOR_WHITE.g, COLOR_WHITE.b, COLOR_WHITE.a);
-    SDL_RenderDrawRect(renderer, &button->getButtonArea());*/
 };
 
 void UIManager::renderUITextBox() {
@@ -388,7 +391,7 @@ void UIManager::setFocusedNPC(NPC* npc) {
     focusedNPC = npc;
 }
 
-void UIManager::renderUI(Player* player, bool inventoryView) {
+void UIManager::renderUI(Player* player, bool inventoryView, Object* selectedInventoryItem) {
     renderUIPanel(leftUIPanel);
     renderUIPanel(rightUIPanel);
     renderUIPanel(bottomUIPanel);
@@ -398,6 +401,13 @@ void UIManager::renderUI(Player* player, bool inventoryView) {
         renderUIButton(attackButton);
         renderUIButton(moveButton);
         renderUIButton(endTurnButton);
+    }
+    else {
+        if(selectedInventoryItem)
+        {
+            renderUIButton(useInventoryItemButton);
+            renderUIButton(dropInventoryItemButton);
+        }
     }
 
     renderUITextBox();
@@ -440,6 +450,29 @@ int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
         return END_TURN;
     }
 
+    return NONE;
+}
+
+int UIManager::checkInventoryUIButtonPress(int mouseX, int mouseY, Object* selectedInventoryItem) {
+    if (!selectedInventoryItem) {
+        return NONE;
+    }
+    if ((mouseX > useInventoryItemButton->getButtonArea().x && mouseX < useInventoryItemButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > useInventoryItemButton->getButtonArea().y && mouseY < useInventoryItemButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        dropInventoryItemButton->setButtonState(INACTIVE);
+        useInventoryItemButton->setButtonState(ACTIVE);
+
+        return USE_INVENTORY_ITEM;
+    }
+    if ((mouseX > dropInventoryItemButton->getButtonArea().x && mouseX < dropInventoryItemButton->getButtonArea().x + BUTTON_WIDTH)
+        && (mouseY > dropInventoryItemButton->getButtonArea().y && mouseY < dropInventoryItemButton->getButtonArea().y + BUTTON_HEIGHT)) {
+
+        dropInventoryItemButton->setButtonState(ACTIVE);
+        useInventoryItemButton->setButtonState(INACTIVE);
+
+        return DROP_INVENTORY_ITEM;
+    }
     return NONE;
 }
 
@@ -644,12 +677,12 @@ void UIManager::renderDarkness(int playerLocationX, int playerLocationY) {
     }
 }
 
-void UIManager::render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView) {
+void UIManager::render(Room* currentRoom, Player* player, std::vector<Object>* playerInventory, int selectedPlayerAction, bool inInventoryView, Object* selectedInventoryItem) {
     SDL_SetRenderDrawColor(renderer, COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, COLOR_BLACK.a);
     SDL_RenderClear(renderer);
     updateUIButtonsBasedOnSelectedAction(selectedPlayerAction);
 
-    renderUI(player, inInventoryView);
+    renderUI(player, inInventoryView, selectedInventoryItem);
 
     if (inInventoryView) {
         renderInventory(playerInventory, player->getMaxInventorySize());
