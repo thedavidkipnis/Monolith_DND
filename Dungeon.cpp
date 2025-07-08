@@ -156,31 +156,56 @@ void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) 
 }
 void Dungeon::parseAndPopulateRoomObjects(Room* room, const std::string& filename) {
     std::ifstream file(filename);
+    std::string line;
 
-    if (!file.is_open()) {
-        std::cerr << "No objects in file: '" << filename << "'\n";
-        return;
-    }
-
-    int roomIndexX = 0;
-    int roomIndexY = 0;
-
-    char c;
-    while (file.get(c)) {
-
-        if (c == '\n') {
-            roomIndexX++;
-            roomIndexY = 0;
+    while (std::getline(file, line)) {
+        // Remove surrounding parentheses
+        if (line.front() == '(' && line.back() == ')') {
+            line = line.substr(1, line.size() - 2);
         }
-        else if (c != ',' && c != ' ')
-        {
-            int ca = c - '0';
-
-            if (ca != 0) {
-                room->addObjectToRoom(roomIndexY, roomIndexX, ca);
-            }
-            roomIndexY++;
+        else {
+            continue; // skip malformed lines
         }
+
+        std::stringstream ss(line);
+        std::string token;
+
+        int x, y, hitPoints;
+        bool isCollectable;
+        std::string description, name, textureID;
+
+        std::getline(ss, token, ',');
+        x = std::stoi(token);
+
+        std::getline(ss, token, ',');
+        y = std::stoi(token);
+
+        std::getline(ss, token, ',');
+        hitPoints = std::stoi(token);
+
+        std::getline(ss, token, ',');
+        isCollectable = std::stoi(token) != 0;
+
+        std::getline(ss, token, ',');
+        description = token;
+
+        std::getline(ss, token, ',');
+        name = token;
+
+        std::getline(ss, token, ',');
+        textureID = token;
+
+        // Trim leading/trailing whitespace (optional but helpful)
+        auto trim = [](std::string& s) {
+            s.erase(0, s.find_first_not_of(" \t\n\r"));
+            s.erase(s.find_last_not_of(" \t\n\r") + 1);
+            };
+        trim(description);
+        trim(name);
+        trim(textureID);
+
+        // Add the object using your existing function
+        room->addObjectToRoom(x,y,hitPoints, isCollectable, description, name, textureID);
     }
 
     file.close();

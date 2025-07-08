@@ -58,7 +58,12 @@ bool Game::initialize() {
     int damage*/
     player = std::make_unique<Player>(12, 9, 5, 8, 5, 1, 1, 1, 3);
 
-    //Object* potion1 = new Object(0,0,0);
+    Object potion1 = Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
+    playerInventory.push_back(potion1);
+    potion1 = Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion");
+    playerInventory.push_back(potion1);
+    Object potion2 = Object(-1, -1, 1, true, "AN ENERGIZING ELIXIR", "ENERGY POTION", "energy_potion");
+    playerInventory.push_back(potion2);
 
     dungeon = std::make_unique<Dungeon>();
     dungeon->generateFloorRooms(15);

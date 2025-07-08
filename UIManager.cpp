@@ -81,23 +81,6 @@ void UIManager::loadNPCTexture(const char* filePath) {
     NPCTextures[newNPCTextureID] = newNPCTexture;
 }
 
-void UIManager::loadObjectTexture(const char* filePath) {
-    SDL_Surface* surface = IMG_Load(filePath);
-    if (!surface) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-    }
-
-    SDL_Texture* newObjTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
-    if (!newObjTexture) {
-        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
-    }
-    std::string newObjTextureID = extractFileName(filePath);
-
-    NPCTextures[newObjTextureID] = newObjTexture;
-}
-
 void UIManager::loadTextures() {
 
     // loading cursor
@@ -150,8 +133,7 @@ void UIManager::loadTextures() {
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_large.png");
 
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_empty_slot.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/health_potion.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/energy_potion.png");
+
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
     loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
@@ -256,6 +238,9 @@ void UIManager::loadObjectTextures() {
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/coins.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/barrel.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/chest.png");
+
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/health_potion.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/energy_potion.png");
 
     std::cout << "Successfully loaded Object textures.\n";
 
@@ -679,6 +664,8 @@ void UIManager::renderInventory(std::vector<Object>* playerInventory, int maxInv
     int possibleWidth = GAMEVIEW_WIDTH / (2*TILE_SIZE);
     int possibleHeight = GAMEVIEW_HEIGHT / (2 * TILE_SIZE);
 
+    int inventoryRenderCounter = 0;
+
     for (size_t i = 0; i < possibleHeight; i++)
     {
         for (size_t j = 0; j < possibleWidth; j++)
@@ -687,7 +674,14 @@ void UIManager::renderInventory(std::vector<Object>* playerInventory, int maxInv
                 UI_INVENTORY_START_X + (j * 2 * TILE_SIZE), 
                 UI_INVENTORY_START_Y + (i * 2 * TILE_SIZE), 
                 TILE_SIZE * 2 , TILE_SIZE * 2};
-            SDL_RenderCopy(renderer, TileTextures["inventory_empty_slot"], nullptr, &inventoryIconFrame);
+
+            if (inventoryRenderCounter < playerInventory->size()) {
+                SDL_RenderCopy(renderer, NPCTextures[playerInventory->at(inventoryRenderCounter).getTextureID()], nullptr, &inventoryIconFrame);
+                inventoryRenderCounter++;
+            }
+            else {
+                SDL_RenderCopy(renderer, TileTextures["inventory_empty_slot"], nullptr, &inventoryIconFrame);
+            }
             maxInventorySize--;
 
             if (maxInventorySize == 0) {

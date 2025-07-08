@@ -8,6 +8,9 @@
 #include <fstream>
 #include <set>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "Constants.h"
 #include "NPC.h"
 

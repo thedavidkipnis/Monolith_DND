@@ -7,8 +7,6 @@ private:
 	int x;
 	int y;
 
-	int typeID;
-
 	int hitPoints;
 
 	bool isCollectable;
@@ -19,16 +17,13 @@ private:
 
 public:
 
-    Object(int startX, int startY, int typeID);
+    Object(int startX, int startY, int hitPoints, bool isCollectable, std::string description, std::string name, std::string textureID);
 
     int getX() const { return x; }
     void setX(int val) { x = val; }
 
     int getY() const { return y; }
     void setY(int val) { y = val; }
-
-    int getTypeID() const { return typeID; }
-    void setTypeID(int val) { typeID = val; }
 
     int getHitPoints() const { return hitPoints; }
     void setHitPoints(int val) { hitPoints = val; }

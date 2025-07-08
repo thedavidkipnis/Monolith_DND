@@ -113,8 +113,8 @@ Object* Room::getObjectAt(int x, int y) {
     return nullptr;
 }
 
-void Room::addObjectToRoom(int x, int y, int type) {
-    Object* newObj = new Object(x, y, type);
+void Room::addObjectToRoom(int x, int y, int hitPoints, bool isCollectable, std::string description, std::string name, std::string textureID) {
+    Object* newObj = new Object(x, y, hitPoints, isCollectable, description, name, textureID);
     roomObjects.push_back(newObj);
     Tiles[y][x].setIsOccupied(!newObj->getIsCollectable());
 }
