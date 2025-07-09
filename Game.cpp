@@ -434,6 +434,7 @@ void Game::processPlayerAttack(int mouseX, int mouseY) {
                 std::vector<Object*>* objects = curRoom->getObjects();
 
                 ActionDisplayString += obj->getName() + " BROKE INTO PIECES.";
+                genRandomDrop(mouseX, mouseY);
                 delete obj;
                 objects->erase(std::remove(objects->begin(), objects->end(), obj), objects->end());
 
