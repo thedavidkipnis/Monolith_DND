@@ -241,6 +241,8 @@ void UIManager::loadObjectTextures() {
 
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/health_potion.png");
     loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/energy_potion.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/stir_fry.png");
+    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/monster_meat.png");
 
     std::cout << "Successfully loaded Object textures.\n";
 

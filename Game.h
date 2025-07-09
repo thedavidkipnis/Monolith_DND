@@ -52,7 +52,7 @@ private:
     void playerPickUpObject(Object* obj);
     void processPlayerMove(int mouseX, int mouseY);
     void processPlayerAttack(int mouseX, int mouseY);
-    void processPlayerInventoryUseItem();
+    void processPlayerInventoryUseItem(); 
     void processPlayerInventoryDropItem();
     void removePlayerInventoryItem(Object* obj);
     void processNPCLogic();

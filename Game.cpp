@@ -73,6 +73,8 @@ void Game::loadRNGObjectList() {
     RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "A BIT O' WEALTH", "GOLD COINS", "coins"));
     RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "A WARM ELIXIR", "HEALTH POTION", "health_potion"));
     RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "AN ENERGIZING ELIXIR", "ENERGY POTION", "energy_potion"));
+    RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "A HEARTY MEAL", "STIR FRY", "stir_fry"));
+    RNGObjectDrops.push_back(new Object(-1, -1, 1, true, "IT SMELLS A LITTLE WEIRD", "RAW MONSTER MEAT", "monster_meat"));
 }
 
 void Game::handleInput() {
@@ -471,6 +473,22 @@ void Game::processPlayerInventoryUseItem() {
 
         result += "DRANK " + selectedInventoryItem->getName() + ".\n";
         result += "RECOVERED 3 MOVEMENT POINTS.";
+        visualsManager->setUITextboxText(result);
+    }
+    else if (itemName == "STIR FRY") {
+
+        player->setHealthPoints(std::min(player->getMaxHealthPoints(), player->getHealthPoints() + 3));
+
+        result += "ATE " + selectedInventoryItem->getName() + ".\n";
+        result += "RECOVERED 3 HIT POINTS.";
+        visualsManager->setUITextboxText(result);
+    }
+    else if (itemName == "RAW MONSTER MEAT") {
+
+        player->setHealthPoints(std::min(player->getMaxHealthPoints(), player->getHealthPoints() + 3));
+
+        result += "ATE " + selectedInventoryItem->getName() + ".\n";
+        result += "RECOVERED 3 HIT POINTS.";
         visualsManager->setUITextboxText(result);
     }
     removePlayerInventoryItem(selectedInventoryItem);
