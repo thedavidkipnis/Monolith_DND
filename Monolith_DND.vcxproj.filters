@@ -1,460 +1,547 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="include">
+      <UniqueIdentifier>{d178d5eb-e558-42ff-b135-01327aa6fd6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="src">
+      <UniqueIdentifier>{9ede12a9-5e67-4c24-9f1b-709c4b51b3a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="assets">
+      <UniqueIdentifier>{6129244c-1935-46a5-811e-9ef457da6996}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NPC Behaviors">
-      <UniqueIdentifier>{e46aa9fd-e587-41be-a346-a8486b4c2087}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\UI Characters">
-      <UniqueIdentifier>{1fdcafe1-61f4-403e-b139-73d6646a28dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms">
-      <UniqueIdentifier>{a4f0e0a1-a444-4276-a8eb-baa43b410235}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\RoomTileMappings">
-      <UniqueIdentifier>{dbecb357-8648-4574-86ce-c0c1057afc06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\RoomObjectMappings">
-      <UniqueIdentifier>{43daae22-6fbc-4362-a0fd-76557364b4bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\RoomNPCMappings">
-      <UniqueIdentifier>{3874d286-39cd-4cae-b8f6-0581c92085f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\EncounterTileMappings">
-      <UniqueIdentifier>{9896756e-5e85-4176-ab61-d7e280f5a9d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\EncounterObjectMappings">
-      <UniqueIdentifier>{df9b3eaa-7255-4c8a-8ee2-d2d471eae273}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rooms\EncounterNPCMappings">
-      <UniqueIdentifier>{c859476f-ca72-4f96-adce-e7a576a8fd44}</UniqueIdentifier>
+    <Filter Include="room_mappings">
+      <UniqueIdentifier>{03f2d72e-2f6b-4f61-a96b-e72e6f764aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main_game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\BehaviorAttackPlayerMelee.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\BehaviorWander.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Dungeon.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Room.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Dungeon.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\main_game.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\NPC.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorWander.cpp">
-      <Filter>NPC Behaviors</Filter>
+    <ClCompile Include="src\Room.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorAttackPlayerMelee.cpp">
-      <Filter>NPC Behaviors</Filter>
+    <ClCompile Include="src\Tile.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\UIButton.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\BehaviorAttackPlayerMelee.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\BehaviorWander.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Constants.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Room.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Dungeon.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Dungeon.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Game.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\MathConstants.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\NPC.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\NPCBehavior.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="NPCBehavior.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Object.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviorWander.h">
-      <Filter>NPC Behaviors</Filter>
+    <ClInclude Include="include\Player.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviorAttackPlayerMelee.h">
-      <Filter>NPC Behaviors</Filter>
+    <ClInclude Include="include\Room.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Tile.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="MathConstants.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\UIButton.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\UIManager.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="wall.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\!.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="rogue.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\..png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="goblin.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\%27.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="coins.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\action_point.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="g-chest.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\action_point_empty.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="chest.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\action_point_half.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="pine.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\armorer_outside_shop_flag.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\bandit_1.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\bandit_2.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\bandit_display.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\barrel.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\blacksmith_outside_shop_flag.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\bonus_action_point.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\bonus_action_point_empty.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\camp_fire.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\character template.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\chest.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\coins.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\colon.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\cursor.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\cursor_2.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\dirt_1.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\dirt_2.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\dirt_3.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\display frame template.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\drop_inventory_clicked.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\drop_inventory_non_clicked.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\drop_ladder.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\empty_heart.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\empty_movement_point.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\energy_potion.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\fitz.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\fitz_with_table.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\full_action_point.png">
+      <Filter>assets</Filter>
     </Image>
     <Image Include="..\..\..\Downloads\full_red_heart.png">
-      <Filter>Resource Files</Filter>
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="half_red_heart.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="full_action_point.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="action_point_half.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="dirt_1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cursor.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cursor_2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="drop_ladder.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="red_x.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="sword.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="x_bnw_non_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="x_bnw_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="sword_bnw_non_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="sword_bnw_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="move_button_bnw_non_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="move_button_bnw_clicked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="camp_fire.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="spider.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="sheep.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="stone_wall.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="stone_wall_alt.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\full_red_heart.png">
+      <Filter>assets</Filter>
     </Image>
     <Image Include="game_over.png">
-      <Filter>Resource Files</Filter>
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_a.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_z.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_2.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_y.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_3.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_x.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_4.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_w.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_5.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_v.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\game_over_6.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_u.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\g-chest.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_t.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\goblin.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_s.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\goblin_display.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_r.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\half_red_heart.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_q.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\health_potion.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_p.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\inventory_empty_slot.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_o.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\inventory_gold_icon.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_n.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\inventory_slot_full.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_m.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\knight_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_l.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\knight_2.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_k.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\knight_3.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_j.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\knight_4.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_i.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_current_large.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_h.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_current_small.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_g.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_explored_large.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_f.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_explored_small.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_e.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_unexplored_large.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_d.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\minimap_room_unexplored_small.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_c.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\monster_meat.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="upper_b.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\move_button_bnw_clicked.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_6.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\move_button_bnw_non_clicked.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_5.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\movement_point.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_4.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_0.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_3.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_2.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_2.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_1.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_3.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_0.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_4.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_9.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_5.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_8.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_6.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\num_7.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_7.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\prompt_start.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_8.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\num_9.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\!.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="pine.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\semi_colon.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\pine_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\colon.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\prompt_start.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="question_mark.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\question_mark.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="knight_2.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\red_x.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="knight_1.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\rock_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="knight_4.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\rock_2.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="knight_3.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\rogue.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="movement_point.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\semi_colon.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="empty_heart.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\sheep.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="empty_movement_point.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\shop_window.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="tree_1.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\spider.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="tree_2.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\spider_display.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="game_over_5.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\stir_fry.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="game_over_4.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\stone_wall.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="game_over_3.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\stone_wall_alt.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="game_over_2.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\sword.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="game_over_6.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\sword_bnw_clicked.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="fitz_with_table.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\sword_bnw_non_clicked.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="fitz.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\tree_1.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="bonus_action_point.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\tree_2.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="bonus_action_point_empty.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\tt_outdoor_sign.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="action_point_empty.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\tt_outdoor_window_small.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="action_point.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\upper_a.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="bandit_2.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\upper_b.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="bandit_1.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\upper_c.png">
+      <Filter>assets</Filter>
     </Image>
-    <Image Include="%27.png">
-      <Filter>Resource Files\UI Characters</Filter>
+    <Image Include="assets\upper_d.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_e.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_f.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_g.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_h.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_i.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_j.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_k.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_l.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_m.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_n.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_o.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_p.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_q.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_r.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_s.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_t.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_u.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_v.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_w.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_x.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_y.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\upper_z.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\use_inventory_clicked.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\use_inventory_non_clicked.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\wall.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\wood_door.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\wood_floor.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\wood_floor_2.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\x_bnw_clicked.png">
+      <Filter>assets</Filter>
+    </Image>
+    <Image Include="assets\x_bnw_non_clicked.png">
+      <Filter>assets</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="tile_mapping_standard_0_1.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
+    <None Include="room mappings\npcs_mapping_encounter_0_1.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="tile_mapping_standard_0_2.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
+    <None Include="room mappings\npcs_mapping_encounter_0_2.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="tile_mapping_standard_0_3.csv">
-      <Filter>Rooms\RoomTileMappings</Filter>
+    <None Include="room mappings\npcs_mapping_encounter_0_3.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="npcs_mapping_encounter_0_1.csv">
-      <Filter>Rooms\EncounterNPCMappings</Filter>
+    <None Include="room mappings\object_mapping_encounter_0_1.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="npcs_mapping_encounter_0_2.csv">
-      <Filter>Rooms\EncounterNPCMappings</Filter>
+    <None Include="room mappings\object_mapping_encounter_0_2.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="npcs_mapping_encounter_0_3.csv">
-      <Filter>Rooms\EncounterNPCMappings</Filter>
+    <None Include="room mappings\object_mapping_encounter_0_3.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="template.csv">
-      <Filter>Rooms</Filter>
+    <None Include="room mappings\object_mapping_standard_0_1.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_0_3.csv">
-      <Filter>Rooms\EncounterTileMappings</Filter>
+    <None Include="room mappings\object_mapping_standard_0_2.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_0_1.csv">
-      <Filter>Rooms\EncounterTileMappings</Filter>
+    <None Include="room mappings\object_mapping_standard_0_3.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="tile_mapping_encounter_0_2.csv">
-      <Filter>Rooms\EncounterTileMappings</Filter>
+    <None Include="room mappings\template.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_standard_0_1.csv">
-      <Filter>Rooms\RoomObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_encounter_0_1.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_standard_0_2.csv">
-      <Filter>Rooms\RoomObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_encounter_0_2.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_standard_0_3.csv">
-      <Filter>Rooms\RoomObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_encounter_0_3.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_encounter_0_1.csv">
-      <Filter>Rooms\EncounterObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_standard_0_1.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_encounter_0_2.csv">
-      <Filter>Rooms\EncounterObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_standard_0_2.csv">
+      <Filter>room_mappings</Filter>
     </None>
-    <None Include="object_mapping_encounter_0_3.csv">
-      <Filter>Rooms\EncounterObjectMappings</Filter>
+    <None Include="room mappings\tile_mapping_standard_0_3.csv">
+      <Filter>room_mappings</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -34,7 +34,8 @@ UIManager::~UIManager() {
 }
 
 void UIManager::loadTexture(const char* filePath, SDL_Texture*& destinationTexture) {
-    SDL_Surface* surface = IMG_Load(filePath);
+    std::string fullPath = "C:/Users/theda/source/repos/Monolith_DND/assets/" + std::string(filePath);
+    SDL_Surface* surface = IMG_Load(fullPath.c_str());
     if (!surface) {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
@@ -48,7 +49,8 @@ void UIManager::loadTexture(const char* filePath, SDL_Texture*& destinationTextu
 }
 
 void UIManager::loadTileTexture(const char* filePath) {
-    SDL_Surface* surface = IMG_Load(filePath);
+    std::string fullPath = "C:/Users/theda/source/repos/Monolith_DND/assets/" + std::string(filePath);
+    SDL_Surface* surface = IMG_Load(fullPath.c_str());
     if (!surface) {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
@@ -65,7 +67,8 @@ void UIManager::loadTileTexture(const char* filePath) {
 }
 
 void UIManager::loadNPCTexture(const char* filePath) {
-    SDL_Surface* surface = IMG_Load(filePath);
+    std::string fullPath = "C:/Users/theda/source/repos/Monolith_DND/assets/" + std::string(filePath);
+    SDL_Surface* surface = IMG_Load(fullPath.c_str());
     if (!surface) {
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
     }
@@ -84,7 +87,7 @@ void UIManager::loadNPCTexture(const char* filePath) {
 void UIManager::loadTextures() {
 
     // loading cursor
-    SDL_Surface* surface = IMG_Load("C:/Users/theda/source/repos/Monolith_DND/cursor_2.png");
+    SDL_Surface* surface = IMG_Load("assets/cursor_2.png");
     if (surface) {
         cursorTexture = SDL_CreateColorCursor(surface, surface->w / 2, surface->h / 2);
         SDL_FreeSurface(surface);
@@ -102,49 +105,49 @@ void UIManager::loadTextures() {
 
     loadPlayerTextures();
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/stone_wall.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/wood_door.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/drop_ladder.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_1.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_2.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/dirt_3.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/rock_1.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/rock_2.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_1.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/tree_2.png");
+    loadTileTexture("stone_wall.png");
+    loadTileTexture("wood_door.png");
+    loadTileTexture("drop_ladder.png");
+    loadTileTexture("dirt_1.png");
+    loadTileTexture("dirt_2.png");
+    loadTileTexture("dirt_3.png");
+    loadTileTexture("rock_1.png");
+    loadTileTexture("rock_2.png");
+    loadTileTexture("tree_1.png");
+    loadTileTexture("tree_2.png");
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/chest.png");
+    loadTileTexture("chest.png");
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/full_red_heart.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/half_red_heart.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_heart.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/movement_point.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/empty_movement_point.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/action_point.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/action_point_empty.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/bonus_action_point.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/bonus_action_point_empty.png");
+    loadTileTexture("full_red_heart.png");
+    loadTileTexture("half_red_heart.png");
+    loadTileTexture("empty_heart.png");
+    loadTileTexture("movement_point.png");
+    loadTileTexture("empty_movement_point.png");
+    loadTileTexture("action_point.png");
+    loadTileTexture("action_point_empty.png");
+    loadTileTexture("bonus_action_point.png");
+    loadTileTexture("bonus_action_point_empty.png");
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_small.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_current_large.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_explored_small.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_explored_large.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_small.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/minimap_room_unexplored_large.png");
+    loadTileTexture("minimap_room_current_small.png");
+    loadTileTexture("minimap_room_current_large.png");
+    loadTileTexture("minimap_room_explored_small.png");
+    loadTileTexture("minimap_room_explored_large.png");
+    loadTileTexture("minimap_room_unexplored_small.png");
+    loadTileTexture("minimap_room_unexplored_large.png");
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_empty_slot.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/inventory_gold_icon.png");
+    loadTileTexture("inventory_empty_slot.png");
+    loadTileTexture("inventory_gold_icon.png");
 
     gameOverTextureFrame = { (SCREEN_WIDTH / 2) - (TILE_SIZE * 4),(SCREEN_HEIGHT / 2) - (TILE_SIZE * 2), TILE_SIZE * 8, TILE_SIZE * 4};
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_1.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_2.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_3.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_4.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_5.png");
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/game_over_6.png");
+    loadTileTexture("game_over_1.png");
+    loadTileTexture("game_over_2.png");
+    loadTileTexture("game_over_3.png");
+    loadTileTexture("game_over_4.png");
+    loadTileTexture("game_over_5.png");
+    loadTileTexture("game_over_6.png");
 
 
-    loadTileTexture("C:/Users/theda/source/repos/Monolith_DND/fitz_with_table.png");
+    loadTileTexture("fitz_with_table.png");
 
 
     std::cout << "Successfully loaded base textures.\n";
@@ -153,96 +156,96 @@ void UIManager::loadTextures() {
 
 void UIManager::loadPlayerTextures() {
     SDL_Texture* playerTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_1.png", playerTexture);
+    loadTexture("knight_1.png", playerTexture);
     playerTextures.push_back(playerTexture);
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_2.png", playerTexture);
+    loadTexture("knight_2.png", playerTexture);
     playerTextures.push_back(playerTexture);
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_3.png", playerTexture);
+    loadTexture("knight_3.png", playerTexture);
     playerTextures.push_back(playerTexture);
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/knight_4.png", playerTexture);
+    loadTexture("knight_4.png", playerTexture);
     playerTextures.push_back(playerTexture);
 }
 
 void UIManager::loadAlphabetTextures() {
     SDL_Texture* letterTexture;
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/prompt_start.png", letterTexture); AlphabetTextures['>'] = letterTexture;
+    loadTexture("prompt_start.png", letterTexture); AlphabetTextures['>'] = letterTexture;
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_a.png", letterTexture);AlphabetTextures['A'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_b.png", letterTexture);AlphabetTextures['B'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_c.png", letterTexture);AlphabetTextures['C'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_d.png", letterTexture);AlphabetTextures['D'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_e.png", letterTexture);AlphabetTextures['E'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_f.png", letterTexture);AlphabetTextures['F'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_g.png", letterTexture);AlphabetTextures['G'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_h.png", letterTexture);AlphabetTextures['H'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_i.png", letterTexture);AlphabetTextures['I'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_j.png", letterTexture);AlphabetTextures['J'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_k.png", letterTexture);AlphabetTextures['K'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_l.png", letterTexture);AlphabetTextures['L'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_m.png", letterTexture);AlphabetTextures['M'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_n.png", letterTexture);AlphabetTextures['N'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_o.png", letterTexture);AlphabetTextures['O'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_p.png", letterTexture);AlphabetTextures['P'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_q.png", letterTexture);AlphabetTextures['Q'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_r.png", letterTexture);AlphabetTextures['R'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_s.png", letterTexture);AlphabetTextures['S'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_t.png", letterTexture);AlphabetTextures['T'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_u.png", letterTexture);AlphabetTextures['U'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_v.png", letterTexture);AlphabetTextures['V'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_w.png", letterTexture);AlphabetTextures['W'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_x.png", letterTexture);AlphabetTextures['X'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_y.png", letterTexture);AlphabetTextures['Y'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/upper_z.png", letterTexture);AlphabetTextures['Z'] = letterTexture;
+    loadTexture("upper_a.png", letterTexture);AlphabetTextures['A'] = letterTexture;
+    loadTexture("upper_b.png", letterTexture);AlphabetTextures['B'] = letterTexture;
+    loadTexture("upper_c.png", letterTexture);AlphabetTextures['C'] = letterTexture;
+    loadTexture("upper_d.png", letterTexture);AlphabetTextures['D'] = letterTexture;
+    loadTexture("upper_e.png", letterTexture);AlphabetTextures['E'] = letterTexture;
+    loadTexture("upper_f.png", letterTexture);AlphabetTextures['F'] = letterTexture;
+    loadTexture("upper_g.png", letterTexture);AlphabetTextures['G'] = letterTexture;
+    loadTexture("upper_h.png", letterTexture);AlphabetTextures['H'] = letterTexture;
+    loadTexture("upper_i.png", letterTexture);AlphabetTextures['I'] = letterTexture;
+    loadTexture("upper_j.png", letterTexture);AlphabetTextures['J'] = letterTexture;
+    loadTexture("upper_k.png", letterTexture);AlphabetTextures['K'] = letterTexture;
+    loadTexture("upper_l.png", letterTexture);AlphabetTextures['L'] = letterTexture;
+    loadTexture("upper_m.png", letterTexture);AlphabetTextures['M'] = letterTexture;
+    loadTexture("upper_n.png", letterTexture);AlphabetTextures['N'] = letterTexture;
+    loadTexture("upper_o.png", letterTexture);AlphabetTextures['O'] = letterTexture;
+    loadTexture("upper_p.png", letterTexture);AlphabetTextures['P'] = letterTexture;
+    loadTexture("upper_q.png", letterTexture);AlphabetTextures['Q'] = letterTexture;
+    loadTexture("upper_r.png", letterTexture);AlphabetTextures['R'] = letterTexture;
+    loadTexture("upper_s.png", letterTexture);AlphabetTextures['S'] = letterTexture;
+    loadTexture("upper_t.png", letterTexture);AlphabetTextures['T'] = letterTexture;
+    loadTexture("upper_u.png", letterTexture);AlphabetTextures['U'] = letterTexture;
+    loadTexture("upper_v.png", letterTexture);AlphabetTextures['V'] = letterTexture;
+    loadTexture("upper_w.png", letterTexture);AlphabetTextures['W'] = letterTexture;
+    loadTexture("upper_x.png", letterTexture);AlphabetTextures['X'] = letterTexture;
+    loadTexture("upper_y.png", letterTexture);AlphabetTextures['Y'] = letterTexture;
+    loadTexture("upper_z.png", letterTexture);AlphabetTextures['Z'] = letterTexture;
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_1.png", letterTexture); AlphabetTextures['1'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_2.png", letterTexture); AlphabetTextures['2'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_3.png", letterTexture); AlphabetTextures['3'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_4.png", letterTexture); AlphabetTextures['4'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_5.png", letterTexture); AlphabetTextures['5'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_6.png", letterTexture); AlphabetTextures['6'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_7.png", letterTexture); AlphabetTextures['7'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_8.png", letterTexture); AlphabetTextures['8'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_9.png", letterTexture); AlphabetTextures['9'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/num_0.png", letterTexture); AlphabetTextures['0'] = letterTexture;
+    loadTexture("num_1.png", letterTexture); AlphabetTextures['1'] = letterTexture;
+    loadTexture("num_2.png", letterTexture); AlphabetTextures['2'] = letterTexture;
+    loadTexture("num_3.png", letterTexture); AlphabetTextures['3'] = letterTexture;
+    loadTexture("num_4.png", letterTexture); AlphabetTextures['4'] = letterTexture;
+    loadTexture("num_5.png", letterTexture); AlphabetTextures['5'] = letterTexture;
+    loadTexture("num_6.png", letterTexture); AlphabetTextures['6'] = letterTexture;
+    loadTexture("num_7.png", letterTexture); AlphabetTextures['7'] = letterTexture;
+    loadTexture("num_8.png", letterTexture); AlphabetTextures['8'] = letterTexture;
+    loadTexture("num_9.png", letterTexture); AlphabetTextures['9'] = letterTexture;
+    loadTexture("num_0.png", letterTexture); AlphabetTextures['0'] = letterTexture;
 
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/..png", letterTexture); AlphabetTextures['.'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/colon.png", letterTexture); AlphabetTextures[':'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/semi_colon.png", letterTexture); AlphabetTextures[';'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/!.png", letterTexture); AlphabetTextures['!'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/question_mark.png", letterTexture); AlphabetTextures['?'] = letterTexture;
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/'.png", letterTexture); AlphabetTextures['\''] = letterTexture;
+    loadTexture("..png", letterTexture); AlphabetTextures['.'] = letterTexture;
+    loadTexture("colon.png", letterTexture); AlphabetTextures[':'] = letterTexture;
+    loadTexture("semi_colon.png", letterTexture); AlphabetTextures[';'] = letterTexture;
+    loadTexture("!.png", letterTexture); AlphabetTextures['!'] = letterTexture;
+    loadTexture("question_mark.png", letterTexture); AlphabetTextures['?'] = letterTexture;
+    loadTexture("'.png", letterTexture); AlphabetTextures['\''] = letterTexture;
 
     std::cout << "Successfully loaded alphabet textures.\n";
 
 }
 
 void UIManager::loadNPCTextures() {
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/goblin.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/goblin_display.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/spider.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/spider_display.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_1.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_2.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/bandit_display.png");
+    loadNPCTexture("goblin.png");
+    loadNPCTexture("goblin_display.png");
+    loadNPCTexture("spider.png");
+    loadNPCTexture("spider_display.png");
+    loadNPCTexture("bandit_1.png");
+    loadNPCTexture("bandit_2.png");
+    loadNPCTexture("bandit_display.png");
 
     std::cout << "Successfully loaded NPC textures.\n";
 
 }
 
 void UIManager::loadObjectTextures() {
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/camp_fire.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/coins.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/barrel.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/chest.png");
+    loadNPCTexture("camp_fire.png");
+    loadNPCTexture("coins.png");
+    loadNPCTexture("barrel.png");
+    loadNPCTexture("chest.png");
 
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/health_potion.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/energy_potion.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/stir_fry.png");
-    loadNPCTexture("C:/Users/theda/source/repos/Monolith_DND/monster_meat.png");
+    loadNPCTexture("health_potion.png");
+    loadNPCTexture("energy_potion.png");
+    loadNPCTexture("stir_fry.png");
+    loadNPCTexture("monster_meat.png");
 
     std::cout << "Successfully loaded Object textures.\n";
 
@@ -254,32 +257,32 @@ void UIManager::loadUIButtons() {
     SDL_Texture* buttonInactive = nullptr;
 
     SDL_Rect attackButtonFrame = { GAMEVIEW_START_X + (2 * (BUTTON_WIDTH + (TILE_SIZE / 2))), UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_non_clicked.png", buttonInactive);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/sword_bnw_clicked.png", buttonActive);
+    loadTexture("sword_bnw_non_clicked.png", buttonInactive);
+    loadTexture("sword_bnw_clicked.png", buttonActive);
 
     attackButton = new UIButton(attackButtonFrame, buttonActive, buttonInactive, INACTIVE, ATTACK);
 
     SDL_Rect moveButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_non_clicked.png", buttonInactive);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/move_button_bnw_clicked.png", buttonActive);
+    loadTexture("move_button_bnw_non_clicked.png", buttonInactive);
+    loadTexture("move_button_bnw_clicked.png", buttonActive);
 
     moveButton = new UIButton(moveButtonFrame, buttonActive, buttonInactive, INACTIVE, MOVE);
 
     SDL_Rect endTurnButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_non_clicked.png", buttonInactive);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/x_bnw_clicked.png", buttonActive);
+    loadTexture("x_bnw_non_clicked.png", buttonInactive);
+    loadTexture("x_bnw_clicked.png", buttonActive);
 
     endTurnButton = new UIButton(endTurnButtonFrame, buttonActive, buttonInactive, INACTIVE, END_TURN);
 
     SDL_Rect useItemButtonFrame = { GAMEVIEW_START_X, UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/use_inventory_non_clicked.png", buttonInactive);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/use_inventory_clicked.png", buttonActive);
+    loadTexture("use_inventory_non_clicked.png", buttonInactive);
+    loadTexture("use_inventory_clicked.png", buttonActive);
 
     useInventoryItemButton = new UIButton(useItemButtonFrame, buttonActive, buttonInactive, INACTIVE, USE_INVENTORY_ITEM);
 
     SDL_Rect dropItemButtonFrame = { GAMEVIEW_START_X + BUTTON_WIDTH + (TILE_SIZE / 2), UI_BOTTOM_PANNEL_START_Y + (0.5 * TILE_SIZE), BUTTON_WIDTH, BUTTON_HEIGHT };
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_inventory_non_clicked.png", buttonInactive);
-    loadTexture("C:/Users/theda/source/repos/Monolith_DND/drop_inventory_clicked.png", buttonActive);
+    loadTexture("drop_inventory_non_clicked.png", buttonInactive);
+    loadTexture("drop_inventory_clicked.png", buttonActive);
 
     dropInventoryItemButton = new UIButton(dropItemButtonFrame, buttonActive, buttonInactive, INACTIVE, DROP_INVENTORY_ITEM);
 

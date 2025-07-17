@@ -73,14 +73,14 @@ void Dungeon::createRoom(const RoomCoord& coord, int width, int height, bool isE
 void Dungeon::populateRoom(Room* room) {
     if (room->isRoomEncounter()) {
         std::string roomEncounterSpec = std::to_string(getRandomIntInRange(1, 3));
-        parseAndPopulateRoomTiles(room, "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_encounter_0_" + roomEncounterSpec + ".csv");
-        parseAndPopulateRoomNPCs(room, "C:/Users/theda/source/repos/Monolith_DND/npcs_mapping_encounter_0_" + roomEncounterSpec + ".csv");
-        parseAndPopulateRoomObjects(room, "C:/Users/theda/source/repos/Monolith_DND/object_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+        parseAndPopulateRoomTiles(room, "tile_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+        parseAndPopulateRoomNPCs(room, "npcs_mapping_encounter_0_" + roomEncounterSpec + ".csv");
+        parseAndPopulateRoomObjects(room, "object_mapping_encounter_0_" + roomEncounterSpec + ".csv");
     }
     else {
         std::string randRoomSuffix = std::to_string(getRandomIntInRange(1, 3));
-        parseAndPopulateRoomTiles(room, "C:/Users/theda/source/repos/Monolith_DND/tile_mapping_standard_0_" + randRoomSuffix + ".csv");
-        parseAndPopulateRoomObjects(room, "C:/Users/theda/source/repos/Monolith_DND/object_mapping_standard_0_" + randRoomSuffix + ".csv");
+        parseAndPopulateRoomTiles(room, "tile_mapping_standard_0_" + randRoomSuffix + ".csv");
+        parseAndPopulateRoomObjects(room, "object_mapping_standard_0_" + randRoomSuffix + ".csv");
     }
 }
 
@@ -95,7 +95,7 @@ void Dungeon::setupRoomConnections(const RoomCoord& coord) {
 }
 
 void Dungeon::parseAndPopulateRoomTiles(Room* room, const std::string& filename) {
-    std::ifstream file(filename);
+    std::ifstream file("C:/Users/theda/source/repos/Monolith_DND/room_mappings/" + filename);
 
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file '" << filename << "'\n";
@@ -124,7 +124,7 @@ void Dungeon::parseAndPopulateRoomTiles(Room* room, const std::string& filename)
     file.close();
 }
 void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) {
-    std::ifstream file(filename);
+    std::ifstream file("C:/Users/theda/source/repos/Monolith_DND/room_mappings/" + filename);
 
     if (!file.is_open()) {
         std::cerr << "No NPC in file: '" << filename << "'\n";
@@ -155,7 +155,7 @@ void Dungeon::parseAndPopulateRoomNPCs(Room* room, const std::string& filename) 
     file.close();
 }
 void Dungeon::parseAndPopulateRoomObjects(Room* room, const std::string& filename) {
-    std::ifstream file(filename);
+    std::ifstream file("C:/Users/theda/source/repos/Monolith_DND/room_mappings/" + filename);
     std::string line;
 
     while (std::getline(file, line)) {
