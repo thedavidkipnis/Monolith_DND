@@ -114,6 +114,31 @@ void Game::handleInput() {
             if (mapView) { mapView = false; }
         }
 
+        // see if user is trying to switch actions
+        if (e.type == SDL_KEYDOWN && keyState[SDL_SCANCODE_2] && e.key.repeat == 0) {
+            if (selectedPlayerAction == MOVE) {
+                selectedPlayerAction = NONE;
+                visualsManager->setUITextboxText(" ...");
+            }
+            else
+            {
+                selectedPlayerAction = MOVE;
+                visualsManager->setUITextboxText("SELECTED MOVE");
+            }
+        }
+        if (e.type == SDL_KEYDOWN && keyState[SDL_SCANCODE_3] && e.key.repeat == 0) {
+
+            if (selectedPlayerAction == ATTACK) {
+                selectedPlayerAction = NONE;
+                visualsManager->setUITextboxText(" ...");
+            }
+            else
+            {
+                selectedPlayerAction = ATTACK;
+                visualsManager->setUITextboxText("SELECTED ATTACK");
+            }
+        }
+
         // Input in inventory view
         if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT && inventoryView) {
             // interacting with inventory view
@@ -225,17 +250,6 @@ void Game::handleInput() {
     // Handle continuous key presses with timing
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastMoveTime > MOVE_DELAY) {
-
-        // see if user is trying to switch actions
-        if (keyState[SDL_SCANCODE_2]) {
-            selectedPlayerAction = MOVE;
-            visualsManager->setUITextboxText("SELECTED MOVE");
-        }
-        if (keyState[SDL_SCANCODE_3]) {
-            selectedPlayerAction = ATTACK;
-            visualsManager->setUITextboxText("SELECTED ATTACK");
-        }
-
 
         if (!isPlayerInEncounter) {
             int deltaX = 0, deltaY = 0;
