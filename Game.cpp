@@ -107,6 +107,8 @@ void Game::handleInput() {
         }
 
         if (e.type == SDL_KEYDOWN && e.button.button == SDL_SCANCODE_TAB && e.key.repeat == 0) {
+            selectedPlayerAction = NONE;
+            selectedInventoryItem = nullptr;
             inventoryView = !inventoryView;
             visualsManager->setUITextboxText(" ...");
             if (mapView) { mapView = false; }

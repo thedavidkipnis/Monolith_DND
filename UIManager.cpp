@@ -471,21 +471,24 @@ int UIManager::checkUIButtonPress(int mouseX, int mouseY) {
 
 int UIManager::checkInventoryUIButtonPress(int mouseX, int mouseY, Object* selectedInventoryItem) {
     if (!selectedInventoryItem) {
+        dropInventoryItemButton->setButtonState(INACTIVE);
+        useInventoryItemButton->setButtonState(INACTIVE);
+
         return NONE;
     }
     if ((mouseX > useInventoryItemButton->getButtonArea().x && mouseX < useInventoryItemButton->getButtonArea().x + BUTTON_WIDTH)
         && (mouseY > useInventoryItemButton->getButtonArea().y && mouseY < useInventoryItemButton->getButtonArea().y + BUTTON_HEIGHT)) {
 
-        dropInventoryItemButton->setButtonState(INACTIVE);
-        useInventoryItemButton->setButtonState(ACTIVE);
+        /*dropInventoryItemButton->setButtonState(INACTIVE);
+        useInventoryItemButton->setButtonState(ACTIVE);*/
 
         return USE_INVENTORY_ITEM;
     }
     if ((mouseX > dropInventoryItemButton->getButtonArea().x && mouseX < dropInventoryItemButton->getButtonArea().x + BUTTON_WIDTH)
         && (mouseY > dropInventoryItemButton->getButtonArea().y && mouseY < dropInventoryItemButton->getButtonArea().y + BUTTON_HEIGHT)) {
 
-        dropInventoryItemButton->setButtonState(ACTIVE);
-        useInventoryItemButton->setButtonState(INACTIVE);
+        /*dropInventoryItemButton->setButtonState(ACTIVE);
+        useInventoryItemButton->setButtonState(INACTIVE);*/
 
         return DROP_INVENTORY_ITEM;
     }
